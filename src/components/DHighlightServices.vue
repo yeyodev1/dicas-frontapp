@@ -1,29 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sectionRef = ref<HTMLElement | null>(null);
-const cardsRef = ref<HTMLElement[]>([]);
+const cardItems = ref<HTMLElement[]>([]);
 
-const setCardRef = (el: any) => {
-  if (el) cardsRef.value.push(el);
-};
-
-onMounted(() => {
-  gsap.from(cardsRef.value, {
-    scrollTrigger: {
-      trigger: sectionRef.value,
-      start: 'top 80%',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.1,
-    ease: 'back.out(1.7)'
-  });
+onMounted(async () => {
+  await nextTick();
+  
+  if (cardItems.value && cardItems.value.length > 0) {
+    gsap.from(cardItems.value, {
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: 'top bottom-=100px',
+        toggleActions: 'play none none none'
+      },
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power1.out',
+      onComplete: () => {
+        ScrollTrigger.refresh();
+      }
+    });
+  }
 });
 
 const coreServices = [
@@ -86,7 +90,7 @@ const coreServices = [
           v-for="(s, i) in coreServices" 
           :key="i"
           class="card"
-          :ref="setCardRef"
+          ref="cardItems"
           :class="{ 'featured': i === 0 || i === 5 }"
         >
           <div class="content">
