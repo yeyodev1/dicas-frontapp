@@ -1,12 +1,19 @@
-// Brand colors - customize per project
-$primary: #2094D2;
-$primary-dark: #010D27;
-$primary-light: #fefefe;
-$secondary: #2BBB92;
+// Dicas Advisor Group Palette
+$dicas-gold: #C5A467;
+$dicas-gold-light: #E2CC91;
+$dicas-gold-dark: #8F6F3A;
+$dicas-red: #8B1D22;
+$dicas-bg-dark: #0A0A0A;
+
+// Functional aliases
+$primary: $dicas-gold;
+$primary-dark: $dicas-bg-dark;
+$primary-light: $dicas-gold-light;
+$secondary: $dicas-red;
 
 $white: #fefefe;
 $text-light: #fefefe;
-$text-secondary: #6b7280;
+$text-secondary: rgba($white, 0.7);
 
 // Alert colors
 $alert-warning: #f59e0b;
