@@ -1,10 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import gsap from 'gsap';
 
 const activeCategory = ref<number | null>(null);
 
 const toggleCategory = (index: number) => {
   activeCategory.value = activeCategory.value === index ? null : index;
+};
+
+// Animation Hooks
+const beforeEnter = (el: any) => {
+  el.style.height = '0';
+  el.style.opacity = '0';
+};
+
+const enter = (el: any, done: any) => {
+  gsap.to(el, {
+    height: 'auto',
+    opacity: 1,
+    duration: 0.4,
+    ease: 'power2.out',
+    onComplete: done
+  });
+};
+
+const leave = (el: any, done: any) => {
+  gsap.to(el, {
+    height: '0',
+    opacity: 0,
+    duration: 0.3,
+    ease: 'power2.in',
+    onComplete: done
+  });
 };
 
 const serviceCategories = [
@@ -150,15 +177,22 @@ const serviceCategories = [
           :class="{ 'is-active': activeCategory === index }"
         >
           <div class="category-header" @click="toggleCategory(index)">
-            <h3 class="category-title">{{ cat.title }}</h3>
-            <span class="icon">{{ activeCategory === index ? '−' : '+' }}</span>
+            <h3 class="category-title" v-html="cat.title"></h3>
+            <span class="icon" :class="{ 'is-rotated': activeCategory === index }">+</span>
           </div>
           
-          <div class="category-content" v-show="activeCategory === index">
-            <ul class="service-list">
-              <li v-for="(item, i) in cat.items" :key="i">{{ item }}</li>
-            </ul>
-          </div>
+          <transition 
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @leave="leave"
+            :css="false"
+          >
+            <div class="category-content" v-if="activeCategory === index">
+              <ul class="service-list">
+                <li v-for="(item, i) in cat.items" :key="i">{{ item }}</li>
+              </ul>
+            </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -229,11 +263,18 @@ const serviceCategories = [
         color: $primary;
         font-size: 1.5rem;
         font-weight: bold;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        
+        &.is-rotated {
+          transform: rotate(45deg);
+          color: $dicas-red;
+        }
       }
     }
 
     .category-content {
       padding: 0 2rem 2rem;
+      overflow: hidden;
       
       .service-list {
         list-style: none;

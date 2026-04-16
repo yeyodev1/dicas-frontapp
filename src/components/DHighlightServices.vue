@@ -12,22 +12,30 @@ onMounted(async () => {
   await nextTick();
   
   if (cardItems.value && cardItems.value.length > 0) {
-    gsap.from(cardItems.value, {
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top bottom-=100px',
-        toggleActions: 'play none none none'
+    gsap.fromTo(cardItems.value, 
+      { 
+        y: 40, 
+        opacity: 0 
       },
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: 'power1.out',
-      onComplete: () => {
-        ScrollTrigger.refresh();
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.value,
+          start: 'top bottom-=100px',
+          toggleActions: 'play none none none'
+        }
       }
-    });
+    );
   }
+
+  // Refresh ScrollTrigger after all assets are loaded
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
 });
 
 const coreServices = [
