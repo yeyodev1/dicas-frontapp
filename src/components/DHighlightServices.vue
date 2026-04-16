@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,6 +8,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const sectionRef = ref<HTMLElement | null>(null);
 const cardItems = ref<HTMLElement[]>([]);
+
+const router = useRouter();
+
+const navigateToService = (id: string) => {
+  router.push(`/servicios/${id}`);
+};
 
 onMounted(async () => {
   await nextTick();
@@ -40,42 +47,49 @@ onMounted(async () => {
 
 const coreServices = [
   {
+    id: 'medicare-seguros',
     title: 'Medicare & Medicaid',
     tag: 'Salud',
     icon: 'fa-solid fa-file-medical',
     featured: true
   },
   {
+    id: 'taxes-contabilidad',
     title: 'Taxes para Independientes',
     tag: 'Impuestos',
     icon: 'fa-solid fa-file-invoice-dollar',
     featured: true
   },
   {
+    id: 'payroll',
     title: 'Payroll para Negocios',
     tag: 'Empresarial',
     icon: 'fa-solid fa-users-gear',
     featured: true
   },
   {
+    id: 'inmigracion',
     title: 'Inmigración',
     tag: 'Legal',
     icon: 'fa-solid fa-passport',
     featured: true
   },
   {
+    id: 'servicios-empresariales',
     title: 'Creación de LLC',
     tag: 'Negocios',
     icon: 'fa-solid fa-building',
     featured: true
   },
   {
+    id: 'registro-marca',
     title: 'Registro de Marca',
     tag: 'Premium',
     icon: 'fa-solid fa-trademark',
     featured: true
   },
   {
+    id: 'bienes-raices',
     title: 'Realtor en NJ',
     tag: 'Inmobiliaria',
     icon: 'fa-solid fa-house-chimney',
@@ -100,6 +114,7 @@ const coreServices = [
           class="card"
           ref="cardItems"
           :class="{ 'featured': i === 0 || i === 5 }"
+          @click="navigateToService(s.id)"
         >
           <div class="content">
             <div class="icon-box">

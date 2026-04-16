@@ -19,15 +19,15 @@ onUnmounted(() => {
 <template>
   <header :class="['d-header', { 'is-scrolled': isScrolled }]">
     <div class="header-container">
-      <div class="logo">
+      <router-link to="/" class="logo">
         <img src="@/assets/logo/logo-large.png" alt="Dicas Advisor Group" class="logo-img" />
-      </div>
+      </router-link>
       
       <nav class="nav-links">
-        <a href="#hero" class="nav-link">Home</a>
-        <a href="#services" class="nav-link">Services</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="#contact" class="nav-link cta">Contact</a>
+        <router-link to="/" class="nav-link">Inicio</router-link>
+        <a href="/#services" class="nav-link">Servicios</a>
+        <a href="/#about" class="nav-link">Nosotros</a>
+        <a href="/#full-catalog" class="nav-link cta">Contacto / Catálogo</a>
       </nav>
     </div>
   </header>

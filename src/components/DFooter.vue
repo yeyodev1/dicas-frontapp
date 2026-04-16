@@ -43,7 +43,7 @@ const year = new Date().getFullYear();
       
       <div class="footer-bottom">
         <p>&copy; {{ year }} Dicas Advisor Group. All rights reserved.</p>
-        <p>Expertly Designed by ScaleFront</p>
+        <p>Proudly Developed & Programmed by <a href="https://yeyo.dev/" target="_blank" class="dev-link">yeyodeve</a></p>
       </div>
     </div>
   </footer>
@@ -151,6 +151,19 @@ const year = new Date().getFullYear();
       flex-direction: column;
       gap: 1rem;
       text-align: center;
+    }
+
+    .dev-link {
+      color: $primary;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+
+      &:hover {
+        color: $white;
+        border-bottom-color: $primary;
+      }
     }
   }
 }

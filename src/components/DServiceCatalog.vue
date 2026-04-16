@@ -36,6 +36,7 @@ const leave = (el: any, done: any) => {
 
 const serviceCategories = [
   {
+    id: 'taxes-contabilidad',
     title: 'Taxes & Contabilidad',
     items: [
       'Preparación de impuestos personales (1040)',
@@ -49,6 +50,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'payroll',
     title: 'Payroll (NUEVO <i class="fa-solid fa-briefcase"></i>)',
     items: [
       'Procesamiento de nómina para pequeños negocios',
@@ -59,6 +61,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'medicare-seguros',
     title: 'Seguros & Beneficios de Salud',
     items: [
       'Inscripción en GetCoveredNJ',
@@ -73,6 +76,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'inmigracion',
     title: 'Servicios de Inmigración (Non-Attorney)',
     items: [
       'Peticiones familiares (I-130)',
@@ -86,6 +90,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'notaria',
     title: 'Notaría y Documentos',
     items: [
       'Notarización de documentos',
@@ -95,6 +100,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'servicios-empresariales',
     title: 'Servicios Empresariales',
     items: [
       'Consultoría inicial',
@@ -105,6 +111,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'registro-marca',
     title: 'Registro de Marca (Trademark) <i class="fa-solid fa-brain"></i>',
     items: [
       'Búsqueda de disponibilidad de nombre',
@@ -115,6 +122,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'credito-finanzas',
     title: 'Crédito y Finanzas Personales',
     items: [
       'Educación de crédito',
@@ -123,6 +131,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'bienes-raices',
     title: 'Bienes Raíces (Real Estate)',
     items: [
       'Compra de vivienda en New Jersey',
@@ -133,6 +142,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'medico-administrativo',
     title: 'Servicios Médicos Administrativos',
     items: [
       'Asistencia con facturación médica',
@@ -142,6 +152,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'ministro-bodas',
     title: 'Ministro de Bodas <i class="fa-solid fa-ring"></i>',
     items: [
       'Oficiante de bodas civiles',
@@ -150,6 +161,7 @@ const serviceCategories = [
     ]
   },
   {
+    id: 'multiservicios',
     title: 'Multiservicios Generales',
     items: [
       'Llenado de formularios',
@@ -191,6 +203,11 @@ const serviceCategories = [
               <ul class="service-list">
                 <li v-for="(item, i) in cat.items" :key="i">{{ item }}</li>
               </ul>
+              <div class="category-footer">
+                <router-link :to="`/servicios/${cat.id}`" class="cta-link">
+                  Ver página del servicio <i class="fa-solid fa-arrow-right"></i>
+                </router-link>
+              </div>
             </div>
           </transition>
         </div>
@@ -282,6 +299,7 @@ const serviceCategories = [
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 0.8rem;
+        margin-bottom: 2rem;
 
         li {
           font-family: $font-principal;
@@ -295,6 +313,29 @@ const serviceCategories = [
             content: '→';
             color: $primary;
             font-size: 0.8rem;
+          }
+        }
+      }
+
+      .category-footer {
+        border-top: 1px solid rgba($white, 0.05);
+        padding-top: 1.5rem;
+        text-align: right;
+
+        .cta-link {
+          color: $primary;
+          text-decoration: none;
+          font-family: $font-principal;
+          font-weight: 600;
+          font-size: 0.9rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: all 0.3s ease;
+
+          &:hover {
+            color: $white;
+            transform: translateX(5px);
           }
         }
       }
