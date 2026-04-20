@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue';
 import axios from 'axios';
 import gsap from 'gsap';
 import { countries, type Country } from '@/data/countries';
@@ -59,7 +59,7 @@ const formData = reactive<Record<string, any>>({
   qUrgency: '',  // Timeframe
 });
 
-import { watch } from 'vue';
+
 // Sync with store
 watch(formData, (newVal) => {
   leadStore.firstName = newVal.firstName;
@@ -347,11 +347,21 @@ const handleSubmit = async () => {
     
     showSuccess.value = true;
     leadStore.clear(); // Clear draft on success
+    
+    // Smooth scroll to top of form/modal
+    nextTick(() => {
+      const container = document.querySelector('.form-card') || document.querySelector('.success-card');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
     gsap.from('.success-card', {
-      scale: 0.8,
+      scale: 0.9,
       opacity: 0,
-      duration: 0.6,
-      ease: 'power3.out'
+      y: 20,
+      duration: 0.8,
+      ease: 'power4.out'
     });
   } catch (error) {
     console.error('Qualify Submission Error:', error);
@@ -598,13 +608,13 @@ const handleSubmit = async () => {
     </div>
 
     <!-- SUCCESS MESSAGE -->
-    <div v-else class="success-card">
+    <div v-else class="success-card section-transition">
       <div class="success-icon">
         <i class="fa-solid fa-circle-check"></i>
       </div>
       <h2>¡Solicitud Recibida!</h2>
-      <p>Hemos analizado tu caso preliminarmente. Un asesor especializado en <strong>{{ serviceTitle }}</strong> se comunicará contigo prioritariamente.</p>
-      <router-link to="/" class="btn-primary">Volver al Inicio</router-link>
+      <p>Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado en <strong>{{ serviceTitle }}</strong> se comunicará contigo prioritariamente.</p>
+      <router-link to="/" class="btn-return-home">Volver al Inicio</router-link>
     </div>
   </div>
 </template>
@@ -1018,10 +1028,49 @@ const handleSubmit = async () => {
 
 .success-card {
   text-align: center;
-  .success-icon { font-size: 4rem; color: $alert-success; margin-bottom: 1.5rem; }
-  h2 { font-family: $font-luxury; font-size: 2rem; margin-bottom: 1rem; color: white; }
-  p { color: rgba($white, 0.6); margin-bottom: 2rem; line-height: 1.6; }
-  .btn-primary { max-width: 300px; margin: 0 auto; text-decoration: none; }
+  padding: 4rem 2rem;
+  
+  .success-icon { 
+    font-size: 5rem; 
+    color: $alert-success; 
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 30px rgba($alert-success, 0.4));
+  }
+  
+  h2 { 
+    font-family: $font-luxury; 
+    font-size: 2.5rem; 
+    margin-bottom: 1rem; 
+    color: white; 
+  }
+  
+  p { 
+    color: rgba($white, 0.8); 
+    margin-bottom: 3rem; 
+    line-height: 1.8;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-return-home {
+    display: inline-flex;
+    padding: 1.2rem 2.5rem;
+    background: rgba($white, 0.1);
+    border: 1px solid rgba($white, 0.2);
+    border-radius: 50px;
+    color: $white !important;
+    text-decoration: none;
+    font-family: $font-principal;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $white;
+      color: $primary-dark !important;
+      transform: translateY(-3px);
+    }
+  }
 }
 
 .ms-auto { margin-left: auto; }
