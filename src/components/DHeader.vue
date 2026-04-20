@@ -6,6 +6,7 @@ import gsap from 'gsap';
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
+const activeSection = ref('hero');
 const menuRef = ref<HTMLElement | null>(null);
 const modalStore = useModalStore();
 const { locale, t } = useI18n();
@@ -33,26 +34,71 @@ const closeMenu = () => {
   isMenuOpen.value = false;
 };
 
-// GSAP Mobile Menu Animation
-watch(isMenuOpen, (isOpen) => {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden';
-    gsap.fromTo('.mobile-menu', 
-      { x: '100%', opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.6, ease: 'power4.out' }
-    );
-    gsap.fromTo('.mm-link', 
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, delay: 0.3, ease: 'back.out(1.7)' }
-    );
-  } else {
-    document.body.style.overflow = '';
-    gsap.to('.mobile-menu', { x: '100%', opacity: 0, duration: 0.5, ease: 'power4.in' });
-  }
-});
+// GSAP Mobile Menu Animations
+const onMenuEnter = (el: Element, done: () => void) => {
+  document.body.style.overflow = 'hidden';
+  const tl = gsap.timeline({ onComplete: done });
+  
+  tl.fromTo(el, 
+    { x: '100%', opacity: 0 },
+    { x: 0, opacity: 1, duration: 0.6, ease: 'power4.out' }
+  );
+  
+  tl.fromTo('.mm-link', 
+    { y: 20, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'back.out(1.7)' },
+    '-=0.3'
+  );
+};
+
+const onMenuLeave = (el: Element, done: () => void) => {
+  document.body.style.overflow = '';
+  const tl = gsap.timeline({ onComplete: done });
+  
+  // Stagger links out first
+  tl.to('.mm-link', {
+    y: -20,
+    opacity: 0,
+    duration: 0.3,
+    stagger: {
+      each: 0.05,
+      from: 'end'
+    },
+    ease: 'power2.in'
+  });
+  
+  // Slide drawer out
+  tl.to(el, {
+    x: '100%',
+    opacity: 0,
+    duration: 0.5,
+    ease: 'power4.in'
+  }, '-=0.1');
+};
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
+
+  // Intersection Observer for active sections
+  const sections = ['hero', 'services', 'about'];
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -60% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id;
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
 });
 
 onUnmounted(() => {
@@ -69,9 +115,9 @@ onUnmounted(() => {
       
       <!-- DESKTOP NAV -->
       <nav class="nav-links">
-        <router-link to="/" class="nav-link">{{ t('nav.home') }}</router-link>
-        <a href="/#services" class="nav-link">{{ t('nav.services') }}</a>
-        <a href="/#about" class="nav-link">{{ t('nav.about') }}</a>
+        <router-link to="/" class="nav-link" :class="{ active: activeSection === 'hero' }">{{ t('nav.home') }}</router-link>
+        <a href="/#services" class="nav-link" :class="{ active: activeSection === 'services' }">{{ t('nav.services') }}</a>
+        <a href="/#about" class="nav-link" :class="{ active: activeSection === 'about' }">{{ t('nav.about') }}</a>
         
         <div class="lang-switcher" @click="toggleLanguage">
           <span :class="{ active: locale === 'en' }">EN</span>
@@ -95,29 +141,35 @@ onUnmounted(() => {
       </button>
 
       <!-- MOBILE MENU DRAWER -->
-      <div v-show="isMenuOpen" class="mobile-menu" ref="menuRef">
-        <nav class="mm-nav">
-          <router-link to="/" class="mm-link" @click="closeMenu">{{ t('nav.home') }}</router-link>
-          <a href="/#services" class="mm-link" @click="closeMenu">{{ t('nav.services') }}</a>
-          <a href="/#about" class="mm-link" @click="closeMenu">{{ t('nav.about') }}</a>
-          
-          <div class="mm-divider"></div>
-          
-          <div class="mm-lang-switcher" @click="toggleLanguage">
-            <span class="label">LANGUAGE:</span>
-            <div class="switcher-btns">
-              <button :class="{ active: locale === 'en' }">ENGLISH</button>
-              <button :class="{ active: locale === 'es' }">ESPAÑOL</button>
+      <Transition 
+        :css="false"
+        @enter="onMenuEnter"
+        @leave="onMenuLeave"
+      >
+        <div v-if="isMenuOpen" class="mobile-menu" ref="menuRef">
+          <nav class="mm-nav">
+            <router-link to="/" class="mm-link" :class="{ active: activeSection === 'hero' }" @click="closeMenu">{{ t('nav.home') }}</router-link>
+            <a href="/#services" class="mm-link" :class="{ active: activeSection === 'services' }" @click="closeMenu">{{ t('nav.services') }}</a>
+            <a href="/#about" class="mm-link" :class="{ active: activeSection === 'about' }" @click="closeMenu">{{ t('nav.about') }}</a>
+            
+            <div class="mm-divider"></div>
+            
+            <div class="mm-lang-switcher" @click="toggleLanguage">
+              <span class="label">LANGUAGE:</span>
+              <div class="switcher-btns">
+                <button :class="{ active: locale === 'en' }">ENGLISH</button>
+                <button :class="{ active: locale === 'es' }">ESPAÑOL</button>
+              </div>
             </div>
-          </div>
 
-          <button @click="openConsultancy" class="mm-cta">{{ t('nav.cta') }}</button>
-        </nav>
-        
-        <div class="mm-footer">
-          <p>© 2026 Dicas Advisor Group</p>
+            <button @click="openConsultancy" class="mm-cta">{{ t('nav.cta') }}</button>
+          </nav>
+          
+          <div class="mm-footer">
+            <p>© 2026 Dicas Advisor Group</p>
+          </div>
         </div>
-      </div>
+      </Transition>
     </div>
   </header>
 </template>
@@ -222,7 +274,7 @@ onUnmounted(() => {
       transition: width 0.3s ease;
     }
 
-    &:hover {
+    &:hover, &.active {
       color: $primary;
       &::after {
         width: 100%;
@@ -316,7 +368,7 @@ onUnmounted(() => {
       font-weight: 700;
       transition: color 0.3s ease;
 
-      &:hover { color: $primary; }
+      &:hover, &.active { color: $primary; }
     }
 
     .mm-divider {

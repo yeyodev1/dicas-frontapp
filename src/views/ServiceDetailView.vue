@@ -431,17 +431,20 @@ onMounted(() => {
 
   .advisor-match-notice {
     background: rgba($white, 0.05);
-    padding: 1rem 1.5rem;
-    border-radius: 12px 12px 0 0;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
     border: 1px solid rgba($white, 0.1);
-    border-bottom: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: rgba($white, 0.6);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
+    font-weight: 500;
 
-    i { color: $primary; }
+    i { color: $primary; font-size: 0.9rem; }
   }
 }
 
