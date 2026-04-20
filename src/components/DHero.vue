@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import gsap from 'gsap';
+import { useModalStore } from '@/stores/modalStore';
 
 const titleRef = ref<HTMLElement | null>(null);
 const subtitleRef = ref<HTMLElement | null>(null);
 const ctaRef = ref<HTMLElement | null>(null);
 const ceoRef = ref<HTMLElement | null>(null);
+
+const modalStore = useModalStore();
+
+const openConsultancy = () => {
+  modalStore.openConsultancy(null, 'hero');
+};
 
 onMounted(() => {
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
@@ -49,8 +56,8 @@ onMounted(() => {
           Dicas Advisor Group: Your personal, family, and business partner. We offer specialized solutions in Finance, Health, Immigration, and Real Estate.
         </p>
         <div class="hero-actions" ref="ctaRef">
-          <a href="https://wa.me/your-number" target="_blank" class="btn btn-primary">Connect on WhatsApp</a>
-          <button class="btn btn-outline">Our Services</button>
+          <button @click="openConsultancy" class="btn btn-primary">Obtener Asesoría <i class="fa-solid fa-calendar-check"></i></button>
+          <a href="/#services" class="btn btn-outline">Ver Servicios</a>
         </div>
       </div>
 
@@ -219,6 +226,7 @@ onMounted(() => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 12px;
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     &-primary {

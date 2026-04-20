@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useModalStore } from '@/stores/modalStore';
 
 const isScrolled = ref(false);
+const modalStore = useModalStore();
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
+};
+
+const openConsultancy = () => {
+  modalStore.openConsultancy(null, 'header');
 };
 
 onMounted(() => {
@@ -27,7 +33,7 @@ onUnmounted(() => {
         <router-link to="/" class="nav-link">Inicio</router-link>
         <a href="/#services" class="nav-link">Servicios</a>
         <a href="/#about" class="nav-link">Nosotros</a>
-        <a href="/#full-catalog" class="nav-link cta">Contacto / Catálogo</a>
+        <button @click="openConsultancy" class="nav-link cta">Obtener Asesoría</button>
       </nav>
     </div>
   </header>

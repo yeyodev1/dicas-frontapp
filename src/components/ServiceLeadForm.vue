@@ -4,22 +4,91 @@ import axios from 'axios';
 import gsap from 'gsap';
 import { countries, type Country } from '@/data/countries';
 import type { ServiceField } from '@/data/servicesData';
+import { useRoute } from 'vue-router';
+import { useLeadStore } from '@/stores/leadStore';
+import DSelect from './DSelect.vue';
+import DDatePicker from './DDatePicker.vue';
 
 const props = defineProps({
   fields: {
     type: Array as () => ServiceField[],
-    required: true
+    default: () => []
   },
   serviceTitle: {
     type: String,
-    required: true
+    default: ''
+  },
+  isGlobal: {
+    type: Boolean,
+    default: false
   }
 });
+
+import { servicesData } from '@/data/servicesData';
 
 const currentStep = ref(1);
 const isSubmitting = ref(false);
 const showSuccess = ref(false);
-const hasCompany = ref(false);
+const hasSentContact = ref(false); // Safety flag to prevent double contact leads
+
+const route = useRoute();
+const leadStore = useLeadStore();
+
+const formData = reactive<Record<string, any>>({
+  // Step 1: Contact
+  firstName: leadStore.firstName,
+  lastName: leadStore.lastName,
+  email: leadStore.email,
+  phone: leadStore.phone,
+  countryCode: leadStore.selectedCountryCode === 'US' ? '+1' : '+1', // Simplified for now
+  zipCode: leadStore.zipCode,
+  companyName: leadStore.companyName,
+  
+  // Step 2: Service Selection (Global only)
+  selectedServiceId: '',
+  qConsultationPurpose: '',
+  
+  // Step 1 extra state
+  hasCompany: leadStore.hasCompany,
+  
+  // Step 3: Qualification (The "Big 5")
+  qBilling: '', // > $5.5k
+  qStatus: '',  // SSN, ITIN, etc
+  qPurpose: '', // Personal vs Business
+  qLocation: '', // NJ focus
+  qUrgency: '',  // Timeframe
+});
+
+import { watch } from 'vue';
+// Sync with store
+watch(formData, (newVal) => {
+  leadStore.firstName = newVal.firstName;
+  leadStore.lastName = newVal.lastName;
+  leadStore.email = newVal.email;
+  leadStore.phone = newVal.phone;
+  leadStore.birthDate = newVal.birthDate;
+  leadStore.zipCode = newVal.zipCode;
+  leadStore.companyName = newVal.companyName;
+  leadStore.hasCompany = newVal.hasCompany;
+  leadStore.saveToStorage();
+}, { deep: true });
+
+const consultationOptions = [
+  'Contabilidad y Tax Prep',
+  'Apertura de Empresa (LLC/Corp)',
+  'Consultoría de Negocios',
+  'Inmigración / Trámites Legales',
+  'Seguros / Notaría',
+  'Otro Apoyo Administrativo'
+];
+
+const statusOptions = [
+  { label: 'Ciudadano / Residente', value: 'Ciudadano/Residente' },
+  { label: 'Poseo número de Seguro Social (SSN)', value: 'SSN' },
+  { label: 'Poseo número de ITIN', value: 'ITIN' },
+  { label: 'En trámite / Proceso', value: 'En Proceso' },
+  { label: 'Ninguno de los anteriores', value: 'Ninguno' }
+];
 
 // Country Selector Logic
 const countrySearch = ref('');
@@ -57,9 +126,46 @@ const detectLocation = async () => {
 };
 
 onMounted(() => {
-  detectLocation();
+  leadStore.loadFromStorage();
   
-  // Close dropdown when clicking outside
+  // Sync formData with restored store values
+  formData.firstName = leadStore.firstName;
+  formData.lastName = leadStore.lastName;
+  formData.email = leadStore.email;
+  formData.phone = leadStore.phone;
+  formData.zipCode = leadStore.zipCode;
+  formData.companyName = leadStore.companyName;
+  formData.hasCompany = leadStore.hasCompany;
+
+  detectLocation();
+
+  // Contextual Auto-selection - CRITICAL: use correct mapping
+  const serviceId = route.params.id as string;
+  const matchedService = servicesData.find(s => s.id === serviceId);
+  if (matchedService) {
+    formData.selectedServiceId = matchedService.id;
+    
+    // Auto-select Consultation Purpose based on service ID mapping
+    const purposeMapping: Record<string, string> = {
+      'taxes-contabilidad': 'Contabilidad y Tax Prep',
+      'medicare-seguros': 'Seguros / Notaría',
+      'inmigracion': 'Inmigración / Trámites Legales',
+      'payroll': 'Contabilidad y Tax Prep',
+      'notaria': 'Seguros / Notaría',
+      'servicios-empresariales': 'Apertura de Empresa (LLC/Corp)',
+      'registro-marca': 'Apertura de Empresa (LLC/Corp)',
+      'credito-finanzas': 'Otro Apoyo Administrativo',
+      'bienes-raices': 'Otro Apoyo Administrativo',
+      'medico-administrativo': 'Otro Apoyo Administrativo',
+      'ministro-bodas': 'Seguros / Notaría',
+      'multiservicios': 'Otro Apoyo Administrativo'
+    };
+    
+    if (purposeMapping[matchedService.id]) {
+      formData.qConsultationPurpose = purposeMapping[matchedService.id];
+    }
+  }
+  
   window.addEventListener('click', (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     if (!target.closest('.country-selector-wrapper')) {
@@ -68,13 +174,10 @@ onMounted(() => {
   });
 });
 
-const formData = reactive<Record<string, any>>({
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  countryCode: '+1',
-  companyName: '',
+// Deduplicate dynamic fields
+const filteredFields = computed(() => {
+  const step1Fields = ['dob', 'birthdate', 'zipcode', 'companyname'];
+  return props.fields.filter(f => !step1Fields.includes(f.name.toLowerCase()));
 });
 
 // Initialize dynamic fields
@@ -82,8 +185,37 @@ props.fields.forEach(field => {
   formData[field.name] = '';
 });
 
+// Capture Contact Lead (Webhook 1)
+const sendContactLead = async () => {
+  if (hasSentContact.value) return; // Only send once
+  
+  const payload = {
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    email: formData.email,
+    fullPhone: `${selectedCountry.value.dial_code}${formData.phone}`,
+    service: props.serviceTitle,
+    source: 'Dicas Website (Partial)',
+    tags: ['dicas_web_lead', 'partial_contact'],
+    submittedAt: new Date().toISOString()
+  };
+
+  try {
+    const contactUrl = import.meta.env.VITE_CRM_CONTACT_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/e1d506dd-5052-404f-9af0-29676473c345';
+    await axios.post(contactUrl, payload);
+    hasSentContact.value = true;
+    console.log('Initial contact captured successfully.');
+  } catch (error) {
+    console.error('Contact Capture Error:', error);
+  }
+};
+
+const totalSteps = computed(() => {
+  return props.isGlobal ? 3 : 2;
+});
+
 const progressWidth = computed(() => {
-  return currentStep.value === 1 ? '50%' : '100%';
+  return `${(currentStep.value / totalSteps.value) * 100}%`;
 });
 
 const nextStep = () => {
@@ -92,13 +224,17 @@ const nextStep = () => {
       alert('Por favor completa los datos obligatorios.');
       return;
     }
-    
+    // Trigger first webhook
+    sendContactLead();
+  }
+  
+  if (currentStep.value < 3) {
     gsap.to('.step-content', {
       opacity: 0,
       x: -20,
       duration: 0.3,
       onComplete: () => {
-        currentStep.value = 2;
+        currentStep.value++;
         gsap.fromTo('.step-content', { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
       }
     });
@@ -106,48 +242,119 @@ const nextStep = () => {
 };
 
 const prevStep = () => {
-  gsap.to('.step-content', {
-    opacity: 0,
-    x: 20,
-    duration: 0.3,
-    onComplete: () => {
-      currentStep.value = 1;
-      gsap.fromTo('.step-content', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4 });
-    }
-  });
+  if (currentStep.value > 1) {
+    gsap.to('.step-content', {
+      opacity: 0,
+      x: 20,
+      duration: 0.3,
+      onComplete: () => {
+        currentStep.value--;
+        gsap.fromTo('.step-content', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4 });
+      }
+    });
+  }
+};
+
+// Automated Lead Scoring System based on the "Big 5"
+const calculateLeadScore = () => {
+  let score = 0;
+  
+  // Q1: Billing (Critical)
+  if (formData.qBilling === 'Sí') score += 40;
+  else if (formData.qBilling === 'No') score += 10;
+
+  // Q2: Status
+  if (['Ciudadano/Residente', 'SSN', 'ITIN'].includes(formData.qStatus)) score += 20;
+  else if (formData.qStatus === 'En Proceso') score += 10;
+
+  // Q4: Location (NJ Focus)
+  if (formData.qLocation === 'Sí, reside en NJ') score += 20;
+  else if (formData.qLocation === 'No, reside en otro estado') score += 10;
+
+  // Q5: Urgency
+  if (formData.qUrgency === '< 48 horas') score += 20;
+  else if (formData.qUrgency === '1-2 semanas') score += 10;
+
+  let status = 'COLD';
+  if (score >= 80) status = 'HIGHT_PRIME_VIP';
+  else if (score >= 50) status = 'WARM_QUALIFIED';
+  else status = 'COLD_RETAIN';
+
+  return { score, status, isQualified: score >= 50 };
+};
+
+// Helper to generate a professional summary with emojis
+const generateSummary = (scoring: any) => {
+  const service = servicesData.find(s => s.id === formData.selectedServiceId)?.title || props.serviceTitle || 'General';
+  
+  let summary = `🚨 NEW LEAD QUALIFICATION: ${scoring.status}\n`;
+  summary += `📈 SCORE: ${scoring.score}/100\n\n`;
+  
+  summary += `👤 PERS: ${formData.firstName} ${formData.lastName}\n`;
+  summary += `📧 MAIL: ${formData.email}\n`;
+  summary += `📱 TEL: ${selectedCountry.value.dial_code}${formData.phone}\n`;
+  if (formData.zipCode) summary += `📮 ZIP: ${formData.zipCode}\n`;
+  summary += `💼 SERV: ${service}\n`;
+  summary += `📝 MOTIVO: ${formData.qConsultationPurpose || 'Consulta General'}\n`;
+  
+  if (formData.hasCompany && formData.companyName) {
+    summary += `🏢 CORP: ${formData.companyName}\n`;
+  }
+
+  summary += `\n--- ⚖️ QUALIFICATION DATA ---\n`;
+  summary += `💰 Facturación > $5.5k: ${formData.qBilling}\n`;
+  summary += `🪪 Estatus Legal: ${formData.qStatus}\n`;
+  summary += `📂 Tipo Trámite: ${formData.qPurpose}\n`;
+  summary += `📍 Ubicación NJ: ${formData.qLocation}\n`;
+  summary += `⚡ Urgencia: ${formData.qUrgency}\n`;
+  
+  return summary;
 };
 
 const handleSubmit = async () => {
   isSubmitting.value = true;
   
+  const scoring = calculateLeadScore();
+
   const serviceSlug = props.serviceTitle.toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
     .replace(/\s+/g, '_')
     .replace(/[^\w]/g, '');
 
+  const crmTags = ['dicas_web_lead', `service_${serviceSlug}`];
+  if (formData.urgency === 'critical') crmTags.push('urgency_critical_hot');
+  if (formData.budget === 'corporate') crmTags.push('high_value_deal');
+  if (formData.wantsExpert) crmTags.push('meeting_request');
+  crmTags.push(`status_${scoring.status.toLowerCase()}`);
+
   const fullPayload = {
     ...formData,
+    leadScore: scoring.score,
+    qualificationStatus: scoring.status,
+    isQualified: scoring.isQualified,
     country: selectedCountry.value.name,
     fullPhone: `${formData.countryCode}${formData.phone}`,
     service: props.serviceTitle,
-    source: 'Dicas Website',
-    tags: ['dicas_web_lead', `service_${serviceSlug}`],
+    nota: generateSummary(scoring),
+    source: 'Dicas Website (Qualified)',
+    tags: crmTags,
     submittedAt: new Date().toISOString()
   };
 
   try {
-    const webhookUrl = import.meta.env.VITE_CRM_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/e1d506dd-5052-404f-9af0-29676473c345';
-    await axios.post(webhookUrl, fullPayload);
+    const qualifyUrl = import.meta.env.VITE_CRM_QUALIFY_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/56365246-d21e-42a3-8c33-578c489ed034';
+    await axios.post(qualifyUrl, fullPayload);
     
     showSuccess.value = true;
-    gsap.from('.success-animation', {
-      scale: 0.5,
+    leadStore.clear(); // Clear draft on success
+    gsap.from('.success-card', {
+      scale: 0.8,
       opacity: 0,
-      duration: 0.5,
-      ease: 'back.out(1.7)'
+      duration: 0.6,
+      ease: 'power3.out'
     });
   } catch (error) {
-    console.error('CRM Submission Error:', error);
+    console.error('Qualify Submission Error:', error);
     alert('Hubo un error al enviar tu solicitud. Por favor intenta de nuevo.');
   } finally {
     isSubmitting.value = false;
@@ -159,8 +366,11 @@ const handleSubmit = async () => {
   <div class="lead-form-container">
     <div class="form-card" v-if="!showSuccess">
       <div class="form-header">
-        <h3 class="form-title">Consulta <span class="accent">Profesional</span></h3>
-        <p class="form-subtitle">Completa los datos para coordinar tu asesoría de {{ serviceTitle }}.</p>
+        <div class="matching-badge">
+          <i class="fa-solid fa-user-tie"></i> Analizando datos para asignarte al mejor especialista
+        </div>
+        <h3 class="form-title">Obtener <span class="accent">Asesoría</span></h3>
+        <p class="form-subtitle">En segundos te conectaremos con el asesor ideal para tu caso.</p>
         
         <div class="progress-bar">
           <div class="progress-fill" :style="{ width: progressWidth }"></div>
@@ -182,6 +392,11 @@ const handleSubmit = async () => {
             <div class="form-group full-width">
               <label>Correo Electrónico</label>
               <input v-model="formData.email" type="email" placeholder="email@ejemplo.com" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Código Postal (Opcional)</label>
+              <input v-model="formData.zipCode" type="text" placeholder="Ej: 07001" />
             </div>
             
             <!-- SMART COUNTRY SELECTOR -->
@@ -236,46 +451,144 @@ const handleSubmit = async () => {
 
             <div class="form-group full-width checkbox-group">
               <label class="checkbox-container">
-                <input type="checkbox" v-model="hasCompany">
+                <input type="checkbox" v-model="formData.hasCompany">
                 <span class="checkmark"></span>
                 Tengo una empresa / Negocio
               </label>
             </div>
 
             <transition name="fade-slide">
-              <div v-if="hasCompany" class="form-group full-width">
+              <div v-if="formData.hasCompany" class="form-group full-width">
                 <label>Nombre de la Empresa</label>
                 <input v-model="formData.companyName" type="text" placeholder="Nombre legal o comercial" />
               </div>
             </transition>
           </div>
 
-          <!-- STEP 2: DYNAMIC FIELDS -->
-          <div v-if="currentStep === 2" class="fields-grid">
-            <div v-for="field in fields" :key="field.name" class="form-group" :class="{ 'full-width': field.type === 'text' }">
-              <label>{{ field.label }}</label>
-              
-              <select v-if="field.type === 'select'" v-model="formData[field.name]" :required="field.required">
-                <option value="" disabled>Selecciona una opción</option>
-                <option v-for="opt in field.options" :key="opt" :value="opt">{{ opt }}</option>
-              </select>
-              
-              <input v-else v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder" :required="field.required" />
+          <!-- STEP 2: SERVICE SELECTION / SPECIFIC FIELDS -->
+          <div v-if="currentStep === 2" class="fields-grid section-transition">
+            <div v-if="isGlobal && !serviceTitle" class="form-group full-width">
+              <DSelect 
+                v-model="formData.selectedServiceId" 
+                label="¿Qué servicio necesitas?"
+                :options="servicesData.map(s => ({ label: s.title, value: s.id }))"
+                placeholder="Selecciona un servicio"
+                icon="fa-solid fa-briefcase"
+                required
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <DSelect 
+                v-model="formData.qConsultationPurpose" 
+                label="¿Para qué nos contactas?"
+                :options="consultationOptions"
+                placeholder="Selecciona el motivo principal"
+                icon="fa-solid fa-comment-dots"
+                required
+              />
+            </div>
+            
+            <div class="dynamic-fields-row">
+              <div v-for="field in filteredFields" :key="field.name" class="form-group" :class="field.type">
+                <DSelect 
+                  v-if="field.type === 'select'"
+                  v-model="formData[field.name]"
+                  :label="field.label"
+                  :options="field.options || []"
+                  :placeholder="field.placeholder || 'Selecciona...'"
+                  :required="field.required"
+                />
+                
+                <DDatePicker
+                  v-else-if="field.type === 'date'"
+                  v-model="formData[field.name]"
+                  :label="field.label"
+                  :required="field.required"
+                />
+
+                <template v-else>
+                  <label>{{ field.label }}</label>
+                  <input v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder" :required="field.required" />
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: QUALIFICATION QUESTIONS -->
+          <div v-if="currentStep === 3" class="qualification-questions">
+            <div class="analysis-group">
+              <label class="group-label">1. ¿Su facturación mensual supera los $5,500 USD?</label>
+              <div class="selection-cards columns-2">
+                <div class="card mini" :class="{ active: formData.qBilling === 'Sí' }" @click="formData.qBilling = 'Sí'">
+                  <i class="fa-solid fa-check"></i> <span>Sí</span>
+                </div>
+                <div class="card mini" :class="{ active: formData.qBilling === 'No' }" @click="formData.qBilling = 'No'">
+                  <i class="fa-solid fa-xmark"></i> <span>No</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-group">
+              <DSelect 
+                v-model="formData.qStatus" 
+                label="2. ¿Cuál es su estatus legal actual?"
+                :options="statusOptions"
+                placeholder="Seleccione su estatus actual"
+                icon="fa-solid fa-id-card-clip"
+                required
+              />
+            </div>
+
+            <div class="analysis-group">
+              <label class="group-label">3. ¿Su requerimiento es Personal o Empresarial?</label>
+              <div class="selection-cards columns-2">
+                <div class="card mini" :class="{ active: formData.qPurpose === 'Personal' }" @click="formData.qPurpose = 'Personal'">
+                  <i class="fa-solid fa-user"></i> <span>Personal</span>
+                </div>
+                <div class="card mini" :class="{ active: formData.qPurpose === 'Negocio/LLC' }" @click="formData.qPurpose = 'Negocio/LLC'">
+                  <i class="fa-solid fa-building"></i> <span>Negocio / LLC</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-group">
+              <label class="group-label">4. ¿Reside usted actualmente en el estado de New Jersey?</label>
+              <div class="selection-cards columns-2">
+                <div class="card mini" :class="{ active: formData.qLocation === 'Sí, reside en NJ' }" @click="formData.qLocation = 'Sí, reside en NJ'">
+                  <i class="fa-solid fa-location-dot"></i> <span>Sí, en NJ</span>
+                </div>
+                <div class="card mini" :class="{ active: formData.qLocation === 'No, reside en otro estado' }" @click="formData.qLocation = 'No, reside en otro estado'">
+                  <i class="fa-solid fa-map"></i> <span>Otro estado</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-group">
+              <label class="group-label">5. ¿Qué tan pronto necesita que un especialista tome su caso?</label>
+              <div class="selection-cards">
+                <div class="card mini" :class="{ active: formData.qUrgency === '< 48 horas' }" @click="formData.qUrgency = '< 48 horas'">
+                  <div class="dot red"></div> <span>Urgente (< 48h)</span>
+                </div>
+                <div class="card mini" :class="{ active: formData.qUrgency === '1-2 semanas' }" @click="formData.qUrgency = '1-2 semanas'">
+                  <div class="dot gold"></div> <span>Próximas semanas</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="form-actions">
-          <button v-if="currentStep === 2" type="button" @click="prevStep" class="btn-secondary" :disabled="isSubmitting">
+          <button v-if="currentStep > 1" type="button" @click="prevStep" class="btn-secondary" :disabled="isSubmitting">
             Atrás
           </button>
           
-          <button v-if="currentStep === 1" type="button" @click="nextStep" class="btn-primary">
+          <button v-if="currentStep < totalSteps" type="button" @click="nextStep" class="btn-primary">
             Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
           </button>
           
           <button v-else type="submit" class="btn-primary" :disabled="isSubmitting">
-            <span v-if="!isSubmitting">Enviar Solicitud <i class="fa-solid fa-paper-plane"></i></span>
+            <span v-if="!isSubmitting">Finalizar y Enviar <i class="fa-solid fa-paper-plane"></i></span>
             <span v-else>Procesando... <i class="fa-solid fa-circle-notch fa-spin"></i></span>
           </button>
         </div>
@@ -283,13 +596,13 @@ const handleSubmit = async () => {
     </div>
 
     <!-- SUCCESS MESSAGE -->
-    <div v-else class="success-card success-animation">
+    <div v-else class="success-card">
       <div class="success-icon">
         <i class="fa-solid fa-circle-check"></i>
       </div>
-      <h2>¡Solicitud Enviada!</h2>
-      <p>Hemos recibido tus datos correctamente. Un asesor experto en <strong>{{ serviceTitle }}</strong> se pondrá en contacto contigo en breve.</p>
-      <router-link to="/" class="btn-primary">Finalizar</router-link>
+      <h2>¡Solicitud Recibida!</h2>
+      <p>Hemos analizado tu caso preliminarmente. Un asesor especializado en <strong>{{ serviceTitle }}</strong> se comunicará contigo prioritariamente.</p>
+      <router-link to="/" class="btn-primary">Volver al Inicio</router-link>
     </div>
   </div>
 </template>
@@ -302,15 +615,209 @@ const handleSubmit = async () => {
 }
 
 .form-card, .success-card {
-  background: rgba($white, 0.03);
-  backdrop-filter: blur(15px);
+  background: linear-gradient(135deg, rgba($white, 0.05) 0%, rgba($white, 0.02) 100%);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid rgba($white, 0.1);
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  border-radius: 30px;
+  padding: 4rem 3rem;
+  box-shadow: 
+    0 40px 100px rgba(0,0,0,0.8),
+    inset 0 0 0 1px rgba($white, 0.05);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba($primary, 0.05), transparent 70%);
+    pointer-events: none;
+  }
 
   @media (max-width: 600px) {
-    padding: 2.5rem 1.5rem;
+    padding: 3rem 1.5rem;
+    border-radius: 0;
+    background: #0a0a0a;
+  }
+}
+
+.qualification-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+
+  .analysis-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    .group-label {
+      font-family: $font-principal;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba($white, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  .premium-select {
+    width: 100%;
+    background: rgba($white, 0.05) !important;
+    border: 1px solid rgba($white, 0.1) !important;
+    padding: 1rem 1.2rem !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-family: $font-principal !important;
+    font-size: 1rem !important;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1.2rem center !important;
+    background-size: 1.2rem !important;
+
+    &:focus {
+      border-color: $primary !important;
+      outline: none;
+      box-shadow: 0 0 15px rgba($primary, 0.1) !important;
+    }
+  }
+
+.fields-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .dynamic-fields-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group.text, .form-group.full-width, .form-group.date {
+      grid-column: span 2;
+      @media (max-width: 600px) { grid-column: span 1; }
+    }
+  }
+}
+
+  .selection-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @media (max-width: 500px) {
+      grid-template-columns: 1fr;
+    }
+
+    &.columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+      @media (max-width: 500px) { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba($white, 0.03);
+      border: 1px solid rgba($white, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
+
+      i { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: $primary; }
+      span { font-size: 0.9rem; font-weight: 500; font-family: $font-principal; color: rgba($white, 0.7); }
+
+      &.mini {
+        flex-direction: row;
+        padding: 1rem;
+        gap: 12px;
+        justify-content: flex-start;
+
+        i { font-size: 1.1rem; }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          &.red { background: #ff4d4d; box-shadow: 0 0 10px rgba(#ff4d4d, 0.5); }
+          &.gold { background: $primary; box-shadow: 0 0 10px rgba($primary, 0.5); }
+        }
+      }
+
+      &:hover {
+        background: rgba($white, 0.06);
+        border-color: rgba($primary, 0.3);
+        transform: translateY(-2px);
+      }
+
+      &.active {
+        background: rgba($primary, 0.1);
+        border-color: $primary;
+        box-shadow: 0 10px 30px rgba($primary, 0.1);
+
+        i { opacity: 1; transform: scale(1.1); color: $primary; }
+        span { color: $white; font-weight: 700; }
+      }
+    }
+  }
+}
+
+.expert-toggle-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  .expert-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba($white, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: $primary;
+  }
+
+  .expert-info {
+    flex: 1;
+    h4 { margin: 0 0 5px 0; font-family: $font-luxury; font-size: 1.1rem; }
+    p { margin: 0; font-size: 0.85rem; color: $text-secondary; line-height: 1.4; }
+  }
+
+  .expert-check {
+    font-size: 1.2rem;
+    color: rgba($white, 0.2);
+    transition: all 0.3s;
+  }
+
+  &:hover { border-color: rgba($primary, 0.3); background: rgba($white, 0.08); }
+
+  &.active {
+    border-color: $primary;
+    background: rgba($primary, 0.05);
+
+    .expert-check { color: $primary; }
   }
 }
 
@@ -510,18 +1017,49 @@ const handleSubmit = async () => {
   margin-bottom: 2.5rem;
   text-align: center;
 
+  .matching-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba($primary, 0.1);
+    border: 1px solid rgba($primary, 0.2);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    color: $primary;
+    font-family: $font-principal;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba($primary, 0.1);
+
+    i { font-size: 0.9rem; }
+  }
+
   .form-title {
     font-family: $font-luxury;
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    .accent { color: $primary; }
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+    color: $white;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+    .accent { 
+      color: $primary; 
+      background: linear-gradient(to bottom, $primary, $dicas-gold-dark);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
 
   .form-subtitle {
     font-family: $font-principal;
-    font-size: 0.95rem;
-    color: $text-secondary;
-    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: rgba($white, 0.7);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .progress-bar {
@@ -610,7 +1148,8 @@ const handleSubmit = async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 14px;
+    letter-spacing: 0.5px;
   }
 
   .btn-primary {

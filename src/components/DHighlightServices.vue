@@ -3,6 +3,7 @@ import { onMounted, ref, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useModalStore } from '@/stores/modalStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +11,11 @@ const sectionRef = ref<HTMLElement | null>(null);
 const cardItems = ref<HTMLElement[]>([]);
 
 const router = useRouter();
+const modalStore = useModalStore();
+
+const openGlobalConsultancy = () => {
+  modalStore.openConsultancy(null, 'highlights');
+};
 
 const navigateToService = (id: string) => {
   router.push(`/servicios/${id}`);
@@ -129,6 +135,12 @@ const coreServices = [
           </div>
           <div class="glow"></div>
         </div>
+      </div>
+
+      <div class="footer-cta">
+        <button @click="openGlobalConsultancy" class="btn-primary-glow">
+          ¿No sabes qué servicio elegir? Obten una asesoría integral <i class="fa-solid fa-arrow-right"></i>
+        </button>
       </div>
     </div>
   </section>
@@ -275,6 +287,44 @@ const coreServices = [
       opacity: 0;
       transition: opacity 0.5s ease;
       pointer-events: none;
+    }
+  }
+
+  .footer-cta {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+
+    .btn-primary-glow {
+      background: linear-gradient(135deg, $primary, $dicas-gold-dark);
+      color: $primary-dark;
+      border: none;
+      padding: 1.5rem 3rem;
+      border-radius: 50px;
+      font-family: $font-principal;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 40px rgba($primary, 0.2);
+
+      i { transition: transform 0.3s ease; }
+
+      &:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 15px 50px rgba($primary, 0.3);
+        i { transform: translateX(5px); }
+      }
+
+      @media (max-width: 600px) {
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 1.2rem;
+        text-align: center;
+      }
     }
   }
 }
