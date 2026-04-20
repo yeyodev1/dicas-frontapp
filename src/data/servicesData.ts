@@ -15,6 +15,7 @@ export interface ServiceDetail {
   icon: string;
   accentColor: string;
   category: string;
+  features: string[];
   specificFields: ServiceField[];
 }
 
@@ -23,10 +24,20 @@ export const servicesData: ServiceDetail[] = [
     id: 'taxes-contabilidad',
     title: 'Taxes & Contabilidad',
     shortDesc: 'Gestión fiscal estratégica para individuos y pequeñas empresas.',
-    longDesc: 'Ofrecemos soluciones contables completas, desde la preparación de impuestos personales (1040) hasta el manejo de libros mensuales para negocios (Bookkeeping). Nos especializamos en maximizar tus deducciones legales y mantener tu cumplimiento con el IRS.',
+    longDesc: 'Ofrecemos soluciones contables completas para New Jersey. Nos especializamos en maximizar tus deducciones legales y mantener tu cumplimiento con el IRS, brindando tranquilidad financiera a familias y emprendedores.',
     icon: 'fa-solid fa-file-invoice-dollar',
     accentColor: '#C5A467',
     category: 'Finanzas',
+    features: [
+      'Preparación de impuestos personales (1040)',
+      'Taxes para independientes (1099 / Schedule C)',
+      'Enmiendas de impuestos (1040X)',
+      'Aplicación y renovación de ITIN',
+      'Planificación tributaria estratégica',
+      'Bookkeeping (contabilidad mensual)',
+      'Reportes de ingresos y gastos',
+      'Asistencia con cartas del IRS'
+    ],
     specificFields: [
       { name: 'entityType', label: 'Tipo de Entidad', type: 'select', required: true, options: ['Personal (Individual)', 'LLC', 'Corporación', 'Independiente (1099)'] },
       { name: 'revenue', label: 'Ingresos Anuales Estimados', type: 'select', required: true, options: ['$0 - $50k', '$50k - $200k', '$200k+'] },
@@ -34,15 +45,45 @@ export const servicesData: ServiceDetail[] = [
     ]
   },
   {
+    id: 'payroll',
+    title: 'Payroll & Nómina',
+    shortDesc: 'Simplifica la gestión de tu equipo con nóminas precisas.',
+    longDesc: 'Ideal para pequeñas empresas y LLCs en NJ. Manejamos el cálculo de salarios, retenciones y cumplimiento para que te enfoques en crecer tu negocio sin preocupaciones administrativas.',
+    icon: 'fa-solid fa-users-gear',
+    accentColor: '#8B1116',
+    category: 'Negocio',
+    features: [
+      'Procesamiento de nómina para pequeños negocios',
+      'Cálculo de salarios y retenciones',
+      'Preparación de formularios W-2 y 1099',
+      'Reportes detallados de payroll',
+      'Asesoria básica de cumplimiento laboral'
+    ],
+    specificFields: [
+      { name: 'employeeCount', label: 'Número de Empleados', type: 'number', required: true },
+      { name: 'frequency', label: 'Frecuencia de Pago', type: 'select', required: true, options: ['Semanal', 'Quincenal', 'Mensual'] },
+      { name: 'companyName', label: 'Nombre Legal de la Empresa', type: 'text', required: true }
+    ]
+  },
+  {
     id: 'medicare-seguros',
     title: 'Medicare & Seguros de Salud',
     shortDesc: 'Protección integral para tu salud y bienestar familiar.',
-    longDesc: 'Somos expertos en el mercado de seguros de New Jersey (GetCoveredNJ) y Medicare. Te ayudamos a navegar entre planes dentales, de visión, accidentes y más, asegurando que recibas el máximo beneficio al menor costo.',
+    longDesc: 'Somos especialistas certificados en el mercado de seguros de New Jersey y Medicare. Te ayudamos a navegar entre planes para asegurar que recibas el máximo beneficio al menor costo posible.',
     icon: 'fa-solid fa-hand-holding-medical',
-    accentColor: '#8B1116',
+    accentColor: '#C5A467',
     category: 'Salud',
+    features: [
+      'Asistencia experta con Medicare (Especialidad)',
+      'Inscripción en GetCoveredNJ',
+      'Seguro de salud (Marketplace)',
+      'Seguro dental, visión y audición',
+      'Seguro de accidentes y cáncer',
+      'Evaluación de elegibilidad integral',
+      'Asistencia con Medicaid',
+      'Renovaciones y cambios de plan'
+    ],
     specificFields: [
-      { name: 'dob', label: 'Fecha de Nacimiento', type: 'date', required: true },
       { name: 'currentCoverage', label: 'Cobertura Actual', type: 'select', required: true, options: ['Ninguna', 'Privada', 'Plan de Empleado', 'Medicare/Medicaid'] },
       { name: 'zipCode', label: 'Código Postal en NJ', type: 'text', required: true, placeholder: 'Ej: 07001' }
     ]
@@ -51,10 +92,20 @@ export const servicesData: ServiceDetail[] = [
     id: 'inmigracion',
     title: 'Servicios de Inmigración',
     shortDesc: 'Asistencia administrativa experta en trámites migratorios.',
-    longDesc: 'Brindamos apoyo en la preparación de paquetes para USCIS (No somos abogados). Desde peticiones familiares (I-130) hasta procesos de ciudadanía (N-400) y permisos de trabajo (I-765).',
+    longDesc: 'Brindamos apoyo profesional en la preparación de paquetes para USCIS. Facilitamos procesos complejos con precisión administrativa (No somos abogados ni brindamos consejo legal).',
     icon: 'fa-solid fa-passport',
-    accentColor: '#C5A467',
-    category: 'Leyes',
+    accentColor: '#8B1116',
+    category: 'Legal',
+    features: [
+      'Peticiones familiares (I-130)',
+      'Ajuste de estatus (I-485)',
+      'Permiso de trabajo (I-765)',
+      'Affidavit of Support (I-864 / I-864A)',
+      'Ciudadanía (N-400)',
+      'Procesos consulares (NVC / DS-260)',
+      'Solicitudes FOIA',
+      'Preparación de paquetes para USCIS'
+    ],
     specificFields: [
       { name: 'processType', label: 'Tipo de Proceso de Interés', type: 'select', required: true, options: ['Petición Familiar', 'Ajuste de Estatus', 'Ciudadanía', 'Permiso de Trabajo'] },
       { name: 'currentStatus', label: 'Estatus Actual', type: 'text', required: true, placeholder: 'Ej: Sin Procesar, En Proceso, Pendiente' },
@@ -62,27 +113,19 @@ export const servicesData: ServiceDetail[] = [
     ]
   },
   {
-    id: 'payroll',
-    title: 'Payroll & Nómina',
-    shortDesc: 'Simplifica la gestión de tu equipo con nóminas precisas.',
-    longDesc: 'Ideal para pequeñas empresas y LLCs. Manejamos el cálculo de salarios, retenciones, formularios W-2/1099 y reportes trimestrales para que te enfoques en crecer tu negocio.',
-    icon: 'fa-solid fa-briefcase',
-    accentColor: '#8B1116',
-    category: 'Negocios',
-    specificFields: [
-      { name: 'employeeCount', label: 'Número de Empleados', type: 'number', required: true },
-      { name: 'frequency', label: 'Frecuencia de Pago', type: 'select', required: true, options: ['Semanal', 'Quincenal', 'Mensual'] },
-      { name: 'companyName', label: 'Nombre Legal de la Empresa', type: 'text', required: true }
-    ]
-  },
-  {
     id: 'notaria',
-    title: 'Notaría & Traducciones',
+    title: 'Notaría & Documentos',
     shortDesc: 'Validación oficial y profesional de tus documentos.',
-    longDesc: 'Servicios rápidos de notarización, redacción de poderes (Power of Attorney), traducciones certificadas (Español-Inglés) y trámites de apostillas.',
+    longDesc: 'Servicios rápidos y confiables de notarización y gestión documental. Aseguramos que tus trámites internacionales y domésticos cumplan con todos los requisitos legales.',
     icon: 'fa-solid fa-stamp',
     accentColor: '#C5A467',
     category: 'Documentos',
+    features: [
+      'Notarización de documentos oficiales',
+      'Redacción de Poderes (Power of Attorney)',
+      'Traducciones certificadas (Español ↔ Inglés)',
+      'Gestión de Apostillas'
+    ],
     specificFields: [
       { name: 'docType', label: 'Tipo de Documento', type: 'text', required: true, placeholder: 'Ej: Poder, Acta de Nacimiento, Contrato' },
       { name: 'needsTranslation', label: '¿Requiere Traducción?', type: 'select', required: true, options: ['Sí', 'No'] },
@@ -93,10 +136,17 @@ export const servicesData: ServiceDetail[] = [
     id: 'servicios-empresariales',
     title: 'Creación de LLC & Negocios',
     shortDesc: 'Convierte tu idea en una empresa legalmente constituida.',
-    longDesc: 'Te guiamos en todo el proceso de formación de LLC, obtención de EIN, registros estatales y consultoría inicial para estructurar tu negocio correctamente.',
+    longDesc: 'Te guiamos en la fundación de tu negocio en NJ. Desde la estructura ideal hasta los registros necesarios para operar legalmente y con éxito.',
     icon: 'fa-solid fa-building-columns',
     accentColor: '#8B1116',
-    category: 'Negocios',
+    category: 'Negocio',
+    features: [
+      'Consultoría empresarial inicial',
+      'Creación completa de LLC',
+      'Registro oficial de negocio',
+      'Obtención de número EIN',
+      'Definición de estructura de negocio'
+    ],
     specificFields: [
       { name: 'businessNature', label: 'Giro o Industria del Negocio', type: 'text', required: true, placeholder: 'Ej: Construcción, Limpieza, Tecnología' },
       { name: 'state', label: 'Estado de Constitución', type: 'text', required: true, placeholder: 'Ej: New Jersey' },
@@ -107,10 +157,17 @@ export const servicesData: ServiceDetail[] = [
     id: 'registro-marca',
     title: 'Registro de Marca (Trademark)',
     shortDesc: 'Protege la identidad y el futuro de tu marca.',
-    longDesc: 'Búsqueda de disponibilidad en USPTO, preparación de solicitudes y seguimiento hasta la obtención del registro oficial de tu marca comercial.',
+    longDesc: 'Posiciona tu negocio a nivel premium protegiendo tu propiedad intelectual. Nos encargamos del riguroso proceso de registro ante la USPTO.',
     icon: 'fa-solid fa-brain',
     accentColor: '#C5A467',
     category: 'Legal',
+    features: [
+      'Búsqueda de disponibilidad de nombre',
+      'Registro ante la USPTO (United States Patent and Trademark Office)',
+      'Preparación integral de solicitud',
+      'Seguimiento exhaustivo del proceso',
+      'Orientación para protección de marca'
+    ],
     specificFields: [
       { name: 'brandName', label: 'Nombre de la Marca a Registrar', type: 'text', required: true },
       { name: 'class', label: 'Clase de Producto/Servicio', type: 'text', required: false, placeholder: 'Ej: Ropa, Consultoría, Comida' },
@@ -121,10 +178,15 @@ export const servicesData: ServiceDetail[] = [
     id: 'credito-finanzas',
     title: 'Crédito & Finanzas',
     shortDesc: 'Educación y estrategias para mejorar tu perfil financiero.',
-    longDesc: 'Asesoría personalizada para entender tu reporte de crédito, estrategias para mejorar tu puntaje y preparación para grandes compras como tu primera vivienda.',
+    longDesc: 'Optimiza tu capacidad financiera con asesoría experta. Te preparamos para los grandes hitos de tu vida, como la compra de tu primer hogar.',
     icon: 'fa-solid fa-chart-line',
     accentColor: '#8B1116',
     category: 'Finanzas',
+    features: [
+      'Educación financiera sobre crédito',
+      'Asesoría personalizada para mejorar crédito',
+      'Preparación para compra de vivienda'
+    ],
     specificFields: [
       { name: 'goal', label: 'Meta Principal', type: 'select', required: true, options: ['Subir Puntaje', 'Eliminar Errores', 'Comprar Casa/Carro', 'Educación General'] },
       { name: 'currentScore', label: 'Estimado Puntaje Actual', type: 'select', required: false, options: ['No sé', '< 500', '500-600', '600-700', '700+'] }
@@ -134,10 +196,16 @@ export const servicesData: ServiceDetail[] = [
     id: 'bienes-raices',
     title: 'Bienes Raíces (NJ Realtor)',
     shortDesc: 'Tu guía experta para comprar o vender en New Jersey.',
-    longDesc: 'Como Realtor licenciada, te acompaño en cada paso: evaluación financiera, búsqueda de viviendas, negociación y cierre exitoso de tu propiedad.',
+    longDesc: 'Asesoría profesional con licencia en NJ. Te acompañamos en cada paso de la compra de tu vivienda, desde la elegibilidad financiera hasta el cierre.',
     icon: 'fa-solid fa-house-chimney',
     accentColor: '#C5A467',
     category: 'Propiedades',
+    features: [
+      'Compra de vivienda en New Jersey',
+      'Asesoría para primeros compradores',
+      'Evaluación de elegibilidad financiera',
+      'Orientación experta en todo el proceso'
+    ],
     specificFields: [
       { name: 'operationType', label: 'Interés en:', type: 'select', required: true, options: ['Comprar', 'Vender', 'Invertir'] },
       { name: 'locationPref', label: 'Condado de Preferencia en NJ', type: 'text', required: true, placeholder: 'Ej: Hudson, Bergen, Passaic' },
@@ -148,10 +216,15 @@ export const servicesData: ServiceDetail[] = [
     id: 'medico-administrativo',
     title: 'Servicios Médicos Admin',
     shortDesc: 'Asistencia especializada en facturación y seguros médicos.',
-    longDesc: 'Revisión de facturas médicas, orientación en seguros complejos y soporte administrativo certificado en Medical Billing and Coding.',
+    longDesc: 'Soporte certificado en Medical Billing and Coding. Revisamos tus facturas y te orientamos para que no pagues de más en tus servicios de salud.',
     icon: 'fa-solid fa-file-medical',
     accentColor: '#8B1116',
     category: 'Salud',
+    features: [
+      'Asistencia con facturación médica',
+      'Revisión exhaustiva de facturas médicas',
+      'Orientación informada en seguros médicos'
+    ],
     specificFields: [
       { name: 'needType', label: 'Necesidad Principal', type: 'select', required: true, options: ['Revisión de Factura', 'Seguimiento de Reclamo', 'Codificación Médica', 'Otro'] },
       { name: 'carrierName', label: 'Nombre del Seguro Médico', type: 'text', required: false }
@@ -161,10 +234,15 @@ export const servicesData: ServiceDetail[] = [
     id: 'ministro-bodas',
     title: 'Ministro de Bodas',
     shortDesc: 'Oficiante para ceremonias civiles y bodas personalizadas.',
-    longDesc: 'Gestión de documentos matrimoniales, firma de actas y realización de ceremonias civiles memorables en el área de New Jersey.',
+    longDesc: 'Hacemos de tu día especial un momento inolvidable. Gestión administrativa y ceremonias civiles en el área de New Jersey con un toque personal.',
     icon: 'fa-solid fa-ring',
     accentColor: '#C5A467',
     category: 'Eventos',
+    features: [
+      'Oficiante de bodas civiles legales',
+      'Ceremonias personalizadas a medida',
+      'Gestión y firma de documentos matrimoniales'
+    ],
     specificFields: [
       { name: 'weddingDate', label: 'Fecha Estimada', type: 'date', required: true },
       { name: 'location', label: 'Ciudad/Ubicación', type: 'text', required: true, placeholder: 'Ciudad en NJ' }
@@ -174,12 +252,19 @@ export const servicesData: ServiceDetail[] = [
     id: 'multiservicios',
     title: 'Multiservicios Generales',
     shortDesc: 'Soporte administrativo integral para cualquier necesidad.',
-    longDesc: 'Desde el llenado de aplicaciones gubernamentales hasta la redacción de cartas formales. Estamos aquí para facilitarte cualquier trámite administrativo.',
+    longDesc: 'Tu asistente administrativo personal. Nos encargamos de esos trámites tediosos para que tu vida sea más sencilla y organizada.',
     icon: 'fa-solid fa-ellipsis',
     accentColor: '#8B1116',
     category: 'General',
+    features: [
+      'Llenado de formularios gubernamentales',
+      'Redacción de cartas formales (Escuela, Corte, Inmigración)',
+      'Aplicaciones para beneficios públicos',
+      'Asistencia administrativa general'
+    ],
     specificFields: [
       { name: 'requirement', label: 'Describe brevemente qué necesitas', type: 'text', required: true }
     ]
   }
 ];
+

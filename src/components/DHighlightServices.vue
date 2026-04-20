@@ -56,20 +56,20 @@ const coreServices = [
     id: 'medicare-seguros',
     title: 'Medicare & Medicaid',
     tag: 'Salud',
-    icon: 'fa-solid fa-file-medical',
+    icon: 'fa-solid fa-hand-holding-medical',
     featured: true
   },
   {
     id: 'taxes-contabilidad',
     title: 'Taxes para Independientes',
-    tag: 'Impuestos',
+    tag: 'Finanzas',
     icon: 'fa-solid fa-file-invoice-dollar',
     featured: true
   },
   {
     id: 'payroll',
     title: 'Payroll para Negocios',
-    tag: 'Empresarial',
+    tag: 'Negocio',
     icon: 'fa-solid fa-users-gear',
     featured: true
   },
@@ -83,21 +83,21 @@ const coreServices = [
   {
     id: 'servicios-empresariales',
     title: 'Creación de LLC',
-    tag: 'Negocios',
-    icon: 'fa-solid fa-building',
+    tag: 'Negocio',
+    icon: 'fa-solid fa-building-columns',
     featured: true
   },
   {
     id: 'registro-marca',
     title: 'Registro de Marca',
-    tag: 'Premium',
-    icon: 'fa-solid fa-trademark',
+    tag: 'Legal',
+    icon: 'fa-solid fa-brain',
     featured: true
   },
   {
     id: 'bienes-raices',
     title: 'Realtor en NJ',
-    tag: 'Inmobiliaria',
+    tag: 'Propiedades',
     icon: 'fa-solid fa-house-chimney',
     featured: true
   }
