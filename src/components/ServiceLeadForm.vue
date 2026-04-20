@@ -659,15 +659,15 @@ const handleSubmit = async () => {
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
     color: $primary;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 2rem;
     
     @media (min-width: 768px) {
-      font-size: 0.75rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      margin-bottom: 2.5rem;
     }
   }
 

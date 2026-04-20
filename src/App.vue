@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import GlobalConsultancyModal from '@/components/GlobalConsultancyModal.vue';
+
+const route = useRoute();
+const { locale } = useI18n();
 </script>
 
 <template>
@@ -9,7 +14,8 @@ import GlobalConsultancyModal from '@/components/GlobalConsultancyModal.vue';
         name="page-fade" 
         mode="out-in"
       >
-        <component :is="Component" />
+        <!-- Adding key with locale forces transition on language change -->
+        <component :is="Component" :key="route.fullPath + locale" />
       </transition>
     </RouterView>
     <GlobalConsultancyModal />

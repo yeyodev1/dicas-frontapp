@@ -430,21 +430,24 @@ onMounted(() => {
   top: 100px;
 
   .advisor-match-notice {
-    background: rgba($white, 0.05);
-    padding: 0.8rem 1.5rem;
+    background: rgba($white, 0.03);
+    padding: 0.7rem 1.2rem;
     border-radius: 50px;
-    border: 1px solid rgba($white, 0.1);
-    display: inline-flex;
+    border: 1px solid rgba($white, 0.08);
+    display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    gap: 0.8rem;
     font-size: 0.75rem;
-    color: rgba($white, 0.6);
-    margin-bottom: 1.5rem;
+    color: rgba($white, 0.5);
+    margin: 0 auto 1.5rem;
     backdrop-filter: blur(10px);
     letter-spacing: 0.5px;
     font-weight: 500;
+    max-width: fit-content;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 
-    i { color: $primary; font-size: 0.9rem; }
+    i { color: $primary; font-size: 0.8rem; }
   }
 }
 
