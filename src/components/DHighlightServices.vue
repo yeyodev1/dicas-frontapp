@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from 'vue';
+import { onMounted, ref, nextTick, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useModalStore } from '@/stores/modalStore';
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,66 +54,66 @@ onMounted(async () => {
   });
 });
 
-const coreServices = [
+const coreServices = computed(() => [
   {
     id: 'medicare-seguros',
-    title: 'Medicare & Medicaid',
-    tag: 'Salud',
+    title: t('services.medicare.title'),
+    tag: t('services.medicare.tag'),
     icon: 'fa-solid fa-hand-holding-medical',
     featured: true
   },
   {
     id: 'taxes-contabilidad',
-    title: 'Taxes para Independientes',
-    tag: 'Finanzas',
+    title: t('services.taxes.title'),
+    tag: t('services.taxes.tag'),
     icon: 'fa-solid fa-file-invoice-dollar',
     featured: true
   },
   {
     id: 'payroll',
-    title: 'Payroll para Negocios',
-    tag: 'Negocio',
+    title: t('services.payroll.title'),
+    tag: t('services.payroll.tag'),
     icon: 'fa-solid fa-users-gear',
     featured: true
   },
   {
     id: 'inmigracion',
-    title: 'Inmigración',
-    tag: 'Legal',
+    title: t('services.immigration.title'),
+    tag: t('services.immigration.tag'),
     icon: 'fa-solid fa-passport',
     featured: true
   },
   {
     id: 'servicios-empresariales',
-    title: 'Creación de LLC',
-    tag: 'Negocio',
+    title: t('services.llc.title'),
+    tag: t('services.llc.tag'),
     icon: 'fa-solid fa-building-columns',
     featured: true
   },
   {
     id: 'registro-marca',
-    title: 'Registro de Marca',
-    tag: 'Legal',
+    title: t('services.trademark.title'),
+    tag: t('services.trademark.tag'),
     icon: 'fa-solid fa-brain',
     featured: true
   },
   {
     id: 'bienes-raices',
-    title: 'Realtor en NJ',
-    tag: 'Propiedades',
+    title: t('services.realtor.title'),
+    tag: t('services.realtor.tag'),
     icon: 'fa-solid fa-house-chimney',
     featured: true
   }
-];
+]);
 </script>
 
 <template>
   <section class="d-highlights" id="services" ref="sectionRef">
     <div class="container">
       <div class="header">
-        <span class="badge">Estrategia Premium</span>
-        <h2 class="title">Servicios <span class="accent">Principales</span></h2>
-        <p class="desc">Impulsa tu vida y tu negocio con nuestras soluciones estrella.</p>
+        <span class="badge">{{ t('services.badge') }}</span>
+        <h2 class="title">{{ t('services.title').split(' ')[0] }} <span class="accent">{{ t('services.title').split(' ').slice(1).join(' ') }}</span></h2>
+        <p class="desc">{{ t('services.description') }}</p>
       </div>
 
       <div class="grid">
@@ -130,7 +133,7 @@ const coreServices = [
             <h3 class="card-title">{{ s.title }}</h3>
           </div>
           <div class="card-footer">
-            <span class="more">Ver detalles</span>
+            <span class="more">{{ t('services.viewDetails') }}</span>
             <span class="arrow">→</span>
           </div>
           <div class="glow"></div>
@@ -139,7 +142,7 @@ const coreServices = [
 
       <div class="footer-cta">
         <button @click="openGlobalConsultancy" class="btn-primary-glow">
-          ¿No sabes qué servicio elegir? Obten una asesoría integral <i class="fa-solid fa-arrow-right"></i>
+          {{ t('services.cta') }} <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </div>

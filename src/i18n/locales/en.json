@@ -1,0 +1,161 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "cta": "Get Advice"
+  },
+  "services": {
+    "badge": "Premium Strategy",
+    "title": "Principal Services",
+    "description": "Boost your life and business with our flagship solutions.",
+    "viewDetails": "View details",
+    "cta": "Don't know which service to choose? Get a comprehensive consultancy",
+    "medicare": {
+      "title": "Medicare & Medicaid",
+      "tag": "Health"
+    },
+    "taxes": {
+      "title": "Taxes for Independents",
+      "tag": "Finance"
+    },
+    "payroll": {
+      "title": "Payroll for Business",
+      "tag": "Business"
+    },
+    "immigration": {
+      "title": "Immigration",
+      "tag": "Legal"
+    },
+    "llc": {
+      "title": "LLC Formation",
+      "tag": "Business"
+    },
+    "trademark": {
+      "title": "Trademark Registration",
+      "tag": "Legal"
+    },
+    "realtor": {
+      "title": "Realtor in NJ",
+      "tag": "Properties"
+    }
+  },
+  "hero": {
+    "title": "Everything {accent} for your life & business.",
+    "accent": "in one place",
+    "subtitle": "Dicas Advisor Group: Your personal, family, and business partner. We offer specialized solutions in Finance, Health, Immigration, and Real Estate.",
+    "scroll": "Scroll To Explore",
+    "viewServices": "View Services"
+  },
+  "about": {
+    "subtitle": "Our Leadership",
+    "title": "Personal Authority,",
+    "accent": "Proven Expertise",
+    "description": "Dicas Advisor Group was founded on the principles of transparency and unwavering commitment to client success. More than just an agency, we are your strategic allies in New Jersey.",
+    "cred1": {
+      "title": "Licensed NJ Realtor",
+      "text": "Expertise in Real Estate & Home Buying."
+    },
+    "cred2": {
+      "title": "Certified Medical Billing & Coding",
+      "text": "Professional Admin Support for Health Services."
+    },
+    "stat1": {
+      "label": "Specialized Areas"
+    },
+    "stat2": {
+      "label": "Based Authority"
+    },
+    "cta": "Start Your Success Journey"
+  },
+  "footer": {
+    "description": "Empowering visions with strategic excellence. Your trusted partner in financial and business advisory.",
+    "links": {
+      "quick": "Quick Links",
+      "legal": "Legal",
+      "connect": "Connect"
+    },
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "security": "Security"
+    },
+    "disclaimer": {
+      "title": "IMPORTANT DISCLAIMER",
+      "text": "We are not attorneys or certified public accountants. Immigration services are administrative assistance. Insurance services subject to eligibility. Trademark registration subject to government approval. Information based on data provided by the client."
+    },
+    "rights": "All rights reserved.",
+    "dev": "Proudly Developed & Programmed by"
+  },
+  "serviceDetail": {
+    "about": "About the Service",
+    "includes": "What we include",
+    "onePlaceTitle": "Everything in one place",
+    "onePlaceDesc": "Consolidate your personal life, business, and family with a 360° comprehensive consultancy.",
+    "privacyTitle": "Total Privacy",
+    "privacyDesc": "Your data is protected under high security protocols.",
+    "responseTitle": "Fast Response",
+    "responseDesc": "Commitment to contact in less than 24 business hours.",
+    "advisorNotice": "We will assign the best specialist for this case"
+  },
+  "form": {
+    "matchingBadge": "Analyzing data to assign you the best specialist",
+    "title": "Get Advice",
+    "subtitle": "In seconds we will connect you with the ideal advisor for your case.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "zipCode": "Zip Code (Optional)",
+    "countryLabel": "Country / Dialing Code",
+    "phoneLabel": "Cell Phone (with local area code if applicable)",
+    "hasCompany": "I have a company / Business",
+    "companyName": "Company Name",
+    "companyPlaceholder": "Legal or trade name",
+    "serviceSelection": "What service do you need?",
+    "consultationPurpose": "What are you contacting us for?",
+    "searchPlaceholder": "Search country or code...",
+    "noResults": "No results found",
+    "next": "Next Step",
+    "back": "Back",
+    "submit": "Finish and Send",
+    "successTitle": "Request Received!",
+    "successDesc": "We have analyzed your case. Soon you will receive updates and a specialist advisor in {service} will contact you as a priority.",
+    "returnHome": "Back to Home",
+    "validationAlert": "Please complete the required fields.",
+    "questions": {
+      "billing": "1. Does your monthly billing exceed $5,500 USD?",
+      "status": "2. What is your current legal status?",
+      "purpose": "3. Is your requirement Personal or Business?",
+      "location": "4. Do you currently reside in the state of New Jersey?",
+      "urgency": "5. How soon do you need a specialist to take your case?"
+    },
+    "options": {
+      "yes": "Yes",
+      "no": "No",
+      "personal": "Personal",
+      "business": "Business / LLC",
+      "resident": "Citizen / Resident",
+      "ssn": "I have a Social Security number (SSN)",
+      "itin": "I have an ITIN number",
+      "inProcess": "In process",
+      "none": "None of the above",
+      "inNJ": "Yes, in NJ",
+      "otherState": "Other state",
+      "urgent": "Urgent (< 48h)",
+      "nextWeeks": "Next weeks"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "submitting": "Processing...",
+    "error": "An error occurred. Please try again.",
+    "back": "Back",
+    "next": "Next Step",
+    "finish": "Finish and Send"
+  },
+  "success": {
+    "title": "Request Received!",
+    "message": "We have analyzed your case. You will soon receive updates and a specialized advisor will contact you as a priority.",
+    "return": "Return Home"
+  }
+}

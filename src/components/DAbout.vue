@@ -2,12 +2,15 @@
 import { onMounted, ref } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useI18n } from 'vue-i18n';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sectionRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);
 const imageRef = ref<HTMLElement | null>(null);
+
+const { t } = useI18n();
 
 onMounted(() => {
   const tl = gsap.timeline({
@@ -37,25 +40,25 @@ onMounted(() => {
     <div class="container">
       <div class="about-grid">
         <div class="about-content" ref="contentRef">
-          <span class="subtitle">Our Leadership</span>
-          <h2 class="title">Personal Authority, <span class="accent">Proven Expertise</span>.</h2>
+          <span class="subtitle">{{ t('about.subtitle') }}</span>
+          <h2 class="title">{{ t('about.title') }} <span class="accent">{{ t('about.accent') }}</span>.</h2>
           <p class="description">
-            Dicas Advisor Group was founded on the principles of transparency and unwavering commitment to client success. More than just an agency, we are your strategic allies in New Jersey.
+            {{ t('about.description') }}
           </p>
           
           <div class="credentials">
             <div class="cred-item">
               <div class="cred-icon"><i class="fa-solid fa-file-signature"></i></div>
               <div class="cred-text">
-                <strong>Realtor Licenciada en NJ</strong>
-                <span>Expertise in Real Estate & Home Buying.</span>
+                <strong>{{ t('about.cred1.title') }}</strong>
+                <span>{{ t('about.cred1.text') }}</span>
               </div>
             </div>
             <div class="cred-item">
               <div class="cred-icon"><i class="fa-solid fa-user-doctor"></i></div>
               <div class="cred-text">
-                <strong>Certified Medical Billing & Coding</strong>
-                <span>Professional Admin Support for Health Services.</span>
+                <strong>{{ t('about.cred2.title') }}</strong>
+                <span>{{ t('about.cred2.text') }}</span>
               </div>
             </div>
           </div>
@@ -63,14 +66,14 @@ onMounted(() => {
           <div class="stats-grid">
             <div class="stat-item">
               <span class="stat-number">12+</span>
-              <span class="stat-label">Specialized Areas</span>
+              <span class="stat-label">{{ t('about.stat1.label') }}</span>
             </div>
             <div class="stat-item">
               <span class="stat-number">NJ</span>
-              <span class="stat-label">Based Authority</span>
+              <span class="stat-label">{{ t('about.stat2.label') }}</span>
             </div>
           </div>
-          <button class="btn btn-primary">Start Your Success Journey</button>
+          <button class="btn btn-primary">{{ t('about.cta') }}</button>
         </div>
         
         <div class="about-visual" ref="imageRef">

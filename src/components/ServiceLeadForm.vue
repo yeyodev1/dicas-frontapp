@@ -2,6 +2,7 @@
 import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue';
 import axios from 'axios';
 import gsap from 'gsap';
+import { useI18n } from 'vue-i18n';
 import { countries, type Country } from '@/data/countries';
 import type { ServiceField } from '@/data/servicesData';
 import { useRoute } from 'vue-router';
@@ -26,6 +27,7 @@ const props = defineProps({
 
 import { servicesData } from '@/data/servicesData';
 
+const { t, locale } = useI18n();
 const currentStep = ref(1);
 const isSubmitting = ref(false);
 const showSuccess = ref(false);
@@ -73,22 +75,22 @@ watch(formData, (newVal) => {
   leadStore.saveToStorage();
 }, { deep: true });
 
-const consultationOptions = [
-  'Contabilidad y Tax Prep',
-  'Apertura de Empresa (LLC/Corp)',
-  'Consultoría de Negocios',
-  'Inmigración / Trámites Legales',
-  'Seguros / Notaría',
-  'Otro Apoyo Administrativo'
-];
+const consultationOptions = computed(() => [
+  t('services.taxes.title'),
+  t('services.llc.title'),
+  t('services.llc.tag'),
+  t('services.immigration.title'),
+  t('services.medicare.title'),
+  t('common.other')
+]);
 
-const statusOptions = [
-  { label: 'Ciudadano / Residente', value: 'Ciudadano/Residente' },
-  { label: 'Poseo número de Seguro Social (SSN)', value: 'SSN' },
-  { label: 'Poseo número de ITIN', value: 'ITIN' },
-  { label: 'En trámite / Proceso', value: 'En Proceso' },
-  { label: 'Ninguno de los anteriores', value: 'Ninguno' }
-];
+const statusOptions = computed(() => [
+  { label: t('form.options.resident'), value: 'Ciudadano/Residente' },
+  { label: t('form.options.ssn'), value: 'SSN' },
+  { label: t('form.options.itin'), value: 'ITIN' },
+  { label: t('form.options.inProcess'), value: 'En Proceso' },
+  { label: t('form.options.none'), value: 'Ninguno' }
+]);
 
 // Country Selector Logic
 const countrySearch = ref('');
@@ -221,7 +223,7 @@ const progressWidth = computed(() => {
 const nextStep = () => {
   if (currentStep.value === 1) {
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
-      alert('Por favor completa los datos obligatorios.');
+      alert(t('form.validationAlert'));
       return;
     }
     // Trigger first webhook
@@ -365,7 +367,7 @@ const handleSubmit = async () => {
     });
   } catch (error) {
     console.error('Qualify Submission Error:', error);
-    alert('Hubo un error al enviar tu solicitud. Por favor intenta de nuevo.');
+    alert('An error occurred while sending your request. Please try again.');
   } finally {
     isSubmitting.value = false;
   }
@@ -377,10 +379,10 @@ const handleSubmit = async () => {
     <div class="form-card" v-if="!showSuccess">
       <div class="form-header">
         <div class="matching-badge">
-          <i class="fa-solid fa-user-tie"></i> Analizando datos para asignarte al mejor especialista
+          <i class="fa-solid fa-user-tie"></i> {{ t('form.matchingBadge') }}
         </div>
-        <h3 class="form-title">Obtener <span class="accent">Asesoría</span></h3>
-        <p class="form-subtitle">En segundos te conectaremos con el asesor ideal para tu caso.</p>
+        <h3 class="form-title">{{ t('form.title').split(' ')[0] }} <span class="accent">{{ t('form.title').split(' ').slice(1).join(' ') }}</span></h3>
+        <p class="form-subtitle">{{ t('form.subtitle') }}</p>
         
         <div class="progress-bar">
           <div class="progress-fill" :style="{ width: progressWidth }"></div>
@@ -392,26 +394,26 @@ const handleSubmit = async () => {
           <!-- STEP 1: CONTACT -->
           <div v-if="currentStep === 1" class="fields-grid">
             <div class="form-group">
-              <label>Nombre</label>
-              <input v-model="formData.firstName" type="text" placeholder="Tu nombre" required />
+              <label>{{ t('form.firstName') }}</label>
+              <input v-model="formData.firstName" type="text" :placeholder="t('form.firstName')" required />
             </div>
             <div class="form-group">
-              <label>Apellidos</label>
-              <input v-model="formData.lastName" type="text" placeholder="Tus apellidos" required />
+              <label>{{ t('form.lastName') }}</label>
+              <input v-model="formData.lastName" type="text" :placeholder="t('form.lastName')" required />
             </div>
             <div class="form-group full-width">
-              <label>Correo Electrónico</label>
-              <input v-model="formData.email" type="email" placeholder="email@ejemplo.com" required />
+              <label>{{ t('form.email') }}</label>
+              <input v-model="formData.email" type="email" placeholder="email@example.com" required />
             </div>
 
             <div class="form-group full-width">
-              <label>Código Postal (Opcional)</label>
+              <label>{{ t('form.zipCode') }}</label>
               <input v-model="formData.zipCode" type="text" placeholder="Ej: 07001" />
             </div>
             
             <!-- SMART COUNTRY SELECTOR -->
             <div class="form-group full-width country-selector-wrapper">
-              <label>País / Código de Marcado</label>
+              <label>{{ t('form.countryLabel') }}</label>
               <div class="custom-select" @click.stop="showCountryDropdown = !showCountryDropdown">
                 <div class="selected-value">
                   <span class="flag">{{ selectedCountry.flag }}</span>
@@ -427,7 +429,7 @@ const handleSubmit = async () => {
                       <input 
                         v-model="countrySearch" 
                         type="text" 
-                        placeholder="Buscar país o código..."
+                        :placeholder="t('form.searchPlaceholder')"
                         autofocus
                       />
                     </div>
@@ -443,7 +445,7 @@ const handleSubmit = async () => {
                         <span class="dial">{{ c.dial_code }}</span>
                       </li>
                       <li v-if="filteredCountries.length === 0" class="no-results">
-                        No se encontraron resultados
+                        {{ t('form.noResults') }}
                       </li>
                     </ul>
                   </div>
@@ -452,7 +454,7 @@ const handleSubmit = async () => {
             </div>
             
             <div class="form-group full-width">
-              <label>Celular (con lada local si aplica)</label>
+              <label>{{ t('form.phoneLabel') }}</label>
               <div class="phone-input-wrapper">
                 <span class="prefix">{{ selectedCountry.dial_code }}</span>
                 <input v-model="formData.phone" type="tel" placeholder="0000 0000" required />
@@ -463,14 +465,14 @@ const handleSubmit = async () => {
               <label class="checkbox-container">
                 <input type="checkbox" v-model="formData.hasCompany">
                 <span class="checkmark"></span>
-                Tengo una empresa / Negocio
+                {{ t('form.hasCompany') }}
               </label>
             </div>
 
             <transition name="fade-slide">
               <div v-if="formData.hasCompany" class="form-group full-width">
-                <label>Nombre de la Empresa</label>
-                <input v-model="formData.companyName" type="text" placeholder="Nombre legal o comercial" />
+                <label>{{ t('form.companyName') }}</label>
+                <input v-model="formData.companyName" type="text" :placeholder="t('form.companyPlaceholder')" />
               </div>
             </transition>
           </div>
@@ -480,9 +482,9 @@ const handleSubmit = async () => {
             <div v-if="isGlobal && !serviceTitle" class="form-group full-width">
               <DSelect 
                 v-model="formData.selectedServiceId" 
-                label="¿Qué servicio necesitas?"
-                :options="servicesData.map(s => ({ label: s.title, value: s.id }))"
-                placeholder="Selecciona un servicio"
+                :label="t('form.serviceSelection')"
+                :options="servicesData.map(s => ({ label: s.title[locale] || s.title['en'], value: s.id }))"
+                :placeholder="t('form.serviceSelection')"
                 icon="fa-solid fa-briefcase"
                 required
               />
@@ -491,9 +493,9 @@ const handleSubmit = async () => {
             <div class="form-group full-width">
               <DSelect 
                 v-model="formData.qConsultationPurpose" 
-                label="¿Para qué nos contactas?"
+                :label="t('form.consultationPurpose')"
                 :options="consultationOptions"
-                placeholder="Selecciona el motivo principal"
+                :placeholder="t('form.consultationPurpose')"
                 icon="fa-solid fa-comment-dots"
                 required
               />
@@ -507,22 +509,22 @@ const handleSubmit = async () => {
               <DSelect 
                 v-if="field.type === 'select'"
                 v-model="formData[field.name]"
-                :label="field.label"
-                :options="field.options || []"
-                :placeholder="field.placeholder || 'Selecciona...'"
+                :label="field.label[locale] || field.label['en']"
+                :options="field.options ? (field.options[locale] || field.options['en']) : []"
+                :placeholder="field.placeholder ? (field.placeholder[locale] || field.placeholder['en']) : '...'"
                 :required="field.required"
               />
               
               <DDatePicker
                 v-else-if="field.type === 'date'"
                 v-model="formData[field.name]"
-                :label="field.label"
+                :label="field.label[locale] || field.label['en']"
                 :required="field.required"
               />
 
               <template v-else>
-                <label>{{ field.label }}<span v-if="field.required" class="required">*</span></label>
-                <input v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder" :required="field.required" />
+                <label>{{ field.label[locale] || field.label['en'] }}<span v-if="field.required" class="required">*</span></label>
+                <input v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder ? (field.placeholder[locale] || field.placeholder['en']) : ''" :required="field.required" />
               </template>
             </div>
           </div>
@@ -530,13 +532,13 @@ const handleSubmit = async () => {
           <!-- STEP 3: QUALIFICATION QUESTIONS -->
           <div v-if="currentStep === 3" class="qualification-questions">
             <div class="analysis-group">
-              <label class="group-label">1. ¿Su facturación mensual supera los $5,500 USD?</label>
+              <label class="group-label">{{ t('form.questions.billing') }}</label>
               <div class="selection-cards columns-2">
                 <div class="card mini" :class="{ active: formData.qBilling === 'Sí' }" @click="formData.qBilling = 'Sí'">
-                  <i class="fa-solid fa-check"></i> <span>Sí</span>
+                  <i class="fa-solid fa-check"></i> <span>{{ t('form.options.yes') }}</span>
                 </div>
                 <div class="card mini" :class="{ active: formData.qBilling === 'No' }" @click="formData.qBilling = 'No'">
-                  <i class="fa-solid fa-xmark"></i> <span>No</span>
+                  <i class="fa-solid fa-xmark"></i> <span>{{ t('form.options.no') }}</span>
                 </div>
               </div>
             </div>
@@ -544,46 +546,46 @@ const handleSubmit = async () => {
             <div class="analysis-group">
               <DSelect 
                 v-model="formData.qStatus" 
-                label="2. ¿Cuál es su estatus legal actual?"
+                :label="t('form.questions.status')"
                 :options="statusOptions"
-                placeholder="Seleccione su estatus actual"
+                :placeholder="t('form.questions.status')"
                 icon="fa-solid fa-id-card-clip"
                 required
               />
             </div>
 
             <div class="analysis-group">
-              <label class="group-label">3. ¿Su requerimiento es Personal o Empresarial?</label>
+              <label class="group-label">{{ t('form.questions.purpose') }}</label>
               <div class="selection-cards columns-2">
                 <div class="card mini" :class="{ active: formData.qPurpose === 'Personal' }" @click="formData.qPurpose = 'Personal'">
-                  <i class="fa-solid fa-user"></i> <span>Personal</span>
+                  <i class="fa-solid fa-user"></i> <span>{{ t('form.options.personal') }}</span>
                 </div>
                 <div class="card mini" :class="{ active: formData.qPurpose === 'Negocio/LLC' }" @click="formData.qPurpose = 'Negocio/LLC'">
-                  <i class="fa-solid fa-building"></i> <span>Negocio / LLC</span>
+                  <i class="fa-solid fa-building"></i> <span>{{ t('form.options.business') }}</span>
                 </div>
               </div>
             </div>
 
             <div class="analysis-group">
-              <label class="group-label">4. ¿Reside usted actualmente en el estado de New Jersey?</label>
+              <label class="group-label">{{ t('form.questions.location') }}</label>
               <div class="selection-cards columns-2">
                 <div class="card mini" :class="{ active: formData.qLocation === 'Sí, reside en NJ' }" @click="formData.qLocation = 'Sí, reside en NJ'">
-                  <i class="fa-solid fa-location-dot"></i> <span>Sí, en NJ</span>
+                  <i class="fa-solid fa-location-dot"></i> <span>{{ t('form.options.inNJ') }}</span>
                 </div>
                 <div class="card mini" :class="{ active: formData.qLocation === 'No, reside en otro estado' }" @click="formData.qLocation = 'No, reside en otro estado'">
-                  <i class="fa-solid fa-map"></i> <span>Otro estado</span>
+                  <i class="fa-solid fa-map"></i> <span>{{ t('form.options.otherState') }}</span>
                 </div>
               </div>
             </div>
 
             <div class="analysis-group">
-              <label class="group-label">5. ¿Qué tan pronto necesita que un especialista tome su caso?</label>
+              <label class="group-label">{{ t('form.questions.urgency') }}</label>
               <div class="selection-cards">
                 <div class="card mini" :class="{ active: formData.qUrgency === '< 48 horas' }" @click="formData.qUrgency = '< 48 horas'">
-                  <div class="dot red"></div> <span>Urgente (< 48h)</span>
+                  <div class="dot red"></div> <span>{{ t('form.options.urgent') }}</span>
                 </div>
                 <div class="card mini" :class="{ active: formData.qUrgency === '1-2 semanas' }" @click="formData.qUrgency = '1-2 semanas'">
-                  <div class="dot gold"></div> <span>Próximas semanas</span>
+                  <div class="dot gold"></div> <span>{{ t('form.options.nextWeeks') }}</span>
                 </div>
               </div>
             </div>
@@ -592,16 +594,16 @@ const handleSubmit = async () => {
 
         <div class="form-actions">
           <button v-if="currentStep > 1" type="button" @click="prevStep" class="btn-secondary" :disabled="isSubmitting">
-            Atrás
+            {{ t('form.back') }}
           </button>
           
           <button v-if="currentStep < totalSteps" type="button" @click="nextStep" class="btn-primary">
-            Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+            {{ t('form.next') }} <i class="fa-solid fa-arrow-right"></i>
           </button>
           
           <button v-else type="submit" class="btn-primary" :disabled="isSubmitting">
-            <span v-if="!isSubmitting">Finalizar y Enviar <i class="fa-solid fa-paper-plane"></i></span>
-            <span v-else>Procesando... <i class="fa-solid fa-circle-notch fa-spin"></i></span>
+            <span v-if="!isSubmitting">{{ t('form.submit') }} <i class="fa-solid fa-paper-plane"></i></span>
+            <span v-else>{{ t('common.submitting') }} <i class="fa-solid fa-circle-notch fa-spin"></i></span>
           </button>
         </div>
       </form>
@@ -612,9 +614,9 @@ const handleSubmit = async () => {
       <div class="success-icon">
         <i class="fa-solid fa-circle-check"></i>
       </div>
-      <h2>¡Solicitud Recibida!</h2>
-      <p>Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado en <strong>{{ serviceTitle }}</strong> se comunicará contigo prioritariamente.</p>
-      <router-link to="/" class="btn-return-home">Volver al Inicio</router-link>
+      <h2>{{ t('form.successTitle') }}</h2>
+      <p v-html="t('form.successDesc', { service: serviceTitle })"></p>
+      <router-link to="/" class="btn-return-home">{{ t('form.returnHome') }}</router-link>
     </div>
   </div>
 </template>

@@ -2,11 +2,14 @@
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useHead } from '@unhead/vue';
+import { useI18n } from 'vue-i18n';
 import { servicesData } from '@/data/servicesData';
 import DHeader from '@/components/DHeader.vue';
 import DFooter from '@/components/DFooter.vue';
 import ServiceLeadForm from '@/components/ServiceLeadForm.vue';
 import gsap from 'gsap';
+
+const { t, locale } = useI18n();
 
 const BASE_URL = 'https://dicasadvisor.org';
 
@@ -19,8 +22,12 @@ const service = computed(() => {
 
 useHead(() => {
   if (!service.value) return {};
-  const title = `${service.value.title} en New Jersey | Dicas Advisor Group`;
-  const description = `${service.value.longDesc?.slice(0, 155) ?? service.value.shortDesc} Dicas Advisor Group — NJ.`;
+  const serviceTitle = service.value.title[locale.value] || service.value.title['en'];
+  const serviceDesc = service.value.longDesc[locale.value] || service.value.longDesc['en'];
+  const serviceShortDesc = service.value.shortDesc[locale.value] || service.value.shortDesc['en'];
+  
+  const title = `${serviceTitle} en New Jersey | Dicas Advisor Group`;
+  const description = `${serviceDesc.slice(0, 155) ?? serviceShortDesc} Dicas Advisor Group — NJ.`;
   const canonical = `${BASE_URL}/servicios/${service.value.id}`;
   return {
     title,
@@ -40,8 +47,8 @@ useHead(() => {
         innerHTML: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: service.value.title,
-          description: service.value.longDesc ?? service.value.shortDesc,
+          name: serviceTitle,
+          description: serviceDesc ?? serviceShortDesc,
           url: canonical,
           provider: {
             '@type': 'ProfessionalService',
@@ -90,12 +97,12 @@ onMounted(() => {
         <div class="hero-overlay"></div>
         <div class="container">
           <div class="service-hero-content">
-            <div class="category-badge">{{ service.category }}</div>
+            <div class="category-badge">{{ service.category[locale] || service.category['en'] }}</div>
             <h1 class="service-title">
               <i :class="service.icon"></i>
-              {{ service.title }}
+              {{ service.title[locale] || service.title['en'] }}
             </h1>
-            <p class="service-tagline">{{ service.shortDesc }}</p>
+            <p class="service-tagline">{{ service.shortDesc[locale] || service.shortDesc['en'] }}</p>
           </div>
         </div>
       </section>
@@ -105,14 +112,14 @@ onMounted(() => {
         <div class="container grid-layout">
           <div class="info-section">
             <div class="content-block">
-              <h2 class="section-title">Sobre el <span class="accent">Servicio</span></h2>
-              <p class="long-desc">{{ service.longDesc }}</p>
+              <h2 class="section-title">{{ t('serviceDetail.about').split(' ')[0] }} <span class="accent">{{ t('serviceDetail.about').split(' ').slice(1).join(' ') }}</span></h2>
+              <p class="long-desc">{{ service.longDesc[locale] || service.longDesc['en'] }}</p>
               
-              <!-- NUEVA SECCION: FEATURES -->
-              <div class="features-grid" v-if="service.features && service.features.length > 0">
-                <h3 class="subsection-title">Lo que <span class="gold">incluimos</span></h3>
+              <!-- FEATURES -->
+              <div class="features-grid" v-if="service.features[locale]">
+                <h3 class="subsection-title">{{ t('serviceDetail.includes').split(' ')[0] }} <span class="gold">{{ t('serviceDetail.includes').split(' ').slice(1).join(' ') }}</span></h3>
                 <div class="features-container">
-                  <div v-for="(feat, i) in service.features" :key="i" class="feature-item">
+                  <div v-for="(feat, i) in (service.features[locale] || service.features['en'])" :key="i" class="feature-item">
                     <div class="check-icon">
                       <i class="fa-solid fa-check"></i>
                     </div>
@@ -124,8 +131,8 @@ onMounted(() => {
               <div class="strategic-banner">
                 <div class="banner-content">
                   <span class="eyebrow">Dicas Advisor Group</span>
-                  <h3>Todo en un solo <span class="accent">lugar</span></h3>
-                  <p>Consolida tu vida personal, negocio y familia con una asesoría integral de 360°.</p>
+                  <h3>{{ t('serviceDetail.onePlaceTitle') }}</h3>
+                  <p>{{ t('serviceDetail.onePlaceDesc') }}</p>
                 </div>
               </div>
 
@@ -133,15 +140,15 @@ onMounted(() => {
                 <div class="indicator">
                   <i class="fa-solid fa-shield-check"></i>
                   <div class="text">
-                    <strong>Privacidad Total</strong>
-                    <span>Tus datos están protegidos bajo protocolos de alta seguridad.</span>
+                    <strong>{{ t('serviceDetail.privacyTitle') }}</strong>
+                    <span>{{ t('serviceDetail.privacyDesc') }}</span>
                   </div>
                 </div>
                 <div class="indicator">
                   <i class="fa-solid fa-clock-rotate-left"></i>
                   <div class="text">
-                    <strong>Respuesta Rápida</strong>
-                    <span>Compromiso de contacto en menos de 24 horas hábiles.</span>
+                    <strong>{{ t('serviceDetail.responseTitle') }}</strong>
+                    <span>{{ t('serviceDetail.responseDesc') }}</span>
                   </div>
                 </div>
               </div>
@@ -152,11 +159,11 @@ onMounted(() => {
             <div class="form-card-container">
               <div class="advisor-match-notice">
                 <i class="fa-solid fa-user-tie"></i>
-                <span>Te asignaremos al mejor especialista para este caso</span>
+                <span>{{ t('serviceDetail.advisorNotice') }}</span>
               </div>
               <ServiceLeadForm 
                 :fields="service.specificFields" 
-                :serviceTitle="service.title" 
+                :serviceTitle="service.title[locale] || service.title['en']" 
               />
             </div>
           </div>
@@ -167,7 +174,7 @@ onMounted(() => {
           <div class="disclaimer-alert">
             <i class="fa-solid fa-circle-info"></i>
             <div class="disclaimer-content">
-              <p><strong>Aviso Importante:</strong> No somos abogados ni contadores públicos certificados. Los servicios de inmigración son de asistencia administrativa. Los servicios de seguros están sujetos a elegibilidad. El registro de marca está sujeto a aprobación gubernamental. La información se basa en los datos proporcionados por el cliente.</p>
+              <p><strong>{{ t('footer.disclaimer.title') }}:</strong> {{ t('footer.disclaimer.text') }}</p>
             </div>
           </div>
         </div>

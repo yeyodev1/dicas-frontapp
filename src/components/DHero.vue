@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import gsap from 'gsap';
 import { useModalStore } from '@/stores/modalStore';
+import { useI18n } from 'vue-i18n';
 
 const titleRef = ref<HTMLElement | null>(null);
 const subtitleRef = ref<HTMLElement | null>(null);
@@ -9,6 +10,7 @@ const ctaRef = ref<HTMLElement | null>(null);
 const ceoRef = ref<HTMLElement | null>(null);
 
 const modalStore = useModalStore();
+const { t } = useI18n();
 
 const openConsultancy = () => {
   modalStore.openConsultancy(null, 'hero');
@@ -50,14 +52,16 @@ onMounted(() => {
     <div class="hero-container">
       <div class="hero-content">
         <h1 class="hero-title" ref="titleRef">
-          Everything <span class="accent">in one place</span> for your life & business.
+          {{ t('hero.title').split('{accent}')[0] }}
+          <span class="accent">{{ t('hero.accent') }}</span>
+          {{ t('hero.title').split('{accent}')[1] }}
         </h1>
         <p class="hero-subtitle" ref="subtitleRef">
-          Dicas Advisor Group: Your personal, family, and business partner. We offer specialized solutions in Finance, Health, Immigration, and Real Estate.
+          {{ t('hero.subtitle') }}
         </p>
         <div class="hero-actions" ref="ctaRef">
-          <button @click="openConsultancy" class="btn btn-primary">Obtener Asesoría <i class="fa-solid fa-calendar-check"></i></button>
-          <a href="/#services" class="btn btn-outline">Ver Servicios</a>
+          <button @click="openConsultancy" class="btn btn-primary">{{ t('nav.cta') }} <i class="fa-solid fa-calendar-check"></i></button>
+          <a href="/#services" class="btn btn-outline">{{ t('hero.viewServices') }}</a>
         </div>
       </div>
 
@@ -77,7 +81,7 @@ onMounted(() => {
       <div class="mouse">
         <div class="wheel"></div>
       </div>
-      <span>Scroll To Explore</span>
+      <span>{{ t('hero.scroll') }}</span>
     </div>
   </section>
 </template>

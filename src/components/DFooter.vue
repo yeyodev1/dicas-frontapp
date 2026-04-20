@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const year = new Date().getFullYear();
 </script>
 
@@ -9,41 +11,41 @@ const year = new Date().getFullYear();
         <div class="footer-brand">
           <img src="@/assets/logo/logo-large.png" alt="Dicas" class="footer-logo" />
           <p class="brand-description">
-            Empowering visions with strategic excellence. Your trusted partner in financial and business advisory.
+            {{ t('footer.description') }}
           </p>
         </div>
         
         <div class="footer-links">
           <div class="link-group">
-            <h4>Quick Links</h4>
-            <a href="#hero">Home</a>
-            <a href="#services">Services</a>
-            <a href="#about">About Us</a>
+            <h4>{{ t('footer.links.quick') }}</h4>
+            <a href="#hero">{{ t('nav.home') }}</a>
+            <a href="#services">{{ t('nav.services') }}</a>
+            <a href="#about">{{ t('nav.about') }}</a>
           </div>
           
           <div class="link-group">
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Security</a>
+            <h4>{{ t('footer.links.legal') }}</h4>
+            <a href="#">{{ t('footer.legal.privacy') }}</a>
+            <a href="#">{{ t('footer.legal.terms') }}</a>
+            <a href="#">{{ t('footer.legal.security') }}</a>
           </div>
           
           <div class="link-group">
-            <h4>Connect</h4>
+            <h4>{{ t('footer.links.connect') }}</h4>
             <a href="#">LinkedIn</a>
             <a href="#">Twitter</a>
-            <a href="#">Contact</a>
+            <a href="#">{{ t('footer.links.connect') }}</a>
           </div>
         </div>
       </div>
       
       <div class="footer-disclaimer">
-        <p><strong>IMPORTANT DISCLAIMER:</strong> No somos abogados ni contadores públicos certificados. Los servicios de inmigración son asistencia administrativa. Servicios de seguros sujetos a elegibilidad. Registro de marca sujeto a aprobación del gobierno. Información basada en datos proporcionados por el cliente.</p>
+        <p><strong>{{ t('footer.disclaimer.title') }}:</strong> {{ t('footer.disclaimer.text') }}</p>
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; {{ year }} Dicas Advisor Group. All rights reserved.</p>
-        <p>Proudly Developed & Programmed by <a href="https://yeyo.dev/" target="_blank" class="dev-link">yeyodeve</a></p>
+        <p>&copy; {{ year }} Dicas Advisor Group. {{ t('footer.rights') }}</p>
+        <p>{{ t('footer.dev') }} <a href="https://yeyo.dev/" target="_blank" class="dev-link">yeyodev</a></p>
       </div>
     </div>
   </footer>
