@@ -5,6 +5,13 @@ import DHighlightServices from '@/components/DHighlightServices.vue';
 import DAbout from '@/components/DAbout.vue';
 import DServiceCatalog from '@/components/DServiceCatalog.vue';
 import DFooter from '@/components/DFooter.vue';
+import { useSEO } from '@/composables/useSEO';
+
+useSEO({
+  title: 'Dicas Advisor Group | Tax, Immigration & Insurance in New Jersey',
+  description: 'Professional advisory services in New Jersey: taxes, immigration, Medicare, LLC formation, real estate, notary, payroll, credit repair and more. Bilingual English/Spanish. Fast response.',
+  path: '/',
+})
 </script>
 
 <template>

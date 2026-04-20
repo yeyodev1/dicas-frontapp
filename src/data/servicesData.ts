@@ -209,7 +209,14 @@ export const servicesData: ServiceDetail[] = [
     specificFields: [
       { name: 'operationType', label: 'Interés en:', type: 'select', required: true, options: ['Comprar', 'Vender', 'Invertir'] },
       { name: 'locationPref', label: 'Condado de Preferencia en NJ', type: 'text', required: true, placeholder: 'Ej: Hudson, Bergen, Passaic' },
-      { name: 'budgetRange', label: 'Rango de Presupuesto', type: 'select', required: true, options: ['$200k - $400k', '$400k - $600k', '$600k+'] }
+      { name: 'budgetRange', label: 'Rango de Presupuesto', type: 'select', required: true, options: [
+        'Menos de $300,000',
+        '$300,000 - $450,000',
+        '$450,000 - $600,000',
+        '$600,000 - $800,000',
+        '$800,000 - $1,200,000',
+        'Más de $1,200,000 (Luxury)'
+      ] }
     ]
   },
   {

@@ -489,29 +489,31 @@ const handleSubmit = async () => {
               />
             </div>
             
-            <div class="dynamic-fields-row">
-              <div v-for="field in filteredFields" :key="field.name" class="form-group" :class="field.type">
-                <DSelect 
-                  v-if="field.type === 'select'"
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                  :options="field.options || []"
-                  :placeholder="field.placeholder || 'Selecciona...'"
-                  :required="field.required"
-                />
-                
-                <DDatePicker
-                  v-else-if="field.type === 'date'"
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                  :required="field.required"
-                />
+            <div 
+              v-for="field in filteredFields" 
+              :key="field.name" 
+              class="form-group full-width"
+            >
+              <DSelect 
+                v-if="field.type === 'select'"
+                v-model="formData[field.name]"
+                :label="field.label"
+                :options="field.options || []"
+                :placeholder="field.placeholder || 'Selecciona...'"
+                :required="field.required"
+              />
+              
+              <DDatePicker
+                v-else-if="field.type === 'date'"
+                v-model="formData[field.name]"
+                :label="field.label"
+                :required="field.required"
+              />
 
-                <template v-else>
-                  <label>{{ field.label }}</label>
-                  <input v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder" :required="field.required" />
-                </template>
-              </div>
+              <template v-else>
+                <label>{{ field.label }}<span v-if="field.required" class="required">*</span></label>
+                <input v-model="formData[field.name]" :type="field.type" :placeholder="field.placeholder" :required="field.required" />
+              </template>
             </div>
           </div>
 
@@ -610,411 +612,30 @@ const handleSubmit = async () => {
 <style lang="scss" scoped>
 .lead-form-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
+// BASE STYLES: MOBILE FIRST
 .form-card, .success-card {
   background: linear-gradient(135deg, rgba($white, 0.05) 0%, rgba($white, 0.02) 100%);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid rgba($white, 0.1);
-  border-radius: 30px;
-  padding: 4rem 3rem;
-  box-shadow: 
-    0 40px 100px rgba(0,0,0,0.8),
-    inset 0 0 0 1px rgba($white, 0.05);
+  border-radius: 20px;
+  padding: 2rem 1.2rem;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
   position: relative;
-  overflow: hidden;
+  overflow: visible; // Allow select dropdowns to overflow if container is auto-height
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba($primary, 0.05), transparent 70%);
-    pointer-events: none;
+  @media (min-width: 768px) {
+    padding: 4rem 3rem;
+    border-radius: 30px;
   }
-
-  @media (max-width: 600px) {
-    padding: 3rem 1.5rem;
-    border-radius: 0;
-    background: #0a0a0a;
-  }
-}
-
-.qualification-questions {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-
-  .analysis-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-
-    .group-label {
-      font-family: $font-principal;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: rgba($white, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  }
-
-  .premium-select {
-    width: 100%;
-    background: rgba($white, 0.05) !important;
-    border: 1px solid rgba($white, 0.1) !important;
-    padding: 1rem 1.2rem !important;
-    border-radius: 10px !important;
-    color: white !important;
-    font-family: $font-principal !important;
-    font-size: 1rem !important;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: right 1.2rem center !important;
-    background-size: 1.2rem !important;
-
-    &:focus {
-      border-color: $primary !important;
-      outline: none;
-      box-shadow: 0 0 15px rgba($primary, 0.1) !important;
-    }
-  }
-
-.fields-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  .dynamic-fields-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    width: 100%;
-
-    @media (max-width: 600px) {
-      grid-template-columns: 1fr;
-    }
-
-    .form-group.text, .form-group.full-width, .form-group.date {
-      grid-column: span 2;
-      @media (max-width: 600px) { grid-column: span 1; }
-    }
-  }
-}
-
-  .selection-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-
-    @media (max-width: 500px) {
-      grid-template-columns: 1fr;
-    }
-
-    &.columns-2 {
-      grid-template-columns: repeat(2, 1fr);
-      @media (max-width: 500px) { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: rgba($white, 0.03);
-      border: 1px solid rgba($white, 0.08);
-      border-radius: 12px;
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      text-align: center;
-
-      i { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: $primary; }
-      span { font-size: 0.9rem; font-weight: 500; font-family: $font-principal; color: rgba($white, 0.7); }
-
-      &.mini {
-        flex-direction: row;
-        padding: 1rem;
-        gap: 12px;
-        justify-content: flex-start;
-
-        i { font-size: 1.1rem; }
-
-        .dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          &.red { background: #ff4d4d; box-shadow: 0 0 10px rgba(#ff4d4d, 0.5); }
-          &.gold { background: $primary; box-shadow: 0 0 10px rgba($primary, 0.5); }
-        }
-      }
-
-      &:hover {
-        background: rgba($white, 0.06);
-        border-color: rgba($primary, 0.3);
-        transform: translateY(-2px);
-      }
-
-      &.active {
-        background: rgba($primary, 0.1);
-        border-color: $primary;
-        box-shadow: 0 10px 30px rgba($primary, 0.1);
-
-        i { opacity: 1; transform: scale(1.1); color: $primary; }
-        span { color: $white; font-weight: 700; }
-      }
-    }
-  }
-}
-
-.expert-toggle-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  background: rgba($white, 0.05);
-  border: 1px solid rgba($white, 0.1);
-  border-radius: 15px;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  .expert-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba($white, 0.05);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: $primary;
-  }
-
-  .expert-info {
-    flex: 1;
-    h4 { margin: 0 0 5px 0; font-family: $font-luxury; font-size: 1.1rem; }
-    p { margin: 0; font-size: 0.85rem; color: $text-secondary; line-height: 1.4; }
-  }
-
-  .expert-check {
-    font-size: 1.2rem;
-    color: rgba($white, 0.2);
-    transition: all 0.3s;
-  }
-
-  &:hover { border-color: rgba($primary, 0.3); background: rgba($white, 0.08); }
-
-  &.active {
-    border-color: $primary;
-    background: rgba($primary, 0.05);
-
-    .expert-check { color: $primary; }
-  }
-}
-
-.country-selector-wrapper {
-  position: relative;
-
-  .custom-select {
-    background: rgba($white, 0.05);
-    border: 1px solid rgba($white, 0.1);
-    border-radius: 8px;
-    padding: 0.8rem 1.2rem;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-
-    &:hover { border-color: $primary; }
-
-    .selected-value {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: $font-principal;
-
-      .flag { font-size: 1.2rem; }
-      .dial { color: $primary; font-weight: 600; }
-      .ms-auto { margin-left: auto; font-size: 0.8rem; opacity: 0.5; }
-    }
-  }
-
-  .dropdown-panel {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
-    width: 100%;
-    background: #1a1a1a;
-    border: 1px solid rgba($white, 0.1);
-    border-radius: 12px;
-    z-index: 100;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    overflow: hidden;
-
-    .search-box {
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid rgba($white, 0.05);
-
-      i { opacity: 0.5; }
-      input {
-        background: transparent;
-        border: none;
-        color: white;
-        width: 100%;
-        outline: none;
-        font-family: $font-principal;
-      }
-    }
-
-    .country-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      max-height: 250px;
-      overflow-y: auto;
-
-      li {
-        padding: 0.8rem 1.2rem;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        cursor: pointer;
-        transition: background 0.2s;
-
-        &:hover { background: rgba($primary, 0.1); }
-        &.active { background: rgba($primary, 0.2); border-left: 3px solid $primary; }
-
-        .flag { font-size: 1.2rem; }
-        .name { flex: 1; font-size: 0.9rem; }
-        .dial { color: $primary; font-size: 0.8rem; font-weight: bold; }
-      }
-
-      .no-results {
-        padding: 2rem;
-        text-align: center;
-        opacity: 0.5;
-        font-size: 0.9rem;
-      }
-    }
-  }
-}
-
-.phone-input-wrapper {
-  display: flex;
-  background: rgba($white, 0.05);
-  border: 1px solid rgba($white, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-
-  &:focus-within { border-color: $primary; }
-
-  .prefix {
-    padding: 0.8rem 1.2rem;
-    background: rgba($white, 0.05);
-    color: $primary;
-    font-weight: 700;
-    font-family: $font-principal;
-    border-right: 1px solid rgba($white, 0.1);
-    display: flex;
-    align-items: center;
-  }
-
-  input {
-    background: transparent;
-    border: none;
-    flex: 1;
-    padding: 0.8rem 1.2rem;
-    color: white;
-    outline: none;
-  }
-}
-
-.checkbox-group {
-  margin-top: 0.5rem;
-  
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: rgba($white, 0.8);
-    user-select: none;
-
-    input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      height: 0;
-      width: 0;
-    }
-
-    .checkmark {
-      height: 20px;
-      width: 20px;
-      background-color: rgba($white, 0.1);
-      border: 1px solid rgba($white, 0.2);
-      border-radius: 4px;
-      position: relative;
-      transition: all 0.3s ease;
-
-      &::after {
-        content: "";
-        position: absolute;
-        display: none;
-        left: 6px;
-        top: 2px;
-        width: 5px;
-        height: 10px;
-        border: solid $primary-dark;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-      }
-    }
-
-    &:hover .checkmark {
-      border-color: $primary;
-    }
-
-    input:checked ~ .checkmark {
-      background-color: $primary;
-      border-color: $primary;
-      &::after { display: block; }
-    }
-  }
-}
-
-.fade-slide-enter-active, .fade-slide-leave-active {
-  transition: all 0.4s ease;
-}
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.full-width {
-  grid-column: span 2;
-  @media (max-width: 500px) { grid-column: span 1; }
 }
 
 .form-header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 
   .matching-badge {
@@ -1026,23 +647,28 @@ const handleSubmit = async () => {
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
     color: $primary;
-    font-family: $font-principal;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 5px 15px rgba($primary, 0.1);
-
-    i { font-size: 0.9rem; }
+    margin-bottom: 1rem;
+    
+    @media (min-width: 768px) {
+      font-size: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .form-title {
     font-family: $font-luxury;
-    font-size: 2.5rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
     color: $white;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+    @media (min-width: 768px) {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+    }
 
     .accent { 
       color: $primary; 
@@ -1053,13 +679,17 @@ const handleSubmit = async () => {
   }
 
   .form-subtitle {
-    font-family: $font-principal;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: rgba($white, 0.7);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+
+    @media (min-width: 768px) {
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
   }
 
   .progress-bar {
@@ -1078,12 +708,14 @@ const handleSubmit = async () => {
 
 .fields-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: 1fr; // Mobile: 1 Column
+  gap: 1.2rem;
+  margin-bottom: 2rem;
 
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr; // Desktop: 2 Columns
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 }
 
@@ -1092,16 +724,28 @@ const handleSubmit = async () => {
   flex-direction: column;
   gap: 0.8rem;
 
+  &.full-width {
+    @media (min-width: 768px) {
+      grid-column: span 2;
+    }
+  }
+
   label {
     font-family: $font-principal;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: rgba($white, 0.6);
     text-transform: uppercase;
     letter-spacing: 1px;
+
+    @media (min-width: 768px) {
+      font-size: 0.85rem;
+    }
+
+    .required { color: $dicas-red; margin-left: 4px; }
   }
 
-  input, select {
+  input {
     background: rgba($white, 0.05);
     border: 1px solid rgba($white, 0.1);
     padding: 0.8rem 1.2rem;
@@ -1118,98 +762,274 @@ const handleSubmit = async () => {
       box-shadow: 0 0 15px rgba($primary, 0.1);
     }
 
-    &::placeholder {
-      color: rgba($white, 0.2);
-    }
+    &::placeholder { color: rgba($white, 0.2); }
+  }
+}
+
+.qualification-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    gap: 2.5rem;
   }
 
-  select {
+  .analysis-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .group-label {
+      font-family: $font-principal;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba($white, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.selection-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  &.columns-2 {
+    grid-template-columns: 1fr;
+    @media (min-width: 500px) { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .card {
+    background: rgba($white, 0.03);
+    border: 1px solid rgba($white, 0.08);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     cursor: pointer;
-    option {
-      background: #111;
-      color: white;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+
+    i { font-size: 1.3rem; color: $primary; opacity: 0.5; }
+    span { font-size: 0.85rem; color: rgba($white, 0.7); }
+
+    &.mini {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 0.8rem 1.2rem;
+    }
+
+    &:hover {
+      background: rgba($white, 0.06);
+      border-color: rgba($primary, 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background: rgba($primary, 0.1);
+      border-color: $primary;
+      i { opacity: 1; transform: scale(1.1); }
+      span { color: $white; font-weight: 700; }
     }
   }
 }
 
 .form-actions {
   display: flex;
+  flex-direction: column-reverse; // Stack buttons on mobile
   gap: 1rem;
+  margin-top: 2rem;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+  }
 
   button {
-    flex: 1;
-    padding: 1.2rem;
+    width: 100%;
+    padding: 1.1rem;
     border-radius: 12px;
-    font-family: $font-principal;
-    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    letter-spacing: 0.5px;
+    gap: 10px;
+
+    @media (min-width: 600px) { flex: 1; }
   }
 
   .btn-primary {
     background: linear-gradient(135deg, $primary, $dicas-gold-dark);
     color: $primary-dark;
     border: none;
-
-    &:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba($primary, 0.3);
-    }
+    &:hover:not(:disabled) { box-shadow: 0 10px 20px rgba($primary, 0.2); transform: translateY(-2px); }
   }
 
   .btn-secondary {
     background: transparent;
-    border: 1px solid rgba($white, 0.2);
+    border: 1px solid rgba($white, 0.1);
     color: white;
+    &:hover { background: rgba($white, 0.05); }
+  }
+}
 
-    &:hover:not(:disabled) {
-      background: rgba($white, 0.05);
-      border-color: $white;
+.country-selector-wrapper {
+  position: relative;
+  .custom-select {
+    background: rgba($white, 0.05);
+    border: 1px solid rgba($white, 0.1);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    .selected-value {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: $white;
+      font-family: $font-principal;
+      font-size: 0.95rem;
+
+      .dial { color: $primary; font-weight: 700; }
+      .ms-auto { opacity: 0.5; font-size: 0.8rem; }
     }
   }
 
-  button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba($white, 0.2);
+    border-radius: 16px;
+    z-index: 10000;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    overflow: hidden;
+
+    .search-box {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba($white, 0.1);
+      background: rgba($white, 0.02);
+
+      i { color: $primary; opacity: 0.7; }
+      input {
+        background: transparent;
+        border: none;
+        color: white;
+        width: 100%;
+        outline: none;
+        font-family: $font-principal;
+        font-size: 0.95rem;
+        &::placeholder { color: rgba($white, 0.3); }
+      }
+    }
+
+    .country-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 250px;
+      overflow-y: auto;
+
+      li {
+        padding: 0.8rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid rgba($white, 0.05);
+
+        &:last-child { border-bottom: none; }
+
+        &:hover { background: rgba($primary, 0.15); }
+        &.active { background: rgba($primary, 0.25); border-left: 3px solid $primary; }
+
+        .flag { font-size: 1.2rem; }
+        .name { flex: 1; font-size: 0.9rem; color: $white; font-weight: 500; }
+        .dial { color: $primary; font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
+      }
+
+      .no-results {
+        padding: 2rem;
+        text-align: center;
+        color: rgba($white, 0.5);
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.phone-input-wrapper {
+  display: flex;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  .prefix {
+    padding: 0.8rem 1rem;
+    background: rgba($white, 0.05);
+    color: $primary;
+    border-right: 1px solid rgba($white, 0.1);
+  }
+  input { background: transparent; border: none; flex: 1; padding: 0.8rem 1rem; color: white; outline: none; }
+}
+
+.checkbox-group {
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgba($white, 0.8);
+    .checkmark {
+      height: 20px;
+      width: 20px;
+      background: rgba($white, 0.05);
+      border: 1px solid rgba($white, 0.1);
+      border-radius: 4px;
+      position: relative;
+    }
+    input:checked ~ .checkmark {
+      background: $primary;
+      &::after { content: '✓'; position: absolute; left: 4px; top: -1px; color: $primary-dark; font-weight: bold; }
+    }
+    input { display: none; }
   }
 }
 
 .success-card {
   text-align: center;
-
-  .success-icon {
-    font-size: 5rem;
-    color: $alert-success;
-    margin-bottom: 2rem;
-    filter: drop-shadow(0 0 20px rgba($alert-success, 0.3));
-  }
-
-  h2 {
-    font-family: $font-luxury;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-family: $font-principal;
-    color: $text-secondary;
-    line-height: 1.8;
-    margin-bottom: 3rem;
-  }
-
-  .btn-primary {
-    max-width: 250px;
-    margin: 0 auto;
-    text-decoration: none;
-  }
+  .success-icon { font-size: 4rem; color: $alert-success; margin-bottom: 1.5rem; }
+  h2 { font-family: $font-luxury; font-size: 2rem; margin-bottom: 1rem; color: white; }
+  p { color: rgba($white, 0.6); margin-bottom: 2rem; line-height: 1.6; }
+  .btn-primary { max-width: 300px; margin: 0 auto; text-decoration: none; }
 }
 
 .ms-auto { margin-left: auto; }
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+.fade-slide-enter-active, .fade-slide-leave-active { transition: all 0.4s ease; }
+.fade-slide-enter-from, .fade-slide-leave-to { opacity: 0; transform: translateY(-10px); }
 
 </style>

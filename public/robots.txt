@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dicasadvisor.org/sitemap.xml
+
+# LLM-friendly content
+# AI agents can read: https://dicasadvisor.org/llms.txt

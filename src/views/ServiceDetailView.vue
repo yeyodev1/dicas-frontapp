@@ -1,17 +1,59 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useHead } from '@unhead/vue';
 import { servicesData } from '@/data/servicesData';
 import DHeader from '@/components/DHeader.vue';
 import DFooter from '@/components/DFooter.vue';
 import ServiceLeadForm from '@/components/ServiceLeadForm.vue';
 import gsap from 'gsap';
 
+const BASE_URL = 'https://dicasadvisor.org';
+
 const route = useRoute();
 const router = useRouter();
 
 const service = computed(() => {
   return servicesData.find(s => s.id === route.params.id);
+});
+
+useHead(() => {
+  if (!service.value) return {};
+  const title = `${service.value.title} en New Jersey | Dicas Advisor Group`;
+  const description = `${service.value.longDesc?.slice(0, 155) ?? service.value.shortDesc} Dicas Advisor Group — NJ.`;
+  const canonical = `${BASE_URL}/servicios/${service.value.id}`;
+  return {
+    title,
+    meta: [
+      { name: 'description', content: description },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:url', content: canonical },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+    ],
+    link: [{ rel: 'canonical', href: canonical }],
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: service.value.title,
+          description: service.value.longDesc ?? service.value.shortDesc,
+          url: canonical,
+          provider: {
+            '@type': 'ProfessionalService',
+            name: 'Dicas Advisor Group',
+            url: BASE_URL,
+            areaServed: { '@type': 'State', name: 'New Jersey' },
+          },
+          areaServed: { '@type': 'State', name: 'New Jersey' },
+        }),
+      },
+    ],
+  };
 });
 
 onMounted(() => {

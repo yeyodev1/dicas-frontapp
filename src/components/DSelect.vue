@@ -209,7 +209,7 @@ onUnmounted(() => {
   backdrop-filter: blur(20px);
   border: 1px solid rgba($white, 0.1);
   border-radius: 16px;
-  z-index: 1000;
+  z-index: 10000;
   box-shadow: 0 30px 60px rgba(0,0,0,0.6);
   overflow: hidden;
   animation: panelSlide 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);

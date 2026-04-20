@@ -63,6 +63,18 @@ const handleClose = () => {
     height: 100%;
     max-height: 100vh;
   }
+
+  @media (min-height: 601px) {
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: rgba($white, 0.1); border-radius: 10px; }
+  }
+}
+
+.modal-content {
+  padding-bottom: 80px; 
 }
 
 .close-btn {
