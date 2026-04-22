@@ -1,197 +1,197 @@
 {
-  "nav": {
-    "home": "Inicio",
-    "services": "Servicios",
-    "about": "Nosotros",
-    "cta": "Obtener Asesoría"
-  },
-  "services": {
-    "badge": "Estrategia Premium",
-    "title": "Servicios Principales",
-    "description": "Impulsa tu vida y tu negocio con nuestras soluciones estrella.",
-    "viewDetails": "Ver detalles",
-    "cta": "¿No sabes qué servicio elegir? Obtén una asesoría integral",
-    "medicare": {
-      "title": "Medicare & Medicaid",
-      "tag": "Salud"
-    },
-    "taxes": {
-      "title": "Taxes para Independientes",
-      "tag": "Finanzas"
-    },
-    "payroll": {
-      "title": "Payroll para Negocios",
-      "tag": "Negocio"
-    },
-    "immigration": {
-      "title": "Inmigración",
-      "tag": "Legal"
-    },
-    "llc": {
-      "title": "Creación de LLC",
-      "tag": "Negocio"
-    },
-    "trademark": {
-      "title": "Registro de Marca",
-      "tag": "Legal"
-    },
-    "realtor": {
-      "title": "Realtor en NJ",
-      "tag": "Propiedades"
-    }
-  },
-  "hero": {
-    "title": "Todo {accent} para tu vida y negocio.",
-    "accent": "en un solo lugar",
-    "subtitle": "Dicas Advisor Group: Tu socio personal, familiar y empresarial. Ofrecemos soluciones especializadas en Finanzas, Salud, Inmigración y Bienes Raíces.",
-    "scroll": "Desliza para explorar",
-    "viewServices": "Ver Servicios"
-  },
-  "header": {
-    "languageLabel": "IDIOMA:",
-    "en": "INGLÉS",
-    "es": "ESPAÑOL"
-  },
-  "home": {
-    "banner": "\"Todo en un solo lugar para tu vida personal, negocio y familia\""
-  },
-  "about": {
-    "subtitle": "Nuestro Liderazgo",
-    "title": "Autoridad Personal,",
-    "accent": "Experiencia Comprobada",
-    "description": "Dicas Advisor Group fue fundado sobre los principios de transparencia y compromiso inquebrantable con el éxito del cliente. Más que una agencia, somos sus aliados estratégicos en New Jersey.",
-    "cred1": {
-      "title": "Realtor Licenciada en NJ",
-      "text": "Experiencia en Bienes Raíces y Compra de Vivienda."
-    },
-    "cred2": {
-      "title": "Facturación y Codificación Médica Certificada",
-      "text": "Soporte Administrativo Profesional para Servicios de Salud."
-    },
-    "stat1": {
-      "number": "12+",
-      "label": "Áreas Especializadas"
-    },
-    "stat2": {
-      "number": "NJ",
-      "label": "Autoridad Local"
-    },
-    "cta": "Comienza tu Camino al Éxito"
-  },
-  "catalog": {
-    "title": "Catálogo",
-    "accent": "Completo",
-    "desc": "Todo lo que necesitas en un solo lugar.",
-    "viewPage": "Ver página del servicio"
-  },
-  "footer": {
-    "description": "Empoderando visiones con excelencia estratégica. Tu socio de confianza en asesoría financiera y empresarial.",
-    "links": {
-      "quick": "Enlaces Rápidos",
-      "legal": "Legal",
-      "connect": "Conectar"
-    },
-    "legal": {
-      "privacy": "Política de Privacidad",
-      "terms": "Términos de Servicio",
-      "security": "Seguridad"
-    },
-    "disclaimer": {
-      "title": "AVISO IMPORTANTE",
-      "text": "No somos abogados ni contadores públicos certificados. Los servicios de inmigración son asistencia administrativa. Servicios de seguros sujetos a elegibilidad. Registro de marca sujeto a aprobación del gobierno. Información basada en datos proporcionados por el cliente."
-    },
-    "rights": "Todos los derechos reservados.",
-    "dev": "Orgullosamente Desarrollado y Programado por"
-  },
-  "serviceDetail": {
-    "about": "Sobre el Servicio",
-    "includes": "Lo que incluimos",
-    "onePlaceTitle": "Todo en un solo lugar",
-    "onePlaceDesc": "Consolida tu vida personal, negocio y familia con una asesoría integral de 360°.",
-    "privacyTitle": "Privacidad Total",
-    "privacyDesc": "Tus datos están protegidos bajo protocolos de alta seguridad.",
-    "responseTitle": "Respuesta Rápida",
-    "responseDesc": "Compromiso de contacto en menos de 24 horas hábiles.",
-    "advisorNotice": "Te asignaremos al mejor especialista para este caso"
-  },
-  "form": {
-    "matchingBadge": "Analizando datos para asignarte al mejor especialista",
-    "title": "Obtener Asesoría",
-    "subtitle": "En segundos te conectaremos con el asesor ideal para tu caso.",
-    "firstName": "Nombre",
-    "lastName": "Apellidos",
-    "email": "Correo Electrónico",
-    "zipCode": "Código Postal (Opcional)",
-    "countryLabel": "País / Código de Marcado",
-    "phoneLabel": "Celular (con lada local si aplica)",
-    "hasCompany": "Tengo una empresa / Negocio",
-    "companyName": "Nombre de la Empresa",
-    "companyPlaceholder": "Nombre legal o comercial",
-    "serviceSelection": "¿Qué servicio necesitas?",
-    "consultationPurpose": "¿Para qué nos contactas?",
-    "searchPlaceholder": "Buscar país o código...",
-    "noResults": "No se encontraron resultados",
-    "next": "Siguiente Paso",
-    "back": "Atrás",
-    "submit": "Finalizar y Enviar",
-    "successTitle": "¡Solicitud Recibida!",
-    "successDesc": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado en {service} se comunicará contigo prioritariamente.",
-    "returnHome": "Volver al Inicio",
-    "validationAlert": "Por favor completa los datos obligatorios.",
-    "questions": {
-      "billing": "1. ¿Su facturación mensual supera los $5,500 USD?",
-      "status": "2. ¿Cuál es su estatus legal actual?",
-      "purpose": "3. ¿Su requerimiento es Personal o Empresarial?",
-      "location": "4. ¿Reside usted actualmente en el estado de New Jersey?",
-      "urgency": "5. ¿Qué tan pronto necesita que un especialista tome su caso?"
-    },
-    "options": {
-      "yes": "Sí",
-      "no": "No",
-      "personal": "Personal",
-      "business": "Negocio / LLC",
-      "resident": "Ciudadano / Residente",
-      "ssn": "Poseo número de Seguro Social (SSN)",
-      "itin": "Poseo número de ITIN",
-      "inProcess": "En trámite / Proceso",
-      "none": "Ninguno de los anteriores",
-      "inNJ": "Sí, en NJ",
-      "otherState": "Otro estado",
-      "urgent": "Urgente (< 48h)",
-      "nextWeeks": "Próximas semanas"
-    }
-  },
-  "common": {
-    "loading": "Cargando...",
-    "submitting": "Procesando...",
-    "error": "Hubo un error. Por favor intenta de nuevo.",
-    "back": "Atrás",
-    "next": "Siguiente Paso",
-    "finish": "Finalizar y Enviar"
-  },
-  "success": {
-    "title": "¡Solicitud Recibida!",
-    "message": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado se comunicará contigo de manera prioritaria.",
-    "return": "Volver al Inicio",
-    "nextStepsTitle": "¿Qué sigue ahora?",
-    "step1": "Un asesor experto revisará tu información detalladamente.",
-    "step2": "Te contactaremos vía telefónica o WhatsApp en menos de 24h.",
-    "step3": "Iniciaremos tu trámite con prioridad máxima."
-  },
-  "booking": {
-    "badge": "Prioridad VIP",
-    "title": "Reserva tu Videollamada",
-    "subtitle": "Has calificado para una asesoría directa. Selecciona el mejor momento para hablar con nuestro equipo.",
-    "secureNotice": "Toda tu información está protegida bajo altos estándares de privacidad."
-  },
-  "seo": {
-    "home": {
-      "title": "Dicas Advisor Group | Impuestos, Inmigración y Seguros en New Jersey",
-      "description": "Servicios de asesoría profesional en New Jersey: taxes, inmigración, Medicare, creación de LLC, bienes raíces, notaría, payroll, reparación de crédito y más. Bilingüe Inglés/Español. Respuesta rápida."
-    },
-    "service": {
-      "title": "{service} en New Jersey | Dicas Advisor Group",
-      "suffix": "Dicas Advisor Group — NJ."
-    }
-  }
+	"nav": {
+		"home": "Inicio",
+		"services": "Servicios",
+		"about": "Nosotros",
+		"cta": "Obtener Asesoría"
+	},
+	"services": {
+		"badge": "Estrategia Premium",
+		"title": "Servicios Principales",
+		"description": "Impulsa tu vida y tu negocio con nuestras soluciones estrella.",
+		"viewDetails": "Ver detalles",
+		"cta": "¿No sabes qué servicio elegir? Obtén una asesoría integral",
+		"medicare": {
+			"title": "Medicare & Medicaid",
+			"tag": "Salud"
+		},
+		"taxes": {
+			"title": "Taxes para Independientes",
+			"tag": "Finanzas"
+		},
+		"payroll": {
+			"title": "Payroll para Negocios",
+			"tag": "Negocio"
+		},
+		"immigration": {
+			"title": "Inmigración",
+			"tag": "Legal"
+		},
+		"llc": {
+			"title": "Creación de LLC",
+			"tag": "Negocio"
+		},
+		"trademark": {
+			"title": "Registro de Marca",
+			"tag": "Legal"
+		},
+		"realtor": {
+			"title": "Realtor en NJ",
+			"tag": "Propiedades"
+		}
+	},
+	"hero": {
+		"title": "Todo {accent} para tu vida y negocio.",
+		"accent": "en un solo lugar",
+		"subtitle": "Dicas Advisor Group: Tu socio personal, familiar y empresarial. Ofrecemos soluciones especializadas en Finanzas, Salud, Inmigración y Bienes Raíces.",
+		"scroll": "Desliza para explorar",
+		"viewServices": "Ver Servicios"
+	},
+	"header": {
+		"languageLabel": "IDIOMA:",
+		"en": "INGLÉS",
+		"es": "ESPAÑOL"
+	},
+	"home": {
+		"banner": "\"Todo en un solo lugar para tu vida personal, negocio y familia\""
+	},
+	"about": {
+		"subtitle": "Nuestro Liderazgo",
+		"title": "Autoridad Personal,",
+		"accent": "Experiencia Comprobada",
+		"description": "Dicas Advisor Group fue fundado sobre los principios de transparencia y compromiso inquebrantable con el éxito del cliente. Más que una agencia, somos sus aliados estratégicos en New Jersey.",
+		"cred1": {
+			"title": "Realtor Licenciada en NJ",
+			"text": "Experiencia en Bienes Raíces y Compra de Vivienda."
+		},
+		"cred2": {
+			"title": "Facturación y Codificación Médica Certificada",
+			"text": "Soporte Administrativo Profesional para Servicios de Salud."
+		},
+		"stat1": {
+			"number": "12+",
+			"label": "Áreas Especializadas"
+		},
+		"stat2": {
+			"number": "NJ",
+			"label": "Autoridad Local"
+		},
+		"cta": "Comienza tu Camino al Éxito"
+	},
+	"catalog": {
+		"title": "Catálogo",
+		"accent": "Completo",
+		"desc": "Todo lo que necesitas en un solo lugar.",
+		"viewPage": "Ver página del servicio"
+	},
+	"footer": {
+		"description": "Empoderando visiones con excelencia estratégica. Tu socio de confianza en asesoría financiera y empresarial.",
+		"links": {
+			"quick": "Enlaces Rápidos",
+			"legal": "Legal",
+			"connect": "Conectar"
+		},
+		"legal": {
+			"privacy": "Política de Privacidad",
+			"terms": "Términos de Servicio",
+			"security": "Seguridad"
+		},
+		"disclaimer": {
+			"title": "AVISO IMPORTANTE",
+			"text": "No somos abogados ni contadores públicos certificados. Los servicios de inmigración son asistencia administrativa. Servicios de seguros sujetos a elegibilidad. Registro de marca sujeto a aprobación del gobierno. Información basada en datos proporcionados por el cliente."
+		},
+		"rights": "Todos los derechos reservados.",
+		"dev": "Orgullosamente Desarrollado y Programado por"
+	},
+	"serviceDetail": {
+		"about": "Sobre el Servicio",
+		"includes": "Lo que incluimos",
+		"onePlaceTitle": "Todo en un solo lugar",
+		"onePlaceDesc": "Consolida tu vida personal, negocio y familia con una asesoría integral de 360°.",
+		"privacyTitle": "Privacidad Total",
+		"privacyDesc": "Tus datos están protegidos bajo protocolos de alta seguridad.",
+		"responseTitle": "Respuesta Rápida",
+		"responseDesc": "Compromiso de contacto en menos de 24 horas hábiles.",
+		"advisorNotice": "Te asignaremos al mejor especialista para este caso"
+	},
+	"form": {
+		"matchingBadge": "Analizando datos para asignarte al mejor especialista",
+		"title": "Obtener Asesoría",
+		"subtitle": "En segundos te conectaremos con el asesor ideal para tu caso.",
+		"firstName": "Nombre",
+		"lastName": "Apellidos",
+		"email": "Correo Electrónico",
+		"zipCode": "Código Postal (Opcional)",
+		"countryLabel": "País / Código de Marcado",
+		"phoneLabel": "Celular (con lada local si aplica)",
+		"hasCompany": "Tengo una empresa / Negocio",
+		"companyName": "Nombre de la Empresa",
+		"companyPlaceholder": "Nombre legal o comercial",
+		"serviceSelection": "¿Qué servicio necesitas?",
+		"consultationPurpose": "¿Para qué nos contactas?",
+		"searchPlaceholder": "Buscar país o código...",
+		"noResults": "No se encontraron resultados",
+		"next": "Siguiente Paso",
+		"back": "Atrás",
+		"submit": "Finalizar y Enviar",
+		"successTitle": "¡Solicitud Recibida!",
+		"successDesc": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado en {service} se comunicará contigo prioritariamente.",
+		"returnHome": "Volver al Inicio",
+		"validationAlert": "Por favor completa los datos obligatorios.",
+		"questions": {
+			"billing": "1. ¿Su facturación mensual supera los $5,500 USD?",
+			"status": "2. ¿Cuál es su estatus legal actual?",
+			"purpose": "3. ¿Su requerimiento es Personal o Empresarial?",
+			"location": "4. ¿Reside usted actualmente en el estado de New Jersey?",
+			"urgency": "5. ¿Qué tan pronto necesita que un especialista tome su caso?"
+		},
+		"options": {
+			"yes": "Sí",
+			"no": "No",
+			"personal": "Personal",
+			"business": "Negocio / LLC",
+			"resident": "Ciudadano / Residente",
+			"ssn": "Poseo número de Seguro Social (SSN)",
+			"itin": "Poseo número de ITIN",
+			"inProcess": "En trámite / Proceso",
+			"none": "Ninguno de los anteriores",
+			"inNJ": "Sí, en NJ",
+			"otherState": "Otro estado",
+			"urgent": "Urgente (< 48h)",
+			"nextWeeks": "Próximas semanas"
+		}
+	},
+	"common": {
+		"loading": "Cargando...",
+		"submitting": "Procesando...",
+		"error": "Hubo un error. Por favor intenta de nuevo.",
+		"back": "Atrás",
+		"next": "Siguiente Paso",
+		"finish": "Finalizar y Enviar"
+	},
+	"success": {
+		"title": "¡Solicitud Recibida!",
+		"message": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado se comunicará contigo de manera prioritaria.",
+		"return": "Volver al Inicio",
+		"nextStepsTitle": "¿Qué sigue ahora?",
+		"step1": "Un asesor experto revisará tu información detalladamente.",
+		"step2": "Te contactaremos vía telefónica o WhatsApp en menos de 24h.",
+		"step3": "Iniciaremos tu trámite con prioridad máxima."
+	},
+	"booking": {
+		"badge": "Prioridad VIP",
+		"title": "Reserva tu Videollamada",
+		"subtitle": "Has calificado para una asesoría directa. Selecciona el mejor momento para hablar con nuestro equipo.",
+		"secureNotice": "Toda tu información está protegida bajo altos estándares de privacidad."
+	},
+	"seo": {
+		"home": {
+			"title": "Dicas Advisor Group | Impuestos, Inmigración y Seguros en New Jersey",
+			"description": "Servicios de asesoría profesional en New Jersey: taxes, inmigración, Medicare, creación de LLC, bienes raíces, notaría, payroll, reparación de crédito y más. Bilingüe Inglés/Español. Respuesta rápida."
+		},
+		"service": {
+			"title": "{service} en New Jersey | Dicas Advisor Group",
+			"suffix": "Dicas Advisor Group — NJ."
+		}
+	}
 }

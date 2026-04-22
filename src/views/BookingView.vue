@@ -24,10 +24,10 @@ const handleMessage = (event: MessageEvent) => {
   try {
     // LeadConnector/GHL sends various types of messages
     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-    
+
     // Check for common GHL booking success patterns
     if (
-      data.type === 'booking_complete' || 
+      data.type === 'booking_complete' ||
       data.event === 'booking_complete' ||
       data.status === 'success' ||
       (data.appointment && data.contact) // Matches the structure you provided
@@ -44,7 +44,7 @@ const handleMessage = (event: MessageEvent) => {
 
 onMounted(() => {
   window.addEventListener('message', handleMessage);
-  
+
   // Append GHL script for iframe responsiveness/functionality
   const script = document.createElement('script');
   script.src = 'https://api.leadconnectorhq.com/js/form_embed.js';
@@ -161,7 +161,7 @@ onUnmounted(() => {
   border: 1px solid rgba($white, 0.05);
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
   min-height: 700px;
 }
 
@@ -198,7 +198,9 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .footer-notice {
@@ -211,6 +213,8 @@ onUnmounted(() => {
   justify-content: center;
   gap: 10px;
 
-  i { color: $primary; }
+  i {
+    color: $primary;
+  }
 }
 </style>
