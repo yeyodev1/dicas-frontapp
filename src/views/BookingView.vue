@@ -21,10 +21,24 @@ const handleIframeLoad = () => {
 };
 
 const handleMessage = (event: MessageEvent) => {
-  // GHL widgets often send messages on completion
-  // You might need to check the exact event data from GHL documentation or testing
-  if (event.data === 'booking_complete' || (typeof event.data === 'string' && event.data.includes('booking'))) {
-    router.push('/gracias');
+  try {
+    // LeadConnector/GHL sends various types of messages
+    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+    
+    // Check for common GHL booking success patterns
+    if (
+      data.type === 'booking_complete' || 
+      data.event === 'booking_complete' ||
+      data.status === 'success' ||
+      (data.appointment && data.contact) // Matches the structure you provided
+    ) {
+      router.push('/gracias');
+    }
+  } catch (e) {
+    // If it's not JSON, check if it's the raw string 'booking_complete'
+    if (event.data === 'booking_complete' || (typeof event.data === 'string' && event.data.includes('booking'))) {
+      router.push('/gracias');
+    }
   }
 };
 
