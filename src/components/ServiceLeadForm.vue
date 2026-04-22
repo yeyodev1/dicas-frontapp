@@ -7,6 +7,7 @@ import { countries, type Country } from '@/data/countries';
 import type { ServiceField } from '@/data/servicesData';
 import { useRoute, useRouter } from 'vue-router';
 import { useLeadStore } from '@/stores/leadStore';
+import { useModalStore } from '@/stores/modalStore';
 import DSelect from './DSelect.vue';
 import DDatePicker from './DDatePicker.vue';
 
@@ -36,6 +37,7 @@ const hasSentContact = ref(false); // Safety flag to prevent double contact lead
 const route = useRoute();
 const router = useRouter();
 const leadStore = useLeadStore();
+const modalStore = useModalStore();
 
 const formData = reactive<Record<string, any>>({
   // Step 1: Contact
@@ -359,6 +361,7 @@ const handleSubmit = async () => {
     // REDIRECTION LOGIC
     // If qualified AND high billing (> 5k), send to calendar
     if (scoring.isQualified && formData.qBilling === 'Sí') {
+      modalStore.closeConsultancy();
       router.push('/agendar');
       return;
     }
