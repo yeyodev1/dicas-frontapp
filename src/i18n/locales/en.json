@@ -172,7 +172,17 @@
   "success": {
     "title": "Request Received!",
     "message": "We have analyzed your case. You will soon receive updates and a specialized advisor will contact you as a priority.",
-    "return": "Return Home"
+    "return": "Return Home",
+    "nextStepsTitle": "What's next?",
+    "step1": "An expert advisor will review your information in detail.",
+    "step2": "We will contact you via phone or WhatsApp in less than 24 hours.",
+    "step3": "We will start your process with maximum priority."
+  },
+  "booking": {
+    "badge": "VIP Priority",
+    "title": "Book Your Video Call",
+    "subtitle": "You have qualified for direct advisory. Select the best time to speak with our team.",
+    "secureNotice": "All your information is protected under high privacy standards."
   },
   "seo": {
     "home": {

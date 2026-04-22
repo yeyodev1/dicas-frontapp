@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { useI18n } from 'vue-i18n';
 import { countries, type Country } from '@/data/countries';
 import type { ServiceField } from '@/data/servicesData';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useLeadStore } from '@/stores/leadStore';
 import DSelect from './DSelect.vue';
 import DDatePicker from './DDatePicker.vue';
@@ -34,6 +34,7 @@ const showSuccess = ref(false);
 const hasSentContact = ref(false); // Safety flag to prevent double contact leads
 
 const route = useRoute();
+const router = useRouter();
 const leadStore = useLeadStore();
 
 const formData = reactive<Record<string, any>>({
@@ -189,14 +190,12 @@ props.fields.forEach(field => {
 
 // Capture Contact Lead (Webhook 1)
 const sendContactLead = async () => {
-  if (hasSentContact.value) return; // Only send once
-  
   const payload = {
     firstName: formData.firstName,
     lastName: formData.lastName,
     email: formData.email,
     fullPhone: `${selectedCountry.value.dial_code}${formData.phone}`,
-    service: props.serviceTitle,
+    service: props.serviceTitle || 'General',
     source: 'Dicas Website (Partial)',
     tags: ['dicas_web_lead', 'partial_contact'],
     submittedAt: new Date().toISOString()
@@ -206,9 +205,9 @@ const sendContactLead = async () => {
     const contactUrl = import.meta.env.VITE_CRM_CONTACT_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/e1d506dd-5052-404f-9af0-29676473c345';
     await axios.post(contactUrl, payload);
     hasSentContact.value = true;
-    console.log('Initial contact captured successfully.');
+    console.log('Contact sync successful.');
   } catch (error) {
-    console.error('Contact Capture Error:', error);
+    console.error('Contact Sync Error:', error);
   }
 };
 
@@ -226,17 +225,19 @@ const nextStep = () => {
       alert(t('form.validationAlert'));
       return;
     }
-    // Trigger first webhook
+    // Sync contact with CRM every time they move forward from Step 1
     sendContactLead();
   }
   
-  if (currentStep.value < 3) {
+  if (currentStep.value < totalSteps.value) {
     gsap.to('.step-content', {
       opacity: 0,
       x: -20,
       duration: 0.3,
       onComplete: () => {
         currentStep.value++;
+        leadStore.lastStepReached = currentStep.value;
+        leadStore.saveToStorage();
         gsap.fromTo('.step-content', { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
       }
     });
@@ -251,6 +252,8 @@ const prevStep = () => {
       duration: 0.3,
       onComplete: () => {
         currentStep.value--;
+        leadStore.lastStepReached = currentStep.value;
+        leadStore.saveToStorage();
         gsap.fromTo('.step-content', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4 });
       }
     });
@@ -287,7 +290,7 @@ const calculateLeadScore = () => {
 
 // Helper to generate a professional summary with emojis
 const generateSummary = (scoring: any) => {
-  const service = servicesData.find(s => s.id === formData.selectedServiceId)?.title || props.serviceTitle || 'General';
+  const service = servicesData.find(s => s.id === formData.selectedServiceId)?.title[locale.value as 'en'|'es'] || props.serviceTitle || 'General';
   
   let summary = `🚨 NEW LEAD QUALIFICATION: ${scoring.status}\n`;
   summary += `📈 SCORE: ${scoring.score}/100\n\n`;
@@ -317,6 +320,12 @@ const handleSubmit = async () => {
   isSubmitting.value = true;
   
   const scoring = calculateLeadScore();
+  
+  // Sync store
+  leadStore.isQualified = scoring.isQualified;
+  leadStore.score = scoring.score;
+  leadStore.qualificationStatus = scoring.status;
+  leadStore.saveToStorage();
 
   const serviceSlug = props.serviceTitle.toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
@@ -347,8 +356,15 @@ const handleSubmit = async () => {
     const qualifyUrl = import.meta.env.VITE_CRM_QUALIFY_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/56365246-d21e-42a3-8c33-578c489ed034';
     await axios.post(qualifyUrl, fullPayload);
     
+    // REDIRECTION LOGIC
+    // If qualified AND high billing (> 5k), send to calendar
+    if (scoring.isQualified && formData.qBilling === 'Sí') {
+      router.push('/agendar');
+      return;
+    }
+
     showSuccess.value = true;
-    leadStore.clear(); // Clear draft on success
+    leadStore.clear(); // Clear draft on success if not going to calendar
     
     // Smooth scroll to top of form/modal
     nextTick(() => {
@@ -614,9 +630,9 @@ const handleSubmit = async () => {
       <div class="success-icon">
         <i class="fa-solid fa-circle-check"></i>
       </div>
-      <h2>{{ t('form.successTitle') }}</h2>
-      <p v-html="t('form.successDesc', { service: serviceTitle })"></p>
-      <router-link to="/" class="btn-return-home">{{ t('form.returnHome') }}</router-link>
+      <h2>{{ t('success.title') }}</h2>
+      <p>{{ t('success.message') }}</p>
+      <router-link to="/" class="btn-return-home">{{ t('success.return') }}</router-link>
     </div>
   </div>
 </template>

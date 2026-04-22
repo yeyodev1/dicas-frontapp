@@ -14,6 +14,18 @@ const routes: Array<RouteRecordRaw> = [
     props: true,
     meta: { title: 'Servicio' }
   },
+  {
+    path: '/agendar',
+    name: 'Booking',
+    component: () => import('../views/BookingView.vue'),
+    meta: { title: 'Agendar Cita' }
+  },
+  {
+    path: '/gracias',
+    name: 'ThankYou',
+    component: () => import('../views/ThankYouView.vue'),
+    meta: { title: 'Gracias' }
+  },
 ]
 
 const router = createRouter({

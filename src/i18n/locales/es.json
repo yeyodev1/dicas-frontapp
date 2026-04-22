@@ -172,7 +172,17 @@
   "success": {
     "title": "¡Solicitud Recibida!",
     "message": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado se comunicará contigo de manera prioritaria.",
-    "return": "Volver al Inicio"
+    "return": "Volver al Inicio",
+    "nextStepsTitle": "¿Qué sigue ahora?",
+    "step1": "Un asesor experto revisará tu información detalladamente.",
+    "step2": "Te contactaremos vía telefónica o WhatsApp en menos de 24h.",
+    "step3": "Iniciaremos tu trámite con prioridad máxima."
+  },
+  "booking": {
+    "badge": "Prioridad VIP",
+    "title": "Reserva tu Videollamada",
+    "subtitle": "Has calificado para una asesoría directa. Selecciona el mejor momento para hablar con nuestro equipo.",
+    "secureNotice": "Toda tu información está protegida bajo altos estándares de privacidad."
   },
   "seo": {
     "home": {

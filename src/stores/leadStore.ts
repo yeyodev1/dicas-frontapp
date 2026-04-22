@@ -10,7 +10,11 @@ export const useLeadStore = defineStore('lead', {
     zipCode: '',
     companyName: '',
     hasCompany: false,
-    selectedCountryCode: 'US' // Store code to sync dial code
+    selectedCountryCode: 'US', // Store code to sync dial code
+    isQualified: false,
+    qualificationStatus: '',
+    score: 0,
+    lastStepReached: 1
   }),
   actions: {
     updateField(field: string, value: any) {
@@ -27,7 +31,11 @@ export const useLeadStore = defineStore('lead', {
         zipCode: this.zipCode,
         companyName: this.companyName,
         hasCompany: this.hasCompany,
-        selectedCountryCode: this.selectedCountryCode
+        selectedCountryCode: this.selectedCountryCode,
+        isQualified: this.isQualified,
+        qualificationStatus: this.qualificationStatus,
+        score: this.score,
+        lastStepReached: this.lastStepReached
       };
       localStorage.setItem('dicas_lead_draft', JSON.stringify(data));
     },
@@ -43,7 +51,18 @@ export const useLeadStore = defineStore('lead', {
       }
     },
     clear() {
-      this.$reset();
+      this.firstName = '';
+      this.lastName = '';
+      this.email = '';
+      this.phone = '';
+      this.birthDate = '';
+      this.zipCode = '';
+      this.companyName = '';
+      this.hasCompany = false;
+      this.isQualified = false;
+      this.qualificationStatus = '';
+      this.score = 0;
+      this.lastStepReached = 1;
       localStorage.removeItem('dicas_lead_draft');
     }
   }
