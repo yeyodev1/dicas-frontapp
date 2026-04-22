@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useModalStore } from '@/stores/modalStore';
 import { useI18n } from 'vue-i18n';
 import gsap from 'gsap';
@@ -7,7 +7,6 @@ import gsap from 'gsap';
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
 const activeSection = ref('hero');
-const menuRef = ref<HTMLElement | null>(null);
 const modalStore = useModalStore();
 const { locale, t } = useI18n();
 
@@ -146,7 +145,7 @@ onUnmounted(() => {
         @enter="onMenuEnter"
         @leave="onMenuLeave"
       >
-        <div v-if="isMenuOpen" class="mobile-menu" ref="menuRef">
+        <div v-if="isMenuOpen" class="mobile-menu">
           <nav class="mm-nav">
             <router-link to="/" class="mm-link" :class="{ active: activeSection === 'hero' }" @click="closeMenu">{{ t('nav.home') }}</router-link>
             <a href="/#services" class="mm-link" :class="{ active: activeSection === 'services' }" @click="closeMenu">{{ t('nav.services') }}</a>

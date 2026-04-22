@@ -483,7 +483,7 @@ const handleSubmit = async () => {
               <DSelect 
                 v-model="formData.selectedServiceId" 
                 :label="t('form.serviceSelection')"
-                :options="servicesData.map(s => ({ label: s.title[locale] || s.title['en'], value: s.id }))"
+                :options="servicesData.map(s => ({ label: (s.title[locale as 'en' | 'es'] || s.title['en'] || '') as string, value: s.id }))"
                 :placeholder="t('form.serviceSelection')"
                 icon="fa-solid fa-briefcase"
                 required
@@ -510,7 +510,7 @@ const handleSubmit = async () => {
                 v-if="field.type === 'select'"
                 v-model="formData[field.name]"
                 :label="field.label[locale] || field.label['en']"
-                :options="field.options ? (field.options[locale] || field.options['en']) : []"
+                :options="field.options ? (field.options[locale as 'en' | 'es'] || field.options['en'] || []) : []"
                 :placeholder="field.placeholder ? (field.placeholder[locale] || field.placeholder['en']) : '...'"
                 :required="field.required"
               />

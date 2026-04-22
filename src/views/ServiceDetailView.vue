@@ -27,7 +27,7 @@ useHead(() => {
   const serviceShortDesc = service.value.shortDesc[locale.value] || service.value.shortDesc['en'];
   
   const title = `${serviceTitle} en New Jersey | Dicas Advisor Group`;
-  const description = `${serviceDesc.slice(0, 155) ?? serviceShortDesc} Dicas Advisor Group — NJ.`;
+  const description = `${(serviceDesc?.slice(0, 155) ?? serviceShortDesc)} Dicas Advisor Group — NJ.`;
   const canonical = `${BASE_URL}/servicios/${service.value.id}`;
   return {
     title,
