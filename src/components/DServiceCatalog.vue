@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import gsap from 'gsap';
+import { servicesData } from '@/data/servicesData';
+import { useI18n } from 'vue-i18n';
 
-const activeCategory = ref<number | null>(null);
+const { t, locale } = useI18n();
+const activeCategory = ref<string | null>(null);
 
-const toggleCategory = (index: number) => {
-  activeCategory.value = activeCategory.value === index ? null : index;
+const toggleCategory = (id: string) => {
+  activeCategory.value = activeCategory.value === id ? null : id;
 };
 
 // Animation Hooks
@@ -33,164 +36,26 @@ const leave = (el: any, done: any) => {
     onComplete: done
   });
 };
-
-const serviceCategories = [
-  {
-    id: 'taxes-contabilidad',
-    title: 'Taxes & Contabilidad',
-    items: [
-      'Preparación de impuestos personales (1040)',
-      'Taxes para independientes (1099 / Schedule C)',
-      'Enmiendas de impuestos (1040X)',
-      'Aplicación y renovación de ITIN',
-      'Planificación tributaria',
-      'Bookkeeping (contabilidad mensual)',
-      'Reportes de ingresos y gastos',
-      'Asistencia con cartas del IRS'
-    ]
-  },
-  {
-    id: 'payroll',
-    title: 'Payroll (NUEVO <i class="fa-solid fa-briefcase"></i>)',
-    items: [
-      'Procesamiento de nómina para pequeños negocios',
-      'Cálculo de salarios y retenciones',
-      'Preparación de formularios (W-2, 1099)',
-      'Reportes de payroll',
-      'Asesoría básica de cumplimiento'
-    ]
-  },
-  {
-    id: 'medicare-seguros',
-    title: 'Seguros & Beneficios de Salud',
-    items: [
-      'Inscripción en GetCoveredNJ',
-      'Ayuda para aplicar a Medicare',
-      'Seguro de salud (Marketplace)',
-      'Seguro dental, visión y audición',
-      'Seguro de accidentes y cáncer',
-      'Asistencia con Medicare (ESPECIALIDAD PRINCIPAL)',
-      'Evaluación de elegibilidad',
-      'Asistencia con Medicaid',
-      'Renovaciones y cambios de plan'
-    ]
-  },
-  {
-    id: 'inmigracion',
-    title: 'Servicios de Inmigración (Non-Attorney)',
-    items: [
-      'Peticiones familiares (I-130)',
-      'Ajuste de estatus (I-485)',
-      'Permiso de trabajo (I-765)',
-      'Affidavit of Support (I-864 / I-864A)',
-      'Ciudadanía (N-400)',
-      'Procesos consulares (NVC / DS-260)',
-      'Solicitudes FOIA',
-      'Preparación de paquetes para USCIS'
-    ]
-  },
-  {
-    id: 'notaria',
-    title: 'Notaría y Documentos',
-    items: [
-      'Notarización de documentos',
-      'Poderes (Power of Attorney)',
-      'Traducciones (Español ↔ Inglés)',
-      'Apostillas'
-    ]
-  },
-  {
-    id: 'servicios-empresariales',
-    title: 'Servicios Empresariales',
-    items: [
-      'Consultoría inicial',
-      'Creación de LLC',
-      'Registro de negocio',
-      'Obtención de EIN',
-      'Estructura de negocio'
-    ]
-  },
-  {
-    id: 'registro-marca',
-    title: 'Registro de Marca (Trademark) <i class="fa-solid fa-brain"></i>',
-    items: [
-      'Búsqueda de disponibilidad de nombre',
-      'Registro de marca en USPTO',
-      'Preparación de solicitud',
-      'Seguimiento del proceso',
-      'Orientación para protección de marca'
-    ]
-  },
-  {
-    id: 'credito-finanzas',
-    title: 'Crédito y Finanzas Personales',
-    items: [
-      'Educación de crédito',
-      'Asesoría para mejorar crédito',
-      'Preparación para compra de vivienda'
-    ]
-  },
-  {
-    id: 'bienes-raices',
-    title: 'Bienes Raíces (Real Estate)',
-    items: [
-      'Compra de vivienda en New Jersey',
-      'Asesoría para primeros compradores',
-      'Evaluación de elegibilidad financiera',
-      'Orientación durante todo el proceso',
-      'Realtor licenciada en NJ'
-    ]
-  },
-  {
-    id: 'medico-administrativo',
-    title: 'Servicios Médicos Administrativos',
-    items: [
-      'Asistencia con facturación médica',
-      'Revisión de facturas médicas',
-      'Orientación en seguros médicos',
-      'Certificada en Medical Billing and Coding'
-    ]
-  },
-  {
-    id: 'ministro-bodas',
-    title: 'Ministro de Bodas <i class="fa-solid fa-ring"></i>',
-    items: [
-      'Oficiante de bodas civiles',
-      'Ceremonias personalizadas',
-      'Firma de documentos matrimoniales'
-    ]
-  },
-  {
-    id: 'multiservicios',
-    title: 'Multiservicios Generales',
-    items: [
-      'Llenado de formularios',
-      'Cartas formales (escuela, corte, inmigración)',
-      'Aplicaciones gubernamentales',
-      'Asistencia general administrativa'
-    ]
-  }
-];
 </script>
 
 <template>
   <section class="d-catalog" id="full-catalog">
     <div class="container">
       <div class="header">
-        <h2 class="title">Catálogo <span class="accent">Completo</span></h2>
-        <p class="desc">Todo lo que necesitas en un solo lugar.</p>
+        <h2 class="title">{{ t('catalog.title') }} <span class="accent">{{ t('catalog.accent') }}</span></h2>
+        <p class="desc">{{ t('catalog.desc') }}</p>
       </div>
 
       <div class="catalog-grid">
         <div 
-          v-for="(cat, index) in serviceCategories" 
-          :key="index"
+          v-for="service in servicesData" 
+          :key="service.id"
           class="category-item"
-          :class="{ 'is-active': activeCategory === index }"
+          :class="{ 'is-active': activeCategory === service.id }"
         >
-          <div class="category-header" @click="toggleCategory(index)">
-            <h3 class="category-title" v-html="cat.title"></h3>
-            <span class="icon" :class="{ 'is-rotated': activeCategory === index }">+</span>
+          <div class="category-header" @click="toggleCategory(service.id)">
+            <h3 class="category-title">{{ service.title[locale as 'en' | 'es'] }}</h3>
+            <span class="icon" :class="{ 'is-rotated': activeCategory === service.id }">+</span>
           </div>
           
           <transition 
@@ -199,13 +64,13 @@ const serviceCategories = [
             @leave="leave"
             :css="false"
           >
-            <div class="category-content" v-if="activeCategory === index">
+            <div class="category-content" v-if="activeCategory === service.id">
               <ul class="service-list">
-                <li v-for="(item, i) in cat.items" :key="i">{{ item }}</li>
+                <li v-for="(item, i) in service.features[locale as 'en' | 'es']" :key="i">{{ item }}</li>
               </ul>
               <div class="category-footer">
-                <router-link :to="`/servicios/${cat.id}`" class="cta-link">
-                  Ver página del servicio <i class="fa-solid fa-arrow-right"></i>
+                <router-link :to="`/servicios/${service.id}`" class="cta-link">
+                  {{ t('catalog.viewPage') }} <i class="fa-solid fa-arrow-right"></i>
                 </router-link>
               </div>
             </div>

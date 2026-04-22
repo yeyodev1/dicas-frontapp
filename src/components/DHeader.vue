@@ -153,11 +153,11 @@ onUnmounted(() => {
             
             <div class="mm-divider"></div>
             
-            <div class="mm-lang-switcher" @click="toggleLanguage">
-              <span class="label">LANGUAGE:</span>
+            <div class="mm-lang-switcher">
+              <span class="label">{{ t('header.languageLabel') }}</span>
               <div class="switcher-btns">
-                <button :class="{ active: locale === 'en' }">ENGLISH</button>
-                <button :class="{ active: locale === 'es' }">ESPAÑOL</button>
+                <button @click="toggleLanguage" :class="{ active: locale === 'en' }">{{ t('header.en') }}</button>
+                <button @click="toggleLanguage" :class="{ active: locale === 'es' }">{{ t('header.es') }}</button>
               </div>
             </div>
 
@@ -165,7 +165,7 @@ onUnmounted(() => {
           </nav>
           
           <div class="mm-footer">
-            <p>© 2026 Dicas Advisor Group</p>
+            <p>&copy; {{ new Date().getFullYear() }} Dicas Advisor Group. {{ t('footer.rights') }}</p>
           </div>
         </div>
       </Transition>

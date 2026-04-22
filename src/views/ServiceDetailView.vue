@@ -10,6 +10,7 @@ import ServiceLeadForm from '@/components/ServiceLeadForm.vue';
 import gsap from 'gsap';
 
 const { t, locale } = useI18n();
+const currentLocale = computed(() => locale.value as 'en' | 'es');
 
 const BASE_URL = 'https://dicasadvisor.org';
 
@@ -22,12 +23,13 @@ const service = computed(() => {
 
 useHead(() => {
   if (!service.value) return {};
-  const serviceTitle = service.value.title[locale.value] || service.value.title['en'];
-  const serviceDesc = service.value.longDesc[locale.value] || service.value.longDesc['en'];
-  const serviceShortDesc = service.value.shortDesc[locale.value] || service.value.shortDesc['en'];
+  const currentLocale = locale.value as 'en' | 'es';
+  const serviceTitle = service.value.title[currentLocale] || service.value.title['en'];
+  const serviceDesc = service.value.longDesc[currentLocale] || service.value.longDesc['en'];
+  const serviceShortDesc = service.value.shortDesc[currentLocale] || service.value.shortDesc['en'];
   
-  const title = `${serviceTitle} en New Jersey | Dicas Advisor Group`;
-  const description = `${(serviceDesc?.slice(0, 155) ?? serviceShortDesc)} Dicas Advisor Group — NJ.`;
+  const title = t('seo.service.title', { service: serviceTitle });
+  const description = `${(serviceDesc?.slice(0, 155) ?? serviceShortDesc)} ${t('seo.service.suffix')}`;
   const canonical = `${BASE_URL}/servicios/${service.value.id}`;
   return {
     title,
@@ -97,12 +99,12 @@ onMounted(() => {
         <div class="hero-overlay"></div>
         <div class="container">
           <div class="service-hero-content">
-            <div class="category-badge">{{ service.category[locale] || service.category['en'] }}</div>
+            <div class="category-badge">{{ service.category[currentLocale] || service.category['en'] }}</div>
             <h1 class="service-title">
               <i :class="service.icon"></i>
-              {{ service.title[locale] || service.title['en'] }}
+              {{ service.title[currentLocale] || service.title['en'] }}
             </h1>
-            <p class="service-tagline">{{ service.shortDesc[locale] || service.shortDesc['en'] }}</p>
+            <p class="service-tagline">{{ service.shortDesc[currentLocale] || service.shortDesc['en'] }}</p>
           </div>
         </div>
       </section>
@@ -113,13 +115,13 @@ onMounted(() => {
           <div class="info-section">
             <div class="content-block">
               <h2 class="section-title">{{ t('serviceDetail.about').split(' ')[0] }} <span class="accent">{{ t('serviceDetail.about').split(' ').slice(1).join(' ') }}</span></h2>
-              <p class="long-desc">{{ service.longDesc[locale] || service.longDesc['en'] }}</p>
+              <p class="long-desc">{{ service.longDesc[currentLocale] || service.longDesc['en'] }}</p>
               
               <!-- FEATURES -->
-              <div class="features-grid" v-if="service.features[locale]">
+              <div class="features-grid" v-if="service.features[currentLocale]">
                 <h3 class="subsection-title">{{ t('serviceDetail.includes').split(' ')[0] }} <span class="gold">{{ t('serviceDetail.includes').split(' ').slice(1).join(' ') }}</span></h3>
                 <div class="features-container">
-                  <div v-for="(feat, i) in (service.features[locale] || service.features['en'])" :key="i" class="feature-item">
+                  <div v-for="(feat, i) in (service.features[currentLocale] || service.features['en'])" :key="i" class="feature-item">
                     <div class="check-icon">
                       <i class="fa-solid fa-check"></i>
                     </div>

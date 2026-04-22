@@ -47,6 +47,14 @@
     "scroll": "Desliza para explorar",
     "viewServices": "Ver Servicios"
   },
+  "header": {
+    "languageLabel": "IDIOMA:",
+    "en": "INGLÉS",
+    "es": "ESPAÑOL"
+  },
+  "home": {
+    "banner": "\"Todo en un solo lugar para tu vida personal, negocio y familia\""
+  },
   "about": {
     "subtitle": "Nuestro Liderazgo",
     "title": "Autoridad Personal,",
@@ -61,12 +69,20 @@
       "text": "Soporte Administrativo Profesional para Servicios de Salud."
     },
     "stat1": {
+      "number": "12+",
       "label": "Áreas Especializadas"
     },
     "stat2": {
+      "number": "NJ",
       "label": "Autoridad Local"
     },
     "cta": "Comienza tu Camino al Éxito"
+  },
+  "catalog": {
+    "title": "Catálogo",
+    "accent": "Completo",
+    "desc": "Todo lo que necesitas en un solo lugar.",
+    "viewPage": "Ver página del servicio"
   },
   "footer": {
     "description": "Empoderando visiones con excelencia estratégica. Tu socio de confianza en asesoría financiera y empresarial.",
@@ -157,5 +173,15 @@
     "title": "¡Solicitud Recibida!",
     "message": "Hemos analizado tu caso. Pronto recibirás actualizaciones y un asesor especializado se comunicará contigo de manera prioritaria.",
     "return": "Volver al Inicio"
+  },
+  "seo": {
+    "home": {
+      "title": "Dicas Advisor Group | Impuestos, Inmigración y Seguros en New Jersey",
+      "description": "Servicios de asesoría profesional en New Jersey: taxes, inmigración, Medicare, creación de LLC, bienes raíces, notaría, payroll, reparación de crédito y más. Bilingüe Inglés/Español. Respuesta rápida."
+    },
+    "service": {
+      "title": "{service} en New Jersey | Dicas Advisor Group",
+      "suffix": "Dicas Advisor Group — NJ."
+    }
   }
 }

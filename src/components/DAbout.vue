@@ -65,11 +65,11 @@ onMounted(() => {
 
           <div class="stats-grid">
             <div class="stat-item">
-              <span class="stat-number">12+</span>
+              <span class="stat-number">{{ t('about.stat1.number') }}</span>
               <span class="stat-label">{{ t('about.stat1.label') }}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">NJ</span>
+              <span class="stat-number">{{ t('about.stat2.number') }}</span>
               <span class="stat-label">{{ t('about.stat2.label') }}</span>
             </div>
           </div>

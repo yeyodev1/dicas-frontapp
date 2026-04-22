@@ -47,6 +47,14 @@
     "scroll": "Scroll To Explore",
     "viewServices": "View Services"
   },
+  "header": {
+    "languageLabel": "LANGUAGE:",
+    "en": "ENGLISH",
+    "es": "ESPAÑOL"
+  },
+  "home": {
+    "banner": "\"Everything in one place for your personal life, business and family\""
+  },
   "about": {
     "subtitle": "Our Leadership",
     "title": "Personal Authority,",
@@ -61,12 +69,20 @@
       "text": "Professional Admin Support for Health Services."
     },
     "stat1": {
+      "number": "12+",
       "label": "Specialized Areas"
     },
     "stat2": {
+      "number": "NJ",
       "label": "Based Authority"
     },
     "cta": "Start Your Success Journey"
+  },
+  "catalog": {
+    "title": "Full",
+    "accent": "Catalog",
+    "desc": "Everything you need in one place.",
+    "viewPage": "View service page"
   },
   "footer": {
     "description": "Empowering visions with strategic excellence. Your trusted partner in financial and business advisory.",
@@ -157,5 +173,15 @@
     "title": "Request Received!",
     "message": "We have analyzed your case. You will soon receive updates and a specialized advisor will contact you as a priority.",
     "return": "Return Home"
+  },
+  "seo": {
+    "home": {
+      "title": "Dicas Advisor Group | Tax, Immigration & Insurance in New Jersey",
+      "description": "Professional advisory services in New Jersey: taxes, immigration, Medicare, LLC formation, real estate, notary, payroll, credit repair and more. Bilingual English/Spanish. Fast response."
+    },
+    "service": {
+      "title": "{service} in New Jersey | Dicas Advisor Group",
+      "suffix": "Dicas Advisor Group — NJ."
+    }
   }
 }
