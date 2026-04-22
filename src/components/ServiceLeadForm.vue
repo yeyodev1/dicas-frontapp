@@ -221,6 +221,12 @@ const progressWidth = computed(() => {
   return `${(currentStep.value / totalSteps.value) * 100}%`;
 });
 
+const goHome = () => {
+  console.log('Closing modal and redirecting to home...');
+  modalStore.closeConsultancy();
+  router.push('/');
+};
+
 const nextStep = () => {
   if (currentStep.value === 1) {
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
@@ -635,7 +641,7 @@ const handleSubmit = async () => {
       </div>
       <h2>{{ t('success.title') }}</h2>
       <p>{{ t('success.message') }}</p>
-      <router-link to="/" class="btn-return-home">{{ t('success.return') }}</router-link>
+      <button @click="goHome" class="btn-return-home">{{ t('success.return') }}</button>
     </div>
   </div>
 </template>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useLeadStore } from '@/stores/leadStore';
 import DHeader from '@/components/DHeader.vue';
 import DFooter from '@/components/DFooter.vue';
 import gsap from 'gsap';
 
 const { t } = useI18n();
+const router = useRouter();
 const leadStore = useLeadStore();
 
 onMounted(() => {
@@ -55,9 +57,9 @@ onMounted(() => {
           <p class="message">{{ t('success.message') }}</p>
           
           <div class="actions">
-            <router-link to="/" class="btn-primary">
+            <button @click="router.push('/')" class="btn-primary">
               {{ t('success.return') }}
-            </router-link>
+            </button>
           </div>
           
           <div class="next-steps">
