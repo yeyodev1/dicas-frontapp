@@ -342,7 +342,7 @@ const handleSubmit = async () => {
     ...formData,
     leadScore: scoring.score,
     qualificationStatus: scoring.status,
-    isQualified: scoring.isQualified,
+    isQualified: scoring.isQualified ? 'Sí' : 'No', // Changed to string for easier GHL mapping
     country: selectedCountry.value.name,
     fullPhone: `${formData.countryCode}${formData.phone}`,
     service: props.serviceTitle,
@@ -353,7 +353,7 @@ const handleSubmit = async () => {
   };
 
   try {
-    const qualifyUrl = import.meta.env.VITE_CRM_QUALIFY_URL || 'https://services.leadconnectorhq.com/hooks/a2wjRz4sU27JY00bUoHZ/webhook-trigger/56365246-d21e-42a3-8c33-578c489ed034';
+    const qualifyUrl = import.meta.env.VITE_CRM_QUALIFY_URL;
     await axios.post(qualifyUrl, fullPayload);
     
     // REDIRECTION LOGIC
