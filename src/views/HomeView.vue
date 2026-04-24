@@ -5,6 +5,7 @@ import DHighlightServices from '@/components/DHighlightServices.vue';
 import DAbout from '@/components/DAbout.vue';
 import DServiceCatalog from '@/components/DServiceCatalog.vue';
 import DFooter from '@/components/DFooter.vue';
+import DBlogSection from '@/components/DBlogSection.vue';
 import { useSEO } from '@/composables/useSEO';
 import { useI18n } from 'vue-i18n';
 
@@ -28,6 +29,7 @@ useSEO({
       <DHighlightServices />
       <DAbout />
       <DServiceCatalog />
+      <DBlogSection />
     </main>
     <DFooter />
   </div>
