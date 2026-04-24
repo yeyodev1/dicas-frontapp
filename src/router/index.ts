@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 function decodeJwtRole(token: string): string | null {
   try {
     const payload = token.split('.')[1]
+    if (!payload) return null
     const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
     return decoded?.accountType || null
   } catch {

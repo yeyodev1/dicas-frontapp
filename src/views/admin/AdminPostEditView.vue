@@ -29,6 +29,7 @@ const coverFileInput = ref<HTMLInputElement | null>(null)
 const coverUploading = ref(false)
 const coverError = ref('')
 const isDragging = ref(false)
+const coverPublicId = ref('')
 
 const slugPreview = computed(() =>
   form.value.title
@@ -84,6 +85,7 @@ async function uploadCover(file: File) {
     if (!res.ok) throw new Error((await res.json()).message || 'Error al subir')
     const data = await res.json()
     form.value.coverImage = data.url
+    coverPublicId.value = data.publicId || ''
   } catch (err: unknown) {
     coverError.value = (err as Error).message || 'Error al subir imagen'
   } finally {
@@ -102,7 +104,19 @@ function onDrop(e: DragEvent) {
   if (file) uploadCover(file)
 }
 
-function removeCover() {
+async function removeCover() {
+  if (coverPublicId.value) {
+    try {
+      const token = localStorage.getItem('access_token')
+      const base = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:8100/api'
+      await fetch(`${base}/upload/image`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ publicId: coverPublicId.value }),
+      })
+    } catch {}
+    coverPublicId.value = ''
+  }
   form.value.coverImage = ''
   coverError.value = ''
   if (coverFileInput.value) coverFileInput.value.value = ''
