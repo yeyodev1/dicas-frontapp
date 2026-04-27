@@ -140,27 +140,26 @@ onUnmounted(() => {
 .select-label {
   display: block;
   font-family: $font-principal;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
   margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
 
   .required { color: $dicas-red; }
 }
 
 .select-trigger {
   background: var(--surface-color);
-  border: 1px solid var(--border-color);
-  padding: 1.1rem 1.4rem;
-  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  padding: 1.1rem 1.6rem;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-  min-height: 58px;
+  min-height: 60px;
 
   &:hover {
     background: var(--surface-color);
@@ -208,9 +207,9 @@ onUnmounted(() => {
   background: var(--bg-color);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: 20px;
   z-index: 10000;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-soft);
   
   [data-theme='dark'] & {
     box-shadow: 0 30px 60px rgba(0,0,0,0.6);

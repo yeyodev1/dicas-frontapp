@@ -106,9 +106,9 @@ onMounted(() => {
     transform: translateX(-110%) translateY(-50%);
     background: var(--surface-color);
     color: var(--text-color);
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    font-size: 0.9rem;
     font-weight: 600;
     font-family: $font-principal;
     white-space: nowrap;

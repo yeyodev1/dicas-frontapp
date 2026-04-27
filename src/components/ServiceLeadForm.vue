@@ -659,9 +659,9 @@ const handleSubmit = async () => {
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 2rem 1.2rem;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+  border-radius: 30px;
+  padding: 2.5rem 1.5rem;
+  box-shadow: var(--shadow-soft);
   position: relative;
   overflow: visible;
   transition: all 0.4s ease;
@@ -671,13 +671,13 @@ const handleSubmit = async () => {
   }
 
   @media (min-width: 768px) {
-    padding: 4rem 3rem;
-    border-radius: 30px;
+    padding: 5rem 4rem;
+    border-radius: 50px;
   }
 }
 
 .form-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
   text-align: center;
 
   .matching-badge {
@@ -686,56 +686,55 @@ const handleSubmit = async () => {
     gap: 8px;
     background: rgba($primary, 0.1);
     border: 1px solid rgba($primary, 0.2);
-    padding: 0.5rem 1.2rem;
-    border-radius: 50px;
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-pill);
     color: var(--accent);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.5px;
     margin-bottom: 2rem;
     
     @media (min-width: 768px) {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       margin-bottom: 2.5rem;
     }
   }
 
   .form-title {
     font-family: $font-luxury;
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
     color: var(--text-color);
+    font-weight: 800;
+    line-height: 1.2;
 
     @media (min-width: 768px) {
-      font-size: 2.5rem;
-      margin-bottom: 0.8rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
 
     .accent { 
       color: var(--accent); 
-      background: linear-gradient(to bottom, var(--accent), $dicas-gold-dark);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
   }
 
   .form-subtitle {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.6;
 
     @media (min-width: 768px) {
-      font-size: 1.1rem;
-      margin-bottom: 2.5rem;
+      font-size: 1.15rem;
+      margin-bottom: 3rem;
     }
   }
 
   .progress-bar {
-    height: 4px;
+    height: 6px;
     background: var(--border-color);
     border-radius: 10px;
     overflow: hidden;
@@ -751,20 +750,20 @@ const handleSubmit = async () => {
 .fields-grid {
   display: grid;
   grid-template-columns: 1fr; // Mobile: 1 Column
-  gap: 1.2rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr; // Desktop: 2 Columns
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    gap: 2rem;
+    margin-bottom: 3rem;
   }
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.6rem;
 
   &.full-width {
     @media (min-width: 768px) {
@@ -774,24 +773,19 @@ const handleSubmit = async () => {
 
   label {
     font-family: $font-principal;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-
-    @media (min-width: 768px) {
-      font-size: 0.85rem;
-    }
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-left: 4px;
 
     .required { color: $dicas-red; margin-left: 4px; }
   }
 
   input {
     background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    padding: 0.8rem 1.2rem;
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    padding: 1.1rem 1.4rem;
+    border-radius: 16px;
     color: var(--text-color);
     font-family: $font-principal;
     font-size: 1rem;
@@ -800,8 +794,8 @@ const handleSubmit = async () => {
     &:focus {
       outline: none;
       border-color: var(--accent);
-      background: var(--surface-color);
-      box-shadow: 0 0 15px rgba($primary, 0.1);
+      background: var(--surface-card);
+      box-shadow: 0 10px 20px rgba($primary, 0.05);
     }
 
     &::placeholder { color: var(--text-secondary); opacity: 0.4; }
@@ -811,24 +805,23 @@ const handleSubmit = async () => {
 .qualification-questions {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
 
   @media (min-width: 768px) {
-    gap: 2.5rem;
+    gap: 3.5rem;
   }
 
   .analysis-group {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
 
     .group-label {
       font-family: $font-principal;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
     }
   }
 }
@@ -836,7 +829,7 @@ const handleSubmit = async () => {
 .selection-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.8rem;
+  gap: 1rem;
 
   @media (min-width: 500px) {
     grid-template-columns: repeat(2, 1fr);
@@ -844,7 +837,7 @@ const handleSubmit = async () => {
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 1.2rem;
   }
 
   &.columns-2 {
@@ -854,37 +847,38 @@ const handleSubmit = async () => {
 
   .card {
     background: var(--surface-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.2rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem 1.2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
 
-    i { font-size: 1.3rem; color: var(--accent); opacity: 0.7; }
-    span { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+    i { font-size: 1.5rem; color: var(--accent); opacity: 0.6; }
+    span { font-size: 0.95rem; color: var(--text-secondary); font-weight: 600; }
 
     &.mini {
       flex-direction: row;
       justify-content: flex-start;
-      padding: 0.8rem 1.2rem;
+      padding: 1rem 1.5rem;
     }
 
     &:hover {
       background: var(--surface-color);
       border-color: var(--accent);
-      transform: translateY(-2px);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
     }
 
     &.active {
-      background: rgba($primary, 0.1);
+      background: rgba($primary, 0.05);
       border-color: var(--accent);
       i { opacity: 1; transform: scale(1.1); }
-      span { color: var(--text-color); font-weight: 700; }
+      span { color: var(--text-color); font-weight: 800; }
     }
   }
 }
@@ -892,8 +886,8 @@ const handleSubmit = async () => {
 .form-actions {
   display: flex;
   flex-direction: column-reverse; // Stack buttons on mobile
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.2rem;
+  margin-top: 3rem;
 
   @media (min-width: 600px) {
     flex-direction: row;
@@ -901,15 +895,16 @@ const handleSubmit = async () => {
 
   button {
     width: 100%;
-    padding: 1.1rem;
-    border-radius: 12px;
-    font-weight: 700;
+    padding: 1.3rem;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
 
     @media (min-width: 600px) { flex: 1; }
   }
@@ -918,14 +913,15 @@ const handleSubmit = async () => {
     background: linear-gradient(135deg, var(--accent), $dicas-gold-dark);
     color: #FFFFFF;
     border: none;
-    &:hover:not(:disabled) { box-shadow: 0 10px 20px rgba($primary, 0.2); transform: translateY(-2px); }
+    box-shadow: 0 10px 25px rgba($primary, 0.2);
+    &:hover:not(:disabled) { box-shadow: 0 15px 35px rgba($primary, 0.4); transform: translateY(-3px); }
   }
 
   .btn-secondary {
     background: transparent;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     color: var(--text-color);
-    &:hover { background: var(--surface-color); }
+    &:hover { border-color: var(--accent); background: var(--surface-color); }
   }
 }
 

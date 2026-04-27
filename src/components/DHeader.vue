@@ -300,9 +300,7 @@ onUnmounted(() => {
     text-decoration: none;
     color: var(--header-link);
     font-family: $font-principal;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    font-size: 0.95rem;
     font-weight: 600;
     transition: color 0.3s ease;
     position: relative;
@@ -311,11 +309,13 @@ onUnmounted(() => {
       content: '';
       position: absolute;
       bottom: -5px;
-      left: 0;
+      left: 50%;
       width: 0;
-      height: 1px;
+      height: 2px;
       background: var(--accent);
-      transition: width 0.3s ease;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+      border-radius: 10px;
     }
 
     &:hover, &.active {
@@ -328,18 +328,18 @@ onUnmounted(() => {
     &.cta {
       background: var(--accent);
       color: #FFFFFF;
-      border: 1px solid var(--accent);
-      padding: 0.6rem 1.5rem;
-      border-radius: 4px;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: var(--radius-pill);
       font-weight: 700;
       transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba($primary, 0.15);
 
       &::after { display: none; }
 
       &:hover {
-        background: transparent;
-        color: var(--accent);
-        box-shadow: 0 5px 15px rgba($primary, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba($primary, 0.3);
       }
     }
   }
@@ -358,8 +358,8 @@ onUnmounted(() => {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 20px;
+    width: 28px;
+    height: 18px;
     background: none;
     border: none;
     padding: 0;
@@ -375,15 +375,15 @@ onUnmounted(() => {
       width: 100%;
       height: 2px;
       background: var(--text-color);
-      border-radius: 2px;
+      border-radius: 10px;
       transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
       transform-origin: center;
     }
 
     &.is-open {
-      span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+      span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
       span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
-      span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+      span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
     }
   }
 
@@ -395,7 +395,7 @@ onUnmounted(() => {
     width: 100%;
     height: 100vh;
     background: var(--bg-color);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     z-index: 1500;
     display: flex;
     flex-direction: column;
@@ -407,54 +407,56 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.8rem;
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
     }
 
     .mm-link {
-      font-family: $font-principal;
-      font-size: 1.5rem;
+      font-family: $font-luxury;
+      font-size: 2rem;
       color: var(--text-color);
       text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-weight: 700;
+      font-weight: 800;
       transition: color 0.3s ease;
 
       &:hover, &.active { color: var(--accent); }
     }
 
     .mm-divider {
-      width: 40px;
-      height: 2px;
+      width: 50px;
+      height: 4px;
       background: var(--accent);
       margin: 0.5rem 0;
+      border-radius: 10px;
+      opacity: 0.3;
     }
 
     .mm-theme-toggle {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
       margin-bottom: 0.5rem;
 
       .label {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
         color: var(--text-secondary);
-        letter-spacing: 2px;
-        font-weight: 800;
+        font-weight: 700;
       }
 
       .toggle-btn {
         background: var(--surface-color);
-        border: 1px solid var(--border-color);
+        border: 2px solid var(--border-color);
         color: var(--text-color);
-        width: 50px;
-        height: 50px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:active { transform: scale(0.9); }
       }
     }
 
@@ -462,34 +464,33 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
       width: 100%;
 
       .label {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
         color: var(--text-secondary);
-        letter-spacing: 2px;
-        font-weight: 800;
+        font-weight: 700;
       }
 
       .switcher-btns {
         display: flex;
         background: var(--surface-color);
-        border: 1px solid var(--border-color);
-        border-radius: 50px;
-        padding: 5px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-pill);
+        padding: 6px;
         width: 100%;
 
         button {
           flex: 1;
           background: none;
           border: none;
-          padding: 0.8rem;
+          padding: 1rem;
           color: var(--text-secondary);
-          font-size: 0.8rem;
+          font-size: 0.9rem;
           font-weight: 700;
           cursor: pointer;
-          border-radius: 50px;
+          border-radius: var(--radius-pill);
           transition: all 0.3s ease;
 
           &.active {
@@ -503,27 +504,28 @@ onUnmounted(() => {
 
     .mm-cta {
       width: 100%;
-      background: $secondary;
+      background: var(--accent);
       color: #FFFFFF;
       border: none;
-      padding: 1.2rem;
-      border-radius: 4px;
+      padding: 1.3rem;
+      border-radius: var(--radius-pill);
       font-family: $font-principal;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 1.1rem;
       margin-top: 1rem;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba($secondary, 0.2);
+      box-shadow: 0 10px 25px rgba($primary, 0.2);
+      
+      &:active { transform: scale(0.98); }
     }
 
     .mm-footer {
       position: absolute;
-      bottom: 2rem;
+      bottom: 2.5rem;
       text-align: center;
       color: var(--text-secondary);
-      font-size: 0.7rem;
-      letter-spacing: 1px;
+      font-size: 0.8rem;
+      font-weight: 500;
     }
   }
 }

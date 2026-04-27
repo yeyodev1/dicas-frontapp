@@ -99,72 +99,56 @@ const services = [
     .subtitle {
       font-family: $font-principal;
       color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       display: block;
       margin-bottom: 1rem;
     }
 
     .title {
       font-family: $font-luxury;
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       margin-bottom: 1.5rem;
+      font-weight: 800;
     }
 
     .divider {
-      width: 60px;
-      height: 3px;
+      width: 50px;
+      height: 4px;
       background: var(--accent);
       margin: 0 auto;
+      border-radius: 10px;
     }
   }
 
   .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .service-card {
     background: var(--surface-card);
-    border: 1px solid var(--border-color);
-    padding: 3rem 2rem;
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    padding: 3.5rem 2.5rem;
+    border-radius: 32px;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-soft);
 
     [data-theme='dark'] & {
-      box-shadow: none;
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
 
     &:hover {
       background: var(--surface-color);
       border-color: var(--accent);
       transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
 
       [data-theme='dark'] & {
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      }
-
-      &::before {
-        transform: translateX(100%);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
       }
 
       .card-icon {
@@ -178,10 +162,10 @@ const services = [
     }
 
     .card-icon {
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       color: var(--accent);
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       transition: all 0.3s ease;
       opacity: 0.9;
 
@@ -190,27 +174,28 @@ const services = [
 
     .card-title {
       font-family: $font-luxury;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      font-weight: 800;
     }
 
     .card-description {
       font-family: $font-principal;
       color: var(--text-secondary);
-      line-height: 1.6;
-      font-size: 0.95rem;
-      margin-bottom: 2rem;
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
     }
 
     .card-link {
       text-decoration: none;
       color: var(--accent);
       font-family: $font-principal;
-      font-weight: 600;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
 
       .arrow {
         transition: transform 0.3s ease;

@@ -106,42 +106,48 @@ const year = new Date().getFullYear();
     .link-group {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
 
       h4 {
         font-family: $font-luxury;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         color: var(--accent);
         margin-bottom: 0.5rem;
+        font-weight: 800;
       }
 
       a {
         text-decoration: none;
         color: var(--text-secondary);
         font-family: $font-principal;
-        font-size: 0.9rem;
-        transition: color 0.3s ease;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
 
         &:hover {
           color: var(--accent);
+          transform: translateX(5px);
         }
       }
     }
   }
 
   .footer-disclaimer {
-    margin-top: 3rem;
-    padding: 2rem;
+    margin-top: 4rem;
+    padding: 2.5rem;
     background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    border-radius: 24px;
     font-family: $font-principal;
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
     color: var(--text-secondary);
     text-align: center;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 
-    strong { color: var(--accent); }
+    strong { color: var(--accent); font-weight: 700; }
   }
 
   .footer-bottom {

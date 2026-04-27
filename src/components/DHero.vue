@@ -149,8 +149,9 @@ onMounted(() => {
       font-size: clamp(2.5rem, 6vw, 5rem);
       line-height: 1.1;
       margin-bottom: 2rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-color);
+      letter-spacing: -1px;
 
       .accent {
         color: var(--accent);
@@ -164,6 +165,7 @@ onMounted(() => {
       color: var(--text-secondary);
       margin-bottom: 3rem;
       line-height: 1.6;
+      max-width: 600px;
     }
 
     .hero-actions {
@@ -205,10 +207,10 @@ onMounted(() => {
         max-width: 100%;
         object-fit: contain;
         z-index: 5;
-        filter: drop-shadow(0 0 20px rgba(0,0,0,0.1));
+        filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));
         
         [data-theme='dark'] & {
-          filter: drop-shadow(0 0 20px rgba($primary, 0.2));
+          filter: drop-shadow(0 20px 50px rgba($primary, 0.2));
         }
       }
 
@@ -216,7 +218,7 @@ onMounted(() => {
         position: absolute;
         bottom: 0;
         width: 100%;
-        height: 50%;
+        height: 40%;
         background: linear-gradient(to top, var(--bg-color), transparent);
         z-index: 6;
       }
@@ -224,13 +226,11 @@ onMounted(() => {
   }
 
   .btn {
-    padding: 1rem 2.5rem;
-    border-radius: 4px;
+    padding: 1.2rem 2.8rem;
+    border-radius: var(--radius-pill);
     font-family: $font-principal;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
@@ -243,20 +243,22 @@ onMounted(() => {
       background: var(--accent);
       color: #FFFFFF;
       border: none;
+      box-shadow: 0 10px 25px rgba($primary, 0.2);
       
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba($primary, 0.3);
+        box-shadow: 0 15px 35px rgba($primary, 0.4);
       }
     }
 
     &-outline {
       background: transparent;
       color: var(--text-color);
-      border: 1px solid var(--border-color);
+      border: 2px solid var(--border-color);
 
       &:hover {
-        background: var(--border-color);
+        background: var(--surface-color);
+        border-color: var(--accent);
         transform: translateY(-5px);
       }
     }

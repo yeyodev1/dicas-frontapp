@@ -12,27 +12,34 @@ html, body {
   --bg-color: #FFFFFF;
   --text-color: #0A0A0A;
   --text-secondary: #4A4A4A;
-  --surface-color: #F9F9F9;
+  --surface-color: #FDFDFD;
   --surface-card: #FFFFFF;
-  --border-color: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.05);
   --accent: #{$primary};
   --gold-text: #{$dicas-gold-dark};
-  --header-bg: rgba(255, 255, 255, 0.85);
-  --header-blur: 12px;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --header-blur: 20px;
   --header-link: #0A0A0A;
+  
+  // Friendly tokens
+  --radius-pill: 100px;
+  --radius-lg: 40px;
+  --radius-md: 16px;
+  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme='dark'] {
-  --bg-color: #050505;
-  --text-color: #FEFEFE;
-  --text-secondary: rgba(254, 254, 254, 0.7);
+  --bg-color: #080808;
+  --text-color: #F5F5F5;
+  --text-secondary: rgba(245, 245, 245, 0.6);
   --surface-color: #121212;
-  --surface-card: #1A1A1A;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --surface-card: #181818;
+  --border-color: rgba(255, 255, 255, 0.08);
   --accent: #{$primary};
   --gold-text: #{$primary};
-  --header-bg: rgba(10, 10, 10, 0.85);
-  --header-link: #FEFEFE;
+  --header-bg: rgba(8, 8, 8, 0.8);
+  --header-link: #F5F5F5;
+  --shadow-soft: 0 40px 100px rgba(0, 0, 0, 0.6);
 }
 
 body {
@@ -40,4 +47,11 @@ body {
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
 }

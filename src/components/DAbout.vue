@@ -121,19 +121,18 @@ onMounted(() => {
     .subtitle {
       color: var(--accent);
       font-family: $font-principal;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       display: block;
       margin-bottom: 1.5rem;
     }
 
     .title {
       font-family: $font-luxury;
-      font-size: clamp(2.5rem, 4vw, 3.5rem);
-      line-height: 1.2;
-      margin-bottom: 2rem;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 2.5rem;
+      font-weight: 800;
 
       .accent { color: var(--accent); }
     }
@@ -143,42 +142,48 @@ onMounted(() => {
       color: var(--text-secondary);
       line-height: 1.8;
       font-size: 1.1rem;
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
+      max-width: 600px;
     }
 
     .credentials {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+      gap: 1.2rem;
+      margin-bottom: 3.5rem;
 
       .cred-item {
         display: flex;
         align-items: flex-start;
-        gap: 1rem;
-        padding: 1.5rem;
+        gap: 1.2rem;
+        padding: 1.8rem;
         background: var(--surface-color);
-        border-radius: 8px;
-        border-left: 3px solid var(--accent);
-        border: 1px solid var(--border-color);
-        border-left-width: 4px;
+        border-radius: 24px;
+        border: 2px solid var(--border-color);
+        transition: all 0.3s ease;
 
-        .cred-icon { font-size: 1.5rem; color: var(--accent); }
+        &:hover {
+          border-color: var(--accent);
+          background: var(--surface-card);
+          transform: translateX(10px);
+        }
+
+        .cred-icon { font-size: 1.8rem; color: var(--accent); }
         .cred-text {
           display: flex;
           flex-direction: column;
           font-family: $font-principal;
           
-          strong { color: var(--text-color); font-size: 1rem; }
-          span { color: var(--text-secondary); font-size: 0.85rem; }
+          strong { color: var(--text-color); font-size: 1.1rem; margin-bottom: 4px; }
+          span { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
         }
       }
     }
 
     .stats-grid {
       display: flex;
-      gap: 3rem;
-      margin-bottom: 3rem;
+      gap: 4rem;
+      margin-bottom: 3.5rem;
       
       .stat-item {
         display: flex;
@@ -186,17 +191,16 @@ onMounted(() => {
         
         .stat-number {
           font-family: $font-luxury;
-          font-size: 2.5rem;
+          font-size: 3rem;
           color: var(--accent);
-          font-weight: 700;
+          font-weight: 800;
         }
         
         .stat-label {
           font-family: $font-principal;
-          font-size: 0.8rem;
-          text-transform: uppercase;
+          font-size: 0.9rem;
           color: var(--text-secondary);
-          letter-spacing: 1px;
+          font-weight: 600;
         }
       }
     }
@@ -207,13 +211,13 @@ onMounted(() => {
     
     .image-wrapper {
       position: relative;
-      height: 600px;
-      border-radius: 8px;
+      height: 650px;
+      border-radius: 40px;
       overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-soft);
 
       [data-theme='dark'] & {
-        box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
       }
     }
 
@@ -222,6 +226,11 @@ onMounted(() => {
       height: 100%;
       object-fit: cover;
       object-position: top;
+      transition: transform 0.6s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
     }
 
     .image-overlay {
@@ -233,35 +242,24 @@ onMounted(() => {
       background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
       z-index: 2;
     }
-
-    .accent-box {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 100px;
-      height: 100px;
-      border-top: 4px solid var(--accent);
-      border-left: 4px solid var(--accent);
-      z-index: 3;
-    }
   }
 
   .btn-primary {
     background: var(--accent);
     color: #FFFFFF;
     border: none;
-    padding: 1.2rem 3rem;
+    padding: 1.3rem 3.5rem;
     font-family: $font-principal;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    border-radius: 4px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 10px 25px rgba($primary, 0.2);
 
     &:hover {
-      box-shadow: 0 15px 40px rgba($primary, 0.3);
-      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba($primary, 0.4);
+      transform: translateY(-5px);
     }
   }
 }
