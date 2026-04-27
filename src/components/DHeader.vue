@@ -201,10 +201,15 @@ onUnmounted(() => {
 
   .logo {
     .logo-img {
-      height: 45px;
+      height: 65px;
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+      transition: height 0.3s ease;
+
+      @media (max-width: 768px) {
+        height: 50px;
+      }
     }
   }
 
