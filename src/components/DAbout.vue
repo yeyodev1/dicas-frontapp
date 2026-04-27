@@ -95,9 +95,10 @@ onMounted(() => {
 <style lang="scss" scoped>
 .d-about {
   padding: 10rem 2rem;
-  background-color: #080808;
-  color: $white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   overflow: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 
   .container {
     max-width: 1200px;
@@ -118,7 +119,7 @@ onMounted(() => {
 
   .about-content {
     .subtitle {
-      color: $primary;
+      color: var(--accent);
       font-family: $font-principal;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -134,12 +135,12 @@ onMounted(() => {
       line-height: 1.2;
       margin-bottom: 2rem;
 
-      .accent { color: $primary; }
+      .accent { color: var(--accent); }
     }
 
     .description {
       font-family: $font-principal;
-      color: $text-secondary;
+      color: var(--text-secondary);
       line-height: 1.8;
       font-size: 1.1rem;
       margin-bottom: 3rem;
@@ -156,18 +157,20 @@ onMounted(() => {
         align-items: flex-start;
         gap: 1rem;
         padding: 1.5rem;
-        background: rgba($white, 0.03);
+        background: var(--surface-color);
         border-radius: 8px;
-        border-left: 3px solid $primary;
+        border-left: 3px solid var(--accent);
+        border: 1px solid var(--border-color);
+        border-left-width: 4px;
 
-        .cred-icon { font-size: 1.5rem; }
+        .cred-icon { font-size: 1.5rem; color: var(--accent); }
         .cred-text {
           display: flex;
           flex-direction: column;
           font-family: $font-principal;
           
-          strong { color: $white; font-size: 1rem; }
-          span { color: $text-secondary; font-size: 0.85rem; }
+          strong { color: var(--text-color); font-size: 1rem; }
+          span { color: var(--text-secondary); font-size: 0.85rem; }
         }
       }
     }
@@ -184,7 +187,7 @@ onMounted(() => {
         .stat-number {
           font-family: $font-luxury;
           font-size: 2.5rem;
-          color: $primary;
+          color: var(--accent);
           font-weight: 700;
         }
         
@@ -192,7 +195,7 @@ onMounted(() => {
           font-family: $font-principal;
           font-size: 0.8rem;
           text-transform: uppercase;
-          color: rgba($white, 0.5);
+          color: var(--text-secondary);
           letter-spacing: 1px;
         }
       }
@@ -207,7 +210,11 @@ onMounted(() => {
       height: 600px;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+
+      [data-theme='dark'] & {
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      }
     }
 
     .about-img {
@@ -223,7 +230,7 @@ onMounted(() => {
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to top, rgba($primary-dark, 0.6), transparent);
+      background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
       z-index: 2;
     }
 
@@ -233,23 +240,24 @@ onMounted(() => {
       left: 20px;
       width: 100px;
       height: 100px;
-      border-top: 4px solid $primary;
-      border-left: 4px solid $primary;
+      border-top: 4px solid var(--accent);
+      border-left: 4px solid var(--accent);
       z-index: 3;
     }
   }
 
   .btn-primary {
-    background: $primary;
-    color: $primary-dark;
+    background: var(--accent);
+    color: #FFFFFF;
     border: none;
     padding: 1.2rem 3rem;
     font-family: $font-principal;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border-radius: 4px;
 
     &:hover {
       box-shadow: 0 15px 40px rgba($primary, 0.3);

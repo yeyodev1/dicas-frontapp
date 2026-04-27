@@ -93,9 +93,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background-color: $dicas-bg-dark;
-  color: $white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   padding: 80px 2rem 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
 
   .hero-container {
     max-width: 1400px;
@@ -127,15 +128,15 @@ onMounted(() => {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 80% 20%, rgba($dicas-red, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 10% 80%, rgba($primary, 0.1) 0%, transparent 40%);
+      background: radial-gradient(circle at 80% 20%, rgba($dicas-red, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 10% 80%, rgba($primary, 0.08) 0%, transparent 40%);
     }
 
     .noise-overlay {
       position: absolute;
       width: 100%;
       height: 100%;
-      opacity: 0.05;
+      opacity: 0.03;
       background-image: url('https://grainy-gradients.vercel.app/noise.svg');
     }
   }
@@ -149,9 +150,10 @@ onMounted(() => {
       line-height: 1.1;
       margin-bottom: 2rem;
       font-weight: 700;
+      color: var(--text-color);
 
       .accent {
-        color: $primary;
+        color: var(--accent);
         display: block;
       }
     }
@@ -159,7 +161,7 @@ onMounted(() => {
     .hero-subtitle {
       font-family: $font-principal;
       font-size: clamp(1.1rem, 2vw, 1.4rem);
-      color: $text-secondary;
+      color: var(--text-secondary);
       margin-bottom: 3rem;
       line-height: 1.6;
     }
@@ -203,7 +205,11 @@ onMounted(() => {
         max-width: 100%;
         object-fit: contain;
         z-index: 5;
-        filter: drop-shadow(0 0 20px rgba($primary, 0.2));
+        filter: drop-shadow(0 0 20px rgba(0,0,0,0.1));
+        
+        [data-theme='dark'] & {
+          filter: drop-shadow(0 0 20px rgba($primary, 0.2));
+        }
       }
 
       .image-glow {
@@ -211,7 +217,7 @@ onMounted(() => {
         bottom: 0;
         width: 100%;
         height: 50%;
-        background: linear-gradient(to top, $dicas-bg-dark, transparent);
+        background: linear-gradient(to top, var(--bg-color), transparent);
         z-index: 6;
       }
     }
@@ -222,7 +228,7 @@ onMounted(() => {
     border-radius: 4px;
     font-family: $font-principal;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
@@ -234,24 +240,23 @@ onMounted(() => {
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     &-primary {
-      background: $primary;
-      color: $primary-dark;
+      background: var(--accent);
+      color: #FFFFFF;
       border: none;
       
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba($primary, 0.4);
+        box-shadow: 0 10px 30px rgba($primary, 0.3);
       }
     }
 
     &-outline {
       background: transparent;
-      color: $white;
-      border: 1px solid rgba($white, 0.3);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
 
       &:hover {
-        background: rgba($white, 0.05);
-        border-color: $white;
+        background: var(--border-color);
         transform: translateY(-5px);
       }
     }
@@ -268,6 +273,7 @@ onMounted(() => {
     gap: 1rem;
     opacity: 0.6;
     z-index: 10;
+    color: var(--text-secondary);
 
     span {
       font-family: $font-principal;
@@ -279,7 +285,7 @@ onMounted(() => {
     .mouse {
       width: 20px;
       height: 35px;
-      border: 2px solid $white;
+      border: 2px solid var(--text-color);
       border-radius: 20px;
       display: flex;
       justify-content: center;
@@ -287,7 +293,7 @@ onMounted(() => {
       .wheel {
         width: 3px;
         height: 6px;
-        background: $primary;
+        background: var(--accent);
         border-radius: 2px;
         margin-top: 6px;
         animation: scrollWheel 2s infinite;

@@ -2,12 +2,14 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useModalStore } from '@/stores/modalStore';
 import { useI18n } from 'vue-i18n';
+import { useThemeStore } from '@/stores/themeStore';
 import gsap from 'gsap';
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
 const activeSection = ref('hero');
 const modalStore = useModalStore();
+const themeStore = useThemeStore();
 const { locale, t } = useI18n();
 
 const handleScroll = () => {
@@ -124,6 +126,13 @@ onUnmounted(() => {
           <span :class="{ active: locale === 'es' }">ES</span>
         </div>
 
+        <button class="theme-toggle" @click="themeStore.toggleTheme" :aria-label="`Switch to ${themeStore.theme === 'light' ? 'dark' : 'light'} mode`" :title="`Switch to ${themeStore.theme === 'light' ? 'dark' : 'light'} mode`">
+          <transition name="scale-fade" mode="out-in">
+            <i v-if="themeStore.theme === 'dark'" class="fa-solid fa-sun"></i>
+            <i v-else class="fa-solid fa-moon"></i>
+          </transition>
+        </button>
+
         <button @click="openConsultancy" class="nav-link cta">{{ t('nav.cta') }}</button>
       </nav>
 
@@ -152,6 +161,14 @@ onUnmounted(() => {
             <a href="/#about" class="mm-link" :class="{ active: activeSection === 'about' }" @click="closeMenu">{{ t('nav.about') }}</a>
             
             <div class="mm-divider"></div>
+
+            <div class="mm-theme-toggle">
+              <span class="label">{{ themeStore.theme === 'light' ? 'LIGHT MODE' : 'DARK MODE' }}</span>
+              <button class="toggle-btn" @click="themeStore.toggleTheme">
+                <i v-if="themeStore.theme === 'dark'" class="fa-solid fa-sun"></i>
+                <i v-else class="fa-solid fa-moon"></i>
+              </button>
+            </div>
             
             <div class="mm-lang-switcher">
               <span class="label">{{ t('header.languageLabel') }}</span>
@@ -184,10 +201,10 @@ onUnmounted(() => {
   padding: 1.5rem 0;
 
   &.is-scrolled {
-    background: rgba($primary-dark, 0.85);
-    backdrop-filter: blur(12px);
+    background: var(--header-bg);
+    backdrop-filter: blur(var(--header-blur));
     padding: 1rem 0;
-    border-bottom: 1px solid rgba($primary, 0.15);
+    border-bottom: 1px solid var(--border-color);
   }
 
   .header-container {
@@ -204,8 +221,8 @@ onUnmounted(() => {
       height: 65px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
-      transition: height 0.3s ease;
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.15));
+      transition: all 0.3s ease;
 
       @media (max-width: 768px) {
         height: 50px;
@@ -215,11 +232,11 @@ onUnmounted(() => {
 
   .nav-links {
     display: flex;
-    gap: 2.5rem;
+    gap: 2rem;
     align-items: center;
 
     @media (max-width: 768px) {
-      display: none; // Minimal approach for now, focus on desktop premium
+      display: none;
     }
   }
 
@@ -230,40 +247,63 @@ onUnmounted(() => {
     font-family: $font-principal;
     font-size: 0.8rem;
     font-weight: 600;
-    color: rgba($white, 0.4);
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 50px;
-    background: rgba($white, 0.05);
-    border: 1px solid rgba($white, 0.1);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 
     &:hover {
-      background: rgba($white, 0.1);
-      border-color: rgba($white, 0.2);
+      background: var(--border-color);
     }
 
     span {
       transition: color 0.3s ease;
       &.active {
-        color: $primary;
+        color: var(--accent);
       }
     }
 
     .separator {
-      color: rgba($white, 0.1);
+      color: var(--border-color);
       font-weight: 300;
+    }
+  }
+
+  .theme-toggle {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--border-color);
+      transform: translateY(-2px);
+    }
+
+    i {
+      display: block;
     }
   }
 
   .nav-link {
     text-decoration: none;
-    color: $white;
+    color: var(--header-link);
     font-family: $font-principal;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    font-weight: 500;
+    font-weight: 600;
     transition: color 0.3s ease;
     position: relative;
 
@@ -274,33 +314,43 @@ onUnmounted(() => {
       left: 0;
       width: 0;
       height: 1px;
-      background: $primary;
+      background: var(--accent);
       transition: width 0.3s ease;
     }
 
     &:hover, &.active {
-      color: $primary;
+      color: var(--accent);
       &::after {
         width: 100%;
       }
     }
 
     &.cta {
-      background: rgba($primary, 0.1);
-      border: 1px solid $primary;
+      background: var(--accent);
+      color: #FFFFFF;
+      border: 1px solid var(--accent);
       padding: 0.6rem 1.5rem;
       border-radius: 4px;
-      font-weight: 600;
+      font-weight: 700;
       transition: all 0.3s ease;
 
       &::after { display: none; }
 
       &:hover {
-        background: $primary;
-        color: $primary-dark;
-        box-shadow: 0 0 20px rgba($primary, 0.3);
+        background: transparent;
+        color: var(--accent);
+        box-shadow: 0 5px 15px rgba($primary, 0.2);
       }
     }
+  }
+
+  // Transitions
+  .scale-fade-enter-active, .scale-fade-leave-active {
+    transition: all 0.3s ease;
+  }
+  .scale-fade-enter-from, .scale-fade-leave-to {
+    opacity: 0;
+    transform: scale(0.5) rotate(45deg);
   }
 
   // MOBILE TOGGLE STYLES
@@ -324,7 +374,7 @@ onUnmounted(() => {
       display: block;
       width: 100%;
       height: 2px;
-      background: $white;
+      background: var(--text-color);
       border-radius: 2px;
       transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
       transform-origin: center;
@@ -344,7 +394,7 @@ onUnmounted(() => {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba($dicas-bg-dark, 0.95);
+    background: var(--bg-color);
     backdrop-filter: blur(20px);
     z-index: 1500;
     display: flex;
@@ -357,7 +407,7 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2rem;
+      gap: 1.5rem;
       width: 100%;
       max-width: 300px;
     }
@@ -365,41 +415,67 @@ onUnmounted(() => {
     .mm-link {
       font-family: $font-principal;
       font-size: 1.5rem;
-      color: $white;
+      color: var(--text-color);
       text-decoration: none;
       text-transform: uppercase;
       letter-spacing: 3px;
       font-weight: 700;
       transition: color 0.3s ease;
 
-      &:hover, &.active { color: $primary; }
+      &:hover, &.active { color: var(--accent); }
     }
 
     .mm-divider {
       width: 40px;
       height: 2px;
-      background: $primary;
-      margin: 1rem 0;
+      background: var(--accent);
+      margin: 0.5rem 0;
+    }
+
+    .mm-theme-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+
+      .label {
+        font-size: 0.6rem;
+        color: var(--text-secondary);
+        letter-spacing: 2px;
+        font-weight: 800;
+      }
+
+      .toggle-btn {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
     }
 
     .mm-lang-switcher {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.8rem;
       width: 100%;
 
       .label {
-        font-size: 0.7rem;
-        color: rgba($white, 0.4);
+        font-size: 0.6rem;
+        color: var(--text-secondary);
         letter-spacing: 2px;
         font-weight: 800;
       }
 
       .switcher-btns {
         display: flex;
-        background: rgba($white, 0.05);
-        border: 1px solid rgba($white, 0.1);
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
         border-radius: 50px;
         padding: 5px;
         width: 100%;
@@ -409,7 +485,7 @@ onUnmounted(() => {
           background: none;
           border: none;
           padding: 0.8rem;
-          color: rgba($white, 0.5);
+          color: var(--text-secondary);
           font-size: 0.8rem;
           font-weight: 700;
           cursor: pointer;
@@ -417,9 +493,9 @@ onUnmounted(() => {
           transition: all 0.3s ease;
 
           &.active {
-            background: $primary;
-            color: $primary-dark;
-            box-shadow: 0 5px 15px rgba($primary, 0.3);
+            background: var(--accent);
+            color: #FFFFFF;
+            box-shadow: 0 5px 15px rgba($primary, 0.2);
           }
         }
       }
@@ -428,7 +504,7 @@ onUnmounted(() => {
     .mm-cta {
       width: 100%;
       background: $secondary;
-      color: $white;
+      color: #FFFFFF;
       border: none;
       padding: 1.2rem;
       border-radius: 4px;
@@ -445,7 +521,7 @@ onUnmounted(() => {
       position: absolute;
       bottom: 2rem;
       text-align: center;
-      color: rgba($white, 0.3);
+      color: var(--text-secondary);
       font-size: 0.7rem;
       letter-spacing: 1px;
     }

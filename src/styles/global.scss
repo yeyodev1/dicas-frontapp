@@ -2,26 +2,42 @@
 @use './fonts.module.scss' as *;
 
 html, body {
-  background-color: $white;
   margin: 0;
+  padding: 0;
   font-family: $font-principal;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 :root {
-  --bg: #{$white};
-  --text: #{$primary-dark};
-  --border: #{rgba($primary-dark, 0.08)};
+  --bg-color: #FFFFFF;
+  --text-color: #0A0A0A;
+  --text-secondary: #4A4A4A;
+  --surface-color: #F9F9F9;
+  --surface-card: #FFFFFF;
+  --border-color: rgba(0, 0, 0, 0.08);
   --accent: #{$primary};
+  --gold-text: #{$dicas-gold-dark};
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-blur: 12px;
+  --header-link: #0A0A0A;
 }
 
 [data-theme='dark'] {
-  --bg: #{$primary-dark};
-  --text: #{$text-light};
-  --border: #{rgba($white, 0.12)};
+  --bg-color: #050505;
+  --text-color: #FEFEFE;
+  --text-secondary: rgba(254, 254, 254, 0.7);
+  --surface-color: #121212;
+  --surface-card: #1A1A1A;
+  --border-color: rgba(255, 255, 255, 0.1);
   --accent: #{$primary};
+  --gold-text: #{$primary};
+  --header-bg: rgba(10, 10, 10, 0.85);
+  --header-link: #FEFEFE;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

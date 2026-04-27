@@ -83,8 +83,9 @@ const services = [
 <style lang="scss" scoped>
 .d-services {
   padding: 10rem 2rem;
-  background-color: $dicas-bg-dark;
-  color: $white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.4s ease, color 0.4s ease;
 
   .container {
     max-width: 1200px;
@@ -97,7 +98,7 @@ const services = [
 
     .subtitle {
       font-family: $font-principal;
-      color: $primary;
+      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 3px;
       font-size: 0.8rem;
@@ -115,7 +116,7 @@ const services = [
     .divider {
       width: 60px;
       height: 3px;
-      background: $primary;
+      background: var(--accent);
       margin: 0 auto;
     }
   }
@@ -127,13 +128,18 @@ const services = [
   }
 
   .service-card {
-    background: rgba($white, 0.03);
-    border: 1px solid rgba($white, 0.08);
+    background: var(--surface-card);
+    border: 1px solid var(--border-color);
     padding: 3rem 2rem;
     border-radius: 8px;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+
+    [data-theme='dark'] & {
+      box-shadow: none;
+    }
 
     &::before {
       content: '';
@@ -142,22 +148,27 @@ const services = [
       left: 0;
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, $primary, transparent);
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
       transform: translateX(-100%);
       transition: transform 0.6s ease;
     }
 
     &:hover {
-      background: rgba($white, 0.06);
-      border-color: rgba($primary, 0.3);
+      background: var(--surface-color);
+      border-color: var(--accent);
       transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+
+      [data-theme='dark'] & {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
 
       &::before {
         transform: translateX(100%);
       }
 
       .card-icon {
-        color: $primary;
+        color: var(--accent);
         transform: scale(1.1);
       }
 
@@ -169,9 +180,10 @@ const services = [
     .card-icon {
       width: 50px;
       height: 50px;
-      color: rgba($white, 0.8);
+      color: var(--accent);
       margin-bottom: 2rem;
       transition: all 0.3s ease;
+      opacity: 0.9;
 
       svg { width: 100%; height: 100%; }
     }
@@ -184,7 +196,7 @@ const services = [
 
     .card-description {
       font-family: $font-principal;
-      color: $text-secondary;
+      color: var(--text-secondary);
       line-height: 1.6;
       font-size: 0.95rem;
       margin-bottom: 2rem;
@@ -192,7 +204,7 @@ const services = [
 
     .card-link {
       text-decoration: none;
-      color: $primary;
+      color: var(--accent);
       font-family: $font-principal;
       font-weight: 600;
       font-size: 0.9rem;

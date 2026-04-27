@@ -655,15 +655,20 @@ const handleSubmit = async () => {
 
 // BASE STYLES: MOBILE FIRST
 .form-card, .success-card {
-  background: linear-gradient(135deg, rgba($white, 0.05) 0%, rgba($white, 0.02) 100%);
+  background: var(--surface-card);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid rgba($white, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 2rem 1.2rem;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.1);
   position: relative;
-  overflow: visible; // Allow select dropdowns to overflow if container is auto-height
+  overflow: visible;
+  transition: all 0.4s ease;
+
+  [data-theme='dark'] & {
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+  }
 
   @media (min-width: 768px) {
     padding: 4rem 3rem;
@@ -683,7 +688,7 @@ const handleSubmit = async () => {
     border: 1px solid rgba($primary, 0.2);
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
-    color: $primary;
+    color: var(--accent);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -700,7 +705,7 @@ const handleSubmit = async () => {
     font-family: $font-luxury;
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
-    color: $white;
+    color: var(--text-color);
 
     @media (min-width: 768px) {
       font-size: 2.5rem;
@@ -708,8 +713,8 @@ const handleSubmit = async () => {
     }
 
     .accent { 
-      color: $primary; 
-      background: linear-gradient(to bottom, $primary, $dicas-gold-dark);
+      color: var(--accent); 
+      background: linear-gradient(to bottom, var(--accent), $dicas-gold-dark);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -717,7 +722,7 @@ const handleSubmit = async () => {
 
   .form-subtitle {
     font-size: 0.95rem;
-    color: rgba($white, 0.7);
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
     max-width: 500px;
     margin-left: auto;
@@ -731,13 +736,13 @@ const handleSubmit = async () => {
 
   .progress-bar {
     height: 4px;
-    background: rgba($white, 0.05);
+    background: var(--border-color);
     border-radius: 10px;
     overflow: hidden;
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, $primary, $dicas-red);
+      background: linear-gradient(90deg, var(--accent), $dicas-red);
       transition: width 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
@@ -771,7 +776,7 @@ const handleSubmit = async () => {
     font-family: $font-principal;
     font-size: 0.8rem;
     font-weight: 700;
-    color: rgba($white, 0.6);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 1px;
 
@@ -783,23 +788,23 @@ const handleSubmit = async () => {
   }
 
   input {
-    background: rgba($white, 0.05);
-    border: 1px solid rgba($white, 0.1);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
-    color: white;
+    color: var(--text-color);
     font-family: $font-principal;
     font-size: 1rem;
     transition: all 0.3s ease;
 
     &:focus {
       outline: none;
-      border-color: $primary;
-      background: rgba($white, 0.08);
+      border-color: var(--accent);
+      background: var(--surface-color);
       box-shadow: 0 0 15px rgba($primary, 0.1);
     }
 
-    &::placeholder { color: rgba($white, 0.2); }
+    &::placeholder { color: var(--text-secondary); opacity: 0.4; }
   }
 }
 
@@ -821,7 +826,7 @@ const handleSubmit = async () => {
       font-family: $font-principal;
       font-size: 0.85rem;
       font-weight: 600;
-      color: rgba($white, 0.6);
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -848,8 +853,8 @@ const handleSubmit = async () => {
   }
 
   .card {
-    background: rgba($white, 0.03);
-    border: 1px solid rgba($white, 0.08);
+    background: var(--surface-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.2rem 1rem;
     display: flex;
@@ -860,8 +865,8 @@ const handleSubmit = async () => {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
 
-    i { font-size: 1.3rem; color: $primary; opacity: 0.5; }
-    span { font-size: 0.85rem; color: rgba($white, 0.7); }
+    i { font-size: 1.3rem; color: var(--accent); opacity: 0.7; }
+    span { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
 
     &.mini {
       flex-direction: row;
@@ -870,16 +875,16 @@ const handleSubmit = async () => {
     }
 
     &:hover {
-      background: rgba($white, 0.06);
-      border-color: rgba($primary, 0.3);
+      background: var(--surface-color);
+      border-color: var(--accent);
       transform: translateY(-2px);
     }
 
     &.active {
       background: rgba($primary, 0.1);
-      border-color: $primary;
+      border-color: var(--accent);
       i { opacity: 1; transform: scale(1.1); }
-      span { color: $white; font-weight: 700; }
+      span { color: var(--text-color); font-weight: 700; }
     }
   }
 }
@@ -910,25 +915,25 @@ const handleSubmit = async () => {
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, $primary, $dicas-gold-dark);
-    color: $primary-dark;
+    background: linear-gradient(135deg, var(--accent), $dicas-gold-dark);
+    color: #FFFFFF;
     border: none;
     &:hover:not(:disabled) { box-shadow: 0 10px 20px rgba($primary, 0.2); transform: translateY(-2px); }
   }
 
   .btn-secondary {
     background: transparent;
-    border: 1px solid rgba($white, 0.1);
-    color: white;
-    &:hover { background: rgba($white, 0.05); }
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    &:hover { background: var(--surface-color); }
   }
 }
 
 .country-selector-wrapper {
   position: relative;
   .custom-select {
-    background: rgba($white, 0.05);
-    border: 1px solid rgba($white, 0.1);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 0.8rem 1.2rem;
     cursor: pointer;
@@ -936,12 +941,12 @@ const handleSubmit = async () => {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: $white;
+      color: var(--text-color);
       font-family: $font-principal;
       font-size: 0.95rem;
 
-      .dial { color: $primary; font-weight: 700; }
-      .ms-auto { opacity: 0.5; font-size: 0.8rem; }
+      .dial { color: var(--accent); font-weight: 700; }
+      .ms-auto { color: var(--text-secondary); opacity: 0.5; font-size: 0.8rem; }
     }
   }
 
@@ -950,11 +955,16 @@ const handleSubmit = async () => {
     top: calc(100% + 5px);
     left: 0;
     width: 100%;
-    background: #1a1a1a;
-    border: 1px solid rgba($white, 0.2);
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     z-index: 10000;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    
+    [data-theme='dark'] & {
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    
     overflow: hidden;
 
     .search-box {
@@ -962,19 +972,19 @@ const handleSubmit = async () => {
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba($white, 0.1);
-      background: rgba($white, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      background: var(--surface-color);
 
-      i { color: $primary; opacity: 0.7; }
+      i { color: var(--accent); opacity: 0.7; }
       input {
         background: transparent;
         border: none;
-        color: white;
+        color: var(--text-color);
         width: 100%;
         outline: none;
         font-family: $font-principal;
         font-size: 0.95rem;
-        &::placeholder { color: rgba($white, 0.3); }
+        &::placeholder { color: var(--text-secondary); opacity: 0.4; }
       }
     }
 
@@ -992,22 +1002,22 @@ const handleSubmit = async () => {
         gap: 12px;
         cursor: pointer;
         transition: all 0.2s ease;
-        border-bottom: 1px solid rgba($white, 0.05);
+        border-bottom: 1px solid var(--border-color);
 
         &:last-child { border-bottom: none; }
 
-        &:hover { background: rgba($primary, 0.15); }
-        &.active { background: rgba($primary, 0.25); border-left: 3px solid $primary; }
+        &:hover { background: rgba($primary, 0.1); }
+        &.active { background: rgba($primary, 0.15); border-left: 3px solid var(--accent); }
 
         .flag { font-size: 1.2rem; }
-        .name { flex: 1; font-size: 0.9rem; color: $white; font-weight: 500; }
-        .dial { color: $primary; font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
+        .name { flex: 1; font-size: 0.9rem; color: var(--text-color); font-weight: 500; }
+        .dial { color: var(--accent); font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
       }
 
       .no-results {
         padding: 2rem;
         text-align: center;
-        color: rgba($white, 0.5);
+        color: var(--text-secondary);
         font-size: 0.9rem;
       }
     }
@@ -1016,17 +1026,18 @@ const handleSubmit = async () => {
 
 .phone-input-wrapper {
   display: flex;
-  background: rgba($white, 0.05);
-  border: 1px solid rgba($white, 0.1);
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
   .prefix {
     padding: 0.8rem 1rem;
-    background: rgba($white, 0.05);
-    color: $primary;
-    border-right: 1px solid rgba($white, 0.1);
+    background: var(--surface-card);
+    color: var(--accent);
+    border-right: 1px solid var(--border-color);
+    font-weight: 700;
   }
-  input { background: transparent; border: none; flex: 1; padding: 0.8rem 1rem; color: white; outline: none; }
+  input { background: transparent; border: none; flex: 1; padding: 0.8rem 1rem; color: var(--text-color); outline: none; }
 }
 
 .checkbox-group {
@@ -1036,18 +1047,18 @@ const handleSubmit = async () => {
     gap: 10px;
     cursor: pointer;
     font-size: 0.9rem;
-    color: rgba($white, 0.8);
+    color: var(--text-secondary);
     .checkmark {
       height: 20px;
       width: 20px;
-      background: rgba($white, 0.05);
-      border: 1px solid rgba($white, 0.1);
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
       border-radius: 4px;
       position: relative;
     }
     input:checked ~ .checkmark {
-      background: $primary;
-      &::after { content: '✓'; position: absolute; left: 4px; top: -1px; color: $primary-dark; font-weight: bold; }
+      background: var(--accent);
+      &::after { content: '✓'; position: absolute; left: 4px; top: -1px; color: #FFFFFF; font-weight: bold; }
     }
     input { display: none; }
   }
@@ -1068,11 +1079,11 @@ const handleSubmit = async () => {
     font-family: $font-luxury; 
     font-size: 2.5rem; 
     margin-bottom: 1rem; 
-    color: white; 
+    color: var(--text-color); 
   }
   
   p { 
-    color: rgba($white, 0.8); 
+    color: var(--text-secondary); 
     margin-bottom: 3rem; 
     line-height: 1.8;
     max-width: 450px;
@@ -1083,18 +1094,18 @@ const handleSubmit = async () => {
   .btn-return-home {
     display: inline-flex;
     padding: 1.2rem 2.5rem;
-    background: rgba($white, 0.1);
-    border: 1px solid rgba($white, 0.2);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     border-radius: 50px;
-    color: $white !important;
+    color: var(--text-color) !important;
     text-decoration: none;
     font-family: $font-principal;
     font-weight: 700;
     transition: all 0.3s ease;
 
     &:hover {
-      background: $white;
-      color: $primary-dark !important;
+      background: var(--accent);
+      color: #FFFFFF !important;
       transform: translateY(-3px);
     }
   }

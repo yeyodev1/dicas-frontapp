@@ -53,10 +53,11 @@ const year = new Date().getFullYear();
 
 <style lang="scss" scoped>
 .d-footer {
-  background: $primary-dark;
-  color: $white;
+  background: var(--footer-bg);
+  color: var(--text-color);
   padding: 5rem 2rem 2rem;
-  border-top: 1px solid rgba($primary, 0.1);
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.4s ease, color 0.4s ease;
 
   .container {
     max-width: 1200px;
@@ -79,11 +80,15 @@ const year = new Date().getFullYear();
     .footer-logo {
       height: 40px;
       margin-bottom: 1.5rem;
+      
+      [data-theme='light'] & {
+        filter: invert(0);
+      }
     }
     
     .brand-description {
       font-family: $font-principal;
-      color: rgba($white, 0.6);
+      color: var(--text-secondary);
       line-height: 1.6;
       max-width: 300px;
     }
@@ -106,19 +111,19 @@ const year = new Date().getFullYear();
       h4 {
         font-family: $font-luxury;
         font-size: 1.2rem;
-        color: $primary;
+        color: var(--accent);
         margin-bottom: 0.5rem;
       }
 
       a {
         text-decoration: none;
-        color: rgba($white, 0.6);
+        color: var(--text-secondary);
         font-family: $font-principal;
         font-size: 0.9rem;
         transition: color 0.3s ease;
 
         &:hover {
-          color: $primary;
+          color: var(--accent);
         }
       }
     }
@@ -127,27 +132,28 @@ const year = new Date().getFullYear();
   .footer-disclaimer {
     margin-top: 3rem;
     padding: 2rem;
-    background: rgba($white, 0.03);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-family: $font-principal;
     font-size: 0.8rem;
     line-height: 1.5;
-    color: rgba($white, 0.4);
+    color: var(--text-secondary);
     text-align: center;
 
-    strong { color: $primary; }
+    strong { color: var(--accent); }
   }
 
   .footer-bottom {
     padding-top: 2rem;
     margin-top: 2rem;
-    border-top: 1px solid rgba($white, 0.05);
+    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-family: $font-principal;
     font-size: 0.8rem;
-    color: rgba($white, 0.4);
+    color: var(--text-secondary);
 
     @media (max-width: 600px) {
       flex-direction: column;
@@ -156,15 +162,15 @@ const year = new Date().getFullYear();
     }
 
     .dev-link {
-      color: $primary;
+      color: var(--accent);
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
       border-bottom: 1px solid transparent;
 
       &:hover {
-        color: $white;
-        border-bottom-color: $primary;
+        color: var(--text-color);
+        border-bottom-color: var(--accent);
       }
     }
   }

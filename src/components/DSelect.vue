@@ -142,7 +142,7 @@ onUnmounted(() => {
   font-family: $font-principal;
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba($white, 0.6);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 0.8rem;
@@ -151,8 +151,8 @@ onUnmounted(() => {
 }
 
 .select-trigger {
-  background: rgba($white, 0.05);
-  border: 1px solid rgba($white, 0.1);
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
   padding: 1.1rem 1.4rem;
   border-radius: 12px;
   cursor: pointer;
@@ -163,8 +163,8 @@ onUnmounted(() => {
   min-height: 58px;
 
   &:hover {
-    background: rgba($white, 0.08);
-    border-color: rgba($primary, 0.3);
+    background: var(--surface-color);
+    border-color: var(--accent);
   }
 
   .trigger-content {
@@ -174,29 +174,29 @@ onUnmounted(() => {
     font-family: $font-principal;
     
     .main-icon {
-      color: $primary;
+      color: var(--accent);
       font-size: 1.1rem;
       opacity: 0.7;
     }
 
-    .value { color: $white; font-weight: 500; font-size: 1rem; }
-    .placeholder { color: rgba($white, 0.3); font-size: 1rem; }
+    .value { color: var(--text-color); font-weight: 500; font-size: 1rem; }
+    .placeholder { color: var(--text-secondary); opacity: 0.4; font-size: 1rem; }
   }
 
   .chevron {
     font-size: 0.8rem;
-    color: rgba($white, 0.4);
+    color: var(--text-secondary);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
 
 .is-open {
   .select-trigger {
-    border-color: $primary;
-    background: rgba($primary, 0.05);
+    border-color: var(--accent);
+    background: var(--surface-color);
     box-shadow: 0 0 20px rgba($primary, 0.1);
     
-    .chevron { transform: rotate(180deg); color: $primary; }
+    .chevron { transform: rotate(180deg); color: var(--accent); }
   }
 }
 
@@ -205,12 +205,17 @@ onUnmounted(() => {
   top: calc(100% + 8px);
   left: 0;
   width: 100%;
-  background: rgba(#0e0e0e, 0.95);
+  background: var(--bg-color);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba($white, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   z-index: 10000;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  
+  [data-theme='dark'] & {
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  }
+  
   overflow: hidden;
   animation: panelSlide 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -220,20 +225,21 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid rgba($white, 0.05);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--surface-color);
 
-  i { color: rgba($white, 0.3); font-size: 0.9rem; }
+  i { color: var(--text-secondary); opacity: 0.5; font-size: 0.9rem; }
 
   input {
     background: transparent;
     border: none;
-    color: $white;
+    color: var(--text-color);
     font-family: $font-principal;
     font-size: 1rem;
     width: 100%;
     outline: none;
 
-    &::placeholder { color: rgba($white, 0.2); }
+    &::placeholder { color: var(--text-secondary); opacity: 0.4; }
   }
 }
 
@@ -252,22 +258,22 @@ onUnmounted(() => {
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: $font-principal;
-    color: rgba($white, 0.7);
+    color: var(--text-secondary);
     font-size: 0.95rem;
 
-    i { color: $primary; font-size: 1rem; opacity: 0.6; }
+    i { color: var(--accent); font-size: 1rem; opacity: 0.6; }
 
     &.is-selected {
-      background: rgba($primary, 0.15);
-      color: $white;
+      background: rgba($primary, 0.1);
+      color: var(--text-color);
       font-weight: 600;
       
-      .check-icon { margin-left: auto; opacity: 1; color: $primary; }
+      .check-icon { margin-left: auto; opacity: 1; color: var(--accent); }
     }
 
     &:hover:not(.is-selected) {
-      background: rgba($white, 0.05);
-      color: $white;
+      background: var(--surface-color);
+      color: var(--text-color);
       padding-left: 1.8rem;
     }
   }
@@ -275,12 +281,12 @@ onUnmounted(() => {
   .no-results {
     padding: 2.5rem 1rem;
     text-align: center;
-    color: rgba($white, 0.3);
+    color: var(--text-secondary);
     font-size: 0.9rem;
   }
 
   &::-webkit-scrollbar { width: 5px; }
-  &::-webkit-scrollbar-thumb { background: rgba($white, 0.1); border-radius: 10px; }
+  &::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 }
 
 @keyframes panelSlide {

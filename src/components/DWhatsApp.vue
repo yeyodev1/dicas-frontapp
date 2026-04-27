@@ -99,23 +99,24 @@ onMounted(() => {
     animation: pulse 2s infinite;
   }
 
-  .tooltip {
+    .tooltip {
     position: absolute;
     left: -15px;
     top: 50%;
     transform: translateX(-110%) translateY(-50%);
-    background: white;
-    color: #333;
+    background: var(--surface-color);
+    color: var(--text-color);
     padding: 8px 15px;
     border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
-    font-family: 'Inter', sans-serif;
+    font-family: $font-principal;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
 
     &::after {
       content: '';
@@ -125,7 +126,7 @@ onMounted(() => {
       transform: translateY(-50%);
       border-top: 6px solid transparent;
       border-bottom: 6px solid transparent;
-      border-left: 6px solid white;
+      border-left: 6px solid var(--surface-color);
     }
   }
 }

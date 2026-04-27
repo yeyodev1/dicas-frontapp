@@ -39,13 +39,18 @@ const handleClose = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  transition: background-color 0.4s ease;
+
+  [data-theme='dark'] & {
+    background: rgba(0, 0, 0, 0.85);
+  }
 
   @media (max-width: 600px) {
     padding: 0;
@@ -69,7 +74,7 @@ const handleClose = () => {
     overflow-y: auto;
     
     &::-webkit-scrollbar { width: 4px; }
-    &::-webkit-scrollbar-thumb { background: rgba($white, 0.1); border-radius: 10px; }
+    &::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
   }
 }
 
@@ -81,16 +86,16 @@ const handleClose = () => {
   position: absolute;
   top: -60px;
   right: 0;
-  background: rgba($white, 0.1);
+  background: var(--surface-color);
   backdrop-filter: blur(5px);
-  border: 1px solid rgba($white, 0.2);
+  border: 1px solid var(--border-color);
   width: 44px;
   height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-color);
   cursor: pointer;
   z-index: 101;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -98,10 +103,11 @@ const handleClose = () => {
   i { font-size: 1.2rem; }
 
   &:hover {
-    background: $dicas-red;
-    border-color: $dicas-red;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #FFFFFF;
     transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 0 20px rgba($dicas-red, 0.4);
+    box-shadow: 0 0 20px rgba($primary, 0.4);
   }
 
   @media (max-width: 750px) {
