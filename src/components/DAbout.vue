@@ -80,7 +80,7 @@ onMounted(() => {
           <div class="image-wrapper">
              <div class="image-overlay"></div>
              <img 
-               src="https://res.cloudinary.com/dvq6znk71/image/upload/v1776361560/dicas/ceo/dicas/ceo/WhatsApp_Image_Apr_10_2026__3_.jpg" 
+               src="@/assets/images/diana-2.jpeg" 
                alt="Dicas Leadership" 
                class="about-img"
              />

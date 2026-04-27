@@ -68,7 +68,7 @@ onMounted(() => {
       <div class="hero-visual" ref="ceoRef">
         <div class="ceo-image-wrapper">
           <img 
-            src="https://res.cloudinary.com/dvq6znk71/image/upload/v1776361560/dicas/ceo/dicas/ceo/WhatsApp_Image_Apr_10_2026__2_.jpg" 
+            src="@/assets/images/diana.jpeg" 
             alt="Dicas CEO" 
             class="ceo-img"
           />
