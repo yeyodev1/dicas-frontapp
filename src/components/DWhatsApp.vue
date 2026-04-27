@@ -5,7 +5,7 @@ import gsap from 'gsap';
 
 const { locale } = useI18n();
 const isVisible = ref(false);
-const whatsappNumber = "12019896068"; // From context or common NJ numbers, user can update
+const whatsappNumber = "12012829103"; // USA Number updated by client
 
 const getMessage = () => {
   return locale.value === 'es' 
