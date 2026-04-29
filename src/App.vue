@@ -2,11 +2,12 @@
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import GlobalConsultancyModal from '@/components/GlobalConsultancyModal.vue';
+import DWhatsApp from '@/components/DWhatsApp.vue';
 import { useThemeStore } from '@/stores/themeStore';
 
 const route = useRoute();
 const { locale } = useI18n();
-const themeStore = useThemeStore();
+useThemeStore();
 </script>
 
 <template>
