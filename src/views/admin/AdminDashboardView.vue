@@ -12,7 +12,7 @@ onMounted(async () => {
   await blogStore.fetchAdminPosts()
   try {
     const res = await UserService.getUsers()
-    userCount.value = res.data.filter(u => u.accountType === 'copywriter').length
+    userCount.value = res.data.users.filter((u: any) => u.accountType === 'copywriter').length
   } catch {}
 })
 
