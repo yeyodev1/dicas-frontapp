@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const blogStore = useBlogStore()
-const { t } = useI18n()
+useI18n()
 
 onMounted(() => {
   blogStore.fetchPostBySlug(props.slug)

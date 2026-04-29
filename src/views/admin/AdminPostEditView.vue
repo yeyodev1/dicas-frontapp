@@ -45,7 +45,7 @@ onMounted(async () => {
   if (isEdit.value) {
     try {
       const res = await BlogService.getAdminPosts()
-      const post = res.data.find(p => p._id === postId.value)
+      const post = res.data.posts.find((p: any) => p._id === postId.value)
       if (post) {
         form.value = {
           title: post.title,
