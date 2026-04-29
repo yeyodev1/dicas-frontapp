@@ -37,20 +37,51 @@ export const useBlogStore = defineStore('blog', {
     currentPost: null as Post | null,
     adminPosts: [] as Post[],
     loading: false,
+    loadingMore: false,
     error: null as string | null,
+    // Pagination
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+    hasMore: false,
   }),
 
   actions: {
-    async fetchPosts() {
-      this.loading = true
+    async fetchPosts(loadMore: boolean = false) {
+      if (loadMore) {
+        this.loadingMore = true
+      } else {
+        this.loading = true
+        this.page = 1
+      }
       this.error = null
+      
       try {
-        const res = await BlogService.getPosts()
-        this.posts = res.data
+        const res = await BlogService.getPosts(this.page, this.limit)
+        const { posts, total, totalPages } = res.data
+        
+        if (loadMore) {
+          this.posts = [...this.posts, ...posts]
+        } else {
+          this.posts = posts
+        }
+        
+        this.total = total
+        this.totalPages = totalPages
+        this.hasMore = this.page < totalPages
       } catch (e: unknown) {
         this.error = (e as { message?: string })?.message || 'Error al cargar posts'
       } finally {
         this.loading = false
+        this.loadingMore = false
+      }
+    },
+
+    async loadNextPage() {
+      if (this.hasMore && !this.loadingMore) {
+        this.page++
+        await this.fetchPosts(true)
       }
     },
 
@@ -59,7 +90,7 @@ export const useBlogStore = defineStore('blog', {
       this.error = null
       try {
         const res = await BlogService.getPostBySlug(slug)
-        this.currentPost = res.data
+        this.currentPost = res.data.post
       } catch (e: unknown) {
         this.error = (e as { message?: string })?.message || 'Post no encontrado'
         this.currentPost = null
@@ -73,7 +104,7 @@ export const useBlogStore = defineStore('blog', {
       this.error = null
       try {
         const res = await BlogService.getAdminPosts()
-        this.adminPosts = res.data
+        this.adminPosts = res.data.posts
       } catch (e: unknown) {
         this.error = (e as { message?: string })?.message || 'Error al cargar posts'
       } finally {
@@ -83,15 +114,15 @@ export const useBlogStore = defineStore('blog', {
 
     async createPost(data: PostFormData) {
       const res = await BlogService.createPost(data)
-      this.adminPosts.unshift(res.data)
-      return res.data
+      this.adminPosts.unshift(res.data.post)
+      return res.data.post
     },
 
     async updatePost(id: string, data: Partial<PostFormData>) {
       const res = await BlogService.updatePost(id, data)
       const idx = this.adminPosts.findIndex((p) => p._id === id)
-      if (idx !== -1) this.adminPosts[idx] = res.data
-      return res.data
+      if (idx !== -1) this.adminPosts[idx] = res.data.post
+      return res.data.post
     },
 
     async deletePost(id: string) {
@@ -102,8 +133,8 @@ export const useBlogStore = defineStore('blog', {
     async togglePublish(id: string) {
       const res = await BlogService.togglePublish(id)
       const idx = this.adminPosts.findIndex((p) => p._id === id)
-      if (idx !== -1) this.adminPosts[idx] = res.data
-      return res.data
+      if (idx !== -1) this.adminPosts[idx] = res.data.post
+      return res.data.post
     },
   },
 })

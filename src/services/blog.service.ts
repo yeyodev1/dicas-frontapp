@@ -1,25 +1,44 @@
 import APIBase from '@/services/httpBase'
 import type { Post, PostFormData } from '@/stores/blog'
 
+interface PaginatedPosts {
+  posts: Post[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  message: string;
+}
+
+interface SinglePostResponse {
+  post: Post;
+  message: string;
+}
+
+interface AdminPostsResponse {
+  posts: Post[];
+  message: string;
+}
+
 class BlogService extends APIBase {
-  getPosts() {
-    return this.get<Post[]>('blog')
+  getPosts(page: number = 1, limit: number = 10) {
+    return this.get<PaginatedPosts>(`blog?page=${page}&limit=${limit}`)
   }
 
   getPostBySlug(slug: string) {
-    return this.get<Post>(`blog/${slug}`)
+    return this.get<SinglePostResponse>(`blog/${slug}`)
   }
 
   getAdminPosts() {
-    return this.get<Post[]>('blog/admin/all')
+    return this.get<AdminPostsResponse>('blog/admin/all')
   }
 
   createPost(data: PostFormData) {
-    return this.post<Post>('blog', data)
+    return this.post<SinglePostResponse>('blog', data)
   }
 
   updatePost(id: string, data: Partial<PostFormData>) {
-    return this.put<Post>(`blog/${id}`, data)
+    return this.put<SinglePostResponse>(`blog/${id}`, data)
   }
 
   deletePost(id: string) {
@@ -27,7 +46,7 @@ class BlogService extends APIBase {
   }
 
   togglePublish(id: string) {
-    return this.patch<Post>(`blog/${id}/publish`, {})
+    return this.patch<SinglePostResponse>(`blog/${id}/publish`, {})
   }
 }
 

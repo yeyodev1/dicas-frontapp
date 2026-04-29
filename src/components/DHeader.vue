@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useModalStore } from '@/stores/modalStore';
 import { useI18n } from 'vue-i18n';
 import { useThemeStore } from '@/stores/themeStore';
 import gsap from 'gsap';
+
+const route = useRoute();
+const isBlogActive = computed(() => route.path.startsWith('/blog'));
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
@@ -119,6 +123,7 @@ onUnmounted(() => {
         <router-link to="/" class="nav-link" :class="{ active: activeSection === 'hero' }">{{ t('nav.home') }}</router-link>
         <a href="/#services" class="nav-link" :class="{ active: activeSection === 'services' }">{{ t('nav.services') }}</a>
         <a href="/#about" class="nav-link" :class="{ active: activeSection === 'about' }">{{ t('nav.about') }}</a>
+        <router-link to="/blog" class="nav-link" :class="{ active: isBlogActive }">{{ t('nav.blog') }}</router-link>
         
         <div class="lang-switcher" @click="toggleLanguage">
           <span :class="{ active: locale === 'en' }">EN</span>
@@ -159,6 +164,7 @@ onUnmounted(() => {
             <router-link to="/" class="mm-link" :class="{ active: activeSection === 'hero' }" @click="closeMenu">{{ t('nav.home') }}</router-link>
             <a href="/#services" class="mm-link" :class="{ active: activeSection === 'services' }" @click="closeMenu">{{ t('nav.services') }}</a>
             <a href="/#about" class="mm-link" :class="{ active: activeSection === 'about' }" @click="closeMenu">{{ t('nav.about') }}</a>
+            <router-link to="/blog" class="mm-link" :class="{ active: isBlogActive }" @click="closeMenu">{{ t('nav.blog') }}</router-link>
             
             <div class="mm-divider"></div>
 
